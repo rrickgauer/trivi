@@ -1,0 +1,53 @@
+﻿@using Trivi.Lib.Domain.Constants
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>Log in</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.MessageBoxes" />
+
+    <div class="feedback-alerts"></div>
+
+    <div class="container my-5">
+        <h1>Log in</h1>
+    </div>
+
+    <div class="container my-5">
+
+        <form class="form-login">
+
+            <div class="alerts-container"></div>
+
+            <div class="input-feedback form-spacing">
+                <label for="form-login-input-email" class="form-label">Email</label>
+                <input type="email" class="form-control input-feedback-input" id="form-login-input-email" required maxlength="@UserConstants.MaxEmailLength">
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <div class="input-feedback form-spacing">
+                <label for="form-login-input-password" class="form-label">Password</label>
+                <input type="password" class="form-control input-feedback-input" id="form-login-input-password" required>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <div class="d-flex align-items-baseline justify-content-between form-spacing">
+                <button type="submit" class="btn btn-success btn-submit">Log in</button>
+                
+                <div>Don't have an account? <a href="#">Sign Up</a></div>
+                
+            </div>
+        </form>
+
+
+    </div>
+
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/login.bundle.js"></script>
+</body>
+</html>

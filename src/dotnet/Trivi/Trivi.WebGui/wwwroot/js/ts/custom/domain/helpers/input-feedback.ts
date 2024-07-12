@@ -1,6 +1,7 @@
 import { Nullable } from "../../utility/nullable";
 import { NativeEvents } from "../constants/native-events";
 import { InputFeebackState } from "../enums/input-feedback-state";
+import { Selector } from "./element-selector/selector";
 
 
 
@@ -15,32 +16,27 @@ export class InputFeedback
     private _validFeedbackElement: HTMLDivElement;
     private _invalidFeedbackElement: HTMLDivElement;
     public inputElement: HTMLElement;
+    private _selector: Selector;
 
     /**
      * Helper class for interfacing with an input's valid feedback text/display
-     * @param container
+     * @param e
      */
-    constructor(container: Element, autoClear: boolean=false)
+    constructor(e: Element, autoClear: boolean=true)
     {
-        this._container = container.closest('.input-feedback');
-
-        this._validFeedbackElement = this._container.querySelector('.valid-feedback');
-        this._invalidFeedbackElement = this._container.querySelector('.invalid-feedback');
-        this.inputElement = this._container.querySelector('.input-feedback-input');
+        this._selector = Selector.fromClosest<HTMLDivElement>('.input-feedback', e);
+        this._container = this._selector.element as HTMLDivElement;
+        this._validFeedbackElement = this._selector.querySelector<HTMLDivElement>('.valid-feedback');
+        this._invalidFeedbackElement = this._selector.querySelector<HTMLDivElement>('.invalid-feedback');
+        this.inputElement = this._selector.querySelector<HTMLElement>('.input-feedback-input');
 
         if (autoClear)
         {
-            this.inputElement.addEventListener(NativeEvents.KeyPress, (e) =>
+            this.inputElement?.addEventListener(NativeEvents.KeyPress, (e) =>
             {
                 this.clearInputFeedbackClasses();
             });
         }
-
-        if (!Nullable.hasValue(this.inputElement))
-        {
-            throw new Error(`Unable to find input element`);
-        }
-
     }
 
 

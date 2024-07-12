@@ -1,8 +1,8 @@
 
 export class ErrorMessage
 {
-    public id?: number;
-    public message?: string;
+    public id: number;
+    public message: string;
 }
 
 export interface IApiErrors
@@ -13,7 +13,7 @@ export interface IApiErrors
 export class ApiResponse<T> implements IApiErrors
 {
     public errors: ErrorMessage[] = [];
-    public data?: T = null;
+    public data?: T | null = null;
 }
 
 export class ApiResponseNoContent implements IApiErrors

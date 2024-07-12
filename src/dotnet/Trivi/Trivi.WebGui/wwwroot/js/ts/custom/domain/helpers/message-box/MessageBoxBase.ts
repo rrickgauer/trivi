@@ -1,5 +1,6 @@
 ﻿import { Modal } from "bootstrap";
 import { MessageBoxType } from "./MessageBoxType";
+import { Selector } from "../element-selector/selector";
 
 
 
@@ -9,19 +10,27 @@ export abstract class MessageBoxBase {
 
     public abstract messageBoxType: MessageBoxType;
     public abstract element: HTMLDivElement;
+
+    
+
     protected abstract defaultTitle: string;
 
+
+    protected get selector()
+    {
+        return new Selector(this.element);
+    }
 
     public get modal(): Modal {
         return Modal.getOrCreateInstance(this.element);
     }
 
     public get elementTitle(): HTMLElement {
-        return this.element.querySelector('.modal-title');
+        return this.selector.querySelector('.modal-title');
     }
 
     public get elementContent(): HTMLElement {
-        return this.element.querySelector('.modal-body-content');
+        return this.selector.querySelector('.modal-body-content');
     }
 
     constructor(message: string, title?: string) {

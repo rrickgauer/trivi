@@ -2,6 +2,7 @@ import { NativeEvents } from "../../../domain/constants/native-events";
 import { IController } from "../../../domain/contracts/icontroller";
 import { ApiErrorCode } from "../../../domain/enums/api-error-codes";
 import { InputFeebackState } from "../../../domain/enums/input-feedback-state";
+import { Selector } from "../../../domain/helpers/element-selector/selector";
 import { InputFeedbackText } from "../../../domain/helpers/input-feedback";
 import { SpinnerButton } from "../../../domain/helpers/spinner-button";
 import { ErrorMessage } from "../../../domain/models/api-response";
@@ -29,16 +30,18 @@ export class LoginForm implements IController
     private readonly _authService: AuthService;
     private readonly _alertsContainer: HTMLDivElement;
     private readonly _destination: string;
+    private _selector: Selector;
 
     constructor(destination: string)
     {
         this._destination = destination;
+        this._selector = Selector.fromString(selectors.formClass);
 
-        this._form = document.querySelector<HTMLFormElement>(selectors.formClass);
-        this._email = new InputFeedbackText(this._form.querySelector(selectors.emailInputId), true);
-        this._password = new InputFeedbackText(this._form.querySelector(selectors.passwordInputId), true);
-        this._btnSubmit = new SpinnerButton(this._form.querySelector<HTMLButtonElement>(selectors.btnSubmitClass));
-        this._alertsContainer = this._form.querySelector<HTMLDivElement>(selectors.alertsContainerClass);
+        this._form = this._selector.element as HTMLFormElement;
+        this._email = new InputFeedbackText(this._selector.querySelector(selectors.emailInputId), true);
+        this._password = new InputFeedbackText(this._selector.querySelector(selectors.passwordInputId), true);
+        this._btnSubmit = new SpinnerButton(this._selector.querySelector<HTMLButtonElement>(selectors.btnSubmitClass));
+        this._alertsContainer = this._selector.querySelector<HTMLDivElement>(selectors.alertsContainerClass);
 
         this._authService = new AuthService();
     }

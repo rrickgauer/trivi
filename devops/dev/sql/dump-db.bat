@@ -19,7 +19,7 @@ mysqldump -u main -h 104.225.208.163 -p ^
 --replace ^
 --order-by-primary ^
 --result-file "C:\xampp\htdocs\files\trivi\sql\ddl\.data.sql" ^
-Trivi_Dev TestEnum
+Trivi_Dev Error_Message_Groups Error_Messages
 
 
 @echo off

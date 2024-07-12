@@ -8,7 +8,7 @@ namespace Trivi.Lib.Domain.Constants;
 
 public class GuiSessionKeys
 {
-    public const string AuthUserId = "auth:user_id";
+    public const string AuthClientId = "auth:client_id";
 
     public const string SessionName = ".Trivi.Session";
 }

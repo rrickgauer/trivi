@@ -44,23 +44,13 @@ class RollupConfig
 
 
 const configs = [
-    //new RollupConfig('ts/custom/pages/home/index.ts', 'dist/home.bundle.js'),
-    //new RollupConfig('ts/custom/pages/login/index.ts', 'dist/login.bundle.js'),
-    //new RollupConfig('ts/custom/pages/community/community-page/index.ts', 'dist/community-page.bundle.js'),
-    //new RollupConfig('ts/custom/pages/community/create-post/index.ts', 'dist/create-post-page.bundle.js'),
-    //new RollupConfig('ts/custom/pages/community/post-page/index.ts', 'dist/post-page.bundle.js'),
-    //new RollupConfig('ts/custom/pages/community/private-community/index.ts', 'dist/private-community.bundle.js'),
-    //new RollupConfig('ts/custom/pages/communities/communities-page/index.ts', 'dist/communities-page.bundle.js'),
-    //new RollupConfig('ts/custom/pages/communities/create-community/index.ts', 'dist/create-community.bundle.js'),
-
-
-    //new RollupConfig('ts/custom/pages/community/settings/general/index.ts', 'dist/community-settings-general.bundle.js'),
-    //new RollupConfig('ts/custom/pages/community/settings/content/index.ts', 'dist/community-settings-content.bundle.js'),
-    //new RollupConfig('ts/custom/pages/community/settings/members/index.ts', 'dist/community-settings-members.bundle.js'),
-    //new RollupConfig('ts/custom/pages/community/settings/flairs/index.ts', 'dist/community-settings-flairs.bundle.js'),
-
 
     new RollupConfig('ts/custom/pages/landing/index.ts', 'dist/landing.bundle.js'),
+
+    new RollupConfig('ts/custom/pages/home/index.ts', 'dist/home.bundle.js'),
+
+    new RollupConfig('ts/custom/pages/auth/login/index.ts', 'dist/login.bundle.js'),
+    new RollupConfig('ts/custom/pages/auth/signup/index.ts', 'dist/signup.bundle.js'),
 
 ];
 

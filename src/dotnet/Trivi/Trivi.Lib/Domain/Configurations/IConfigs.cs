@@ -10,4 +10,6 @@ public interface IConfigs
     public string DbPassword { get; }
 
     public string StaticWebFilesPath { get; }
+
+    public uint MinimumUserPasswordLength { get; }
 }

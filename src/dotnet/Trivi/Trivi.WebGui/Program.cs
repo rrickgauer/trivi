@@ -1,9 +1,11 @@
+using Deadit.Lib.Service.Contracts;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using Trivi.Lib.Domain.Configurations;
 using Trivi.Lib.Domain.Constants;
 using Trivi.Lib.Domain.Enums;
 using Trivi.Lib.Filters;
+using Trivi.Lib.JsonConverters;
 using Trivi.Lib.Utility;
 
 
@@ -17,6 +19,8 @@ isProduction = false;
 IConfigs config = isProduction ? new ConfigurationProduction() : new ConfigurationDev();
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region - Setup web application builder -
 
 // Add services to the container.
 builder.Services.AddControllersWithViews(options =>
@@ -48,7 +52,7 @@ builder.Services.AddControllersWithViews(options =>
         options.JsonSerializerOptions.WriteIndented = true;
     }
 
-    //options.JsonSerializerOptions.Converters.Add(new ServiceDataResponseFactory());
+    options.JsonSerializerOptions.Converters.Add(new ServiceDataResponseFactory());
 });
 
 
@@ -61,7 +65,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-
+#endregion
 
 #region - Dependency Injection -
 
@@ -91,8 +95,16 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 #endregion
 
 
-
 var app = builder.Build();
+
+#region - Load the error messages into memory -
+
+var errorMessages = app.Services.GetRequiredService<IErrorMessageService>();
+await errorMessages.LoadStaticErrorMessagesAsync();
+
+#endregion
+
+#region - Build and run the web application -
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -121,3 +133,7 @@ app.MapControllers();
 app.UseSession();
 
 app.Run();
+
+#endregion
+
+

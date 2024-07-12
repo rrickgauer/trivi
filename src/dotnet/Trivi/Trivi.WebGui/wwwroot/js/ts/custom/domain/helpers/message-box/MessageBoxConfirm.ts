@@ -1,5 +1,6 @@
 ﻿import { BootstrapModalEvents } from "../../constants/bootstrap-constants";
 import { NativeEvents } from "../../constants/native-events";
+import { Selector } from "../element-selector/selector";
 import { MessageBoxBase } from "./MessageBoxBase";
 import { MessageBoxType } from "./MessageBoxType";
 
@@ -19,7 +20,7 @@ export class MessageBoxConfirm extends MessageBoxBase {
     private onSuccess?: () => void;
 
     public get element() {
-        return document.querySelector('#message-box-confirm') as HTMLDivElement;
+        return Selector.querySelector<HTMLDivElement>('#message-box-confirm');
     }
 
     constructor(message: string, confirmButtonText?: string, title?: string) {
@@ -41,7 +42,11 @@ export class MessageBoxConfirm extends MessageBoxBase {
 
     private clickHandler = (e) => {
         e.preventDefault();
-        this.onSuccess();
+
+        if (this.onSuccess)
+        {
+            this.onSuccess();
+        }
 
         // Remove the click event listener
         this._btnConfirm.removeEventListener(NativeEvents.Click, this.clickHandler);

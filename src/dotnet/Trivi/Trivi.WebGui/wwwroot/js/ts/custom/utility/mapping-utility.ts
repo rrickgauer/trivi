@@ -6,25 +6,6 @@ import { Nullable } from "./nullable";
 export class MappingUtility
 {
 
-    public static toFormData(data: object): FormData
-    {
-        const form = new FormData();
-
-        for (const key in data)
-        {
-            if (Nullable.hasValue(data[key]))
-            {
-                form.append(key, data[key]);
-            }
-            else
-            {
-                form.append(key, null);
-            }
-        }
-
-        return form;
-    }
-
     public static toJson(data: object, ignoreEmptyStrings?: boolean): JsonObject
     {
         let newData = ignoreEmptyStrings ? data : this.fixNullValues(data);

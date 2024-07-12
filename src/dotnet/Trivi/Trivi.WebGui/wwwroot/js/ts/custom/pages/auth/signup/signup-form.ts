@@ -2,6 +2,7 @@ import { NativeEvents } from "../../../domain/constants/native-events";
 import { IController } from "../../../domain/contracts/icontroller";
 import { ApiErrorCode } from "../../../domain/enums/api-error-codes";
 import { InputFeebackState } from "../../../domain/enums/input-feedback-state";
+import { Selector } from "../../../domain/helpers/element-selector/selector";
 import { InputFeedbackText } from "../../../domain/helpers/input-feedback";
 import { SpinnerButton } from "../../../domain/helpers/spinner-button";
 import { ErrorMessage } from "../../../domain/models/api-response";
@@ -24,6 +25,8 @@ const selectors = {
 
 export class SignupForm implements IController
 {
+
+
     private _form: HTMLFormElement;
     private _email: InputFeedbackText;
     private _password: InputFeedbackText;
@@ -33,6 +36,7 @@ export class SignupForm implements IController
     private _authService: AuthService;
     private _alertsContainer: HTMLDivElement;
     private _destination: string;
+    private _selector: Selector;
 
     private get _emailInputValue(): string
     {
@@ -53,13 +57,15 @@ export class SignupForm implements IController
     {
         this._destination = destination;
 
-        this._form = document.querySelector<HTMLFormElement>(selectors.formClass);
-        this._email = new InputFeedbackText(this._form.querySelector(selectors.emailInputId), true);
-        this._password = new InputFeedbackText(this._form.querySelector(selectors.passwordInputId), true);
-        this._passwordConfirm = new InputFeedbackText(this._form.querySelector(selectors.passwordConfirmInputId), true);
-        this._submitBtn = new SpinnerButton(this._form.querySelector<HTMLButtonElement>(selectors.submitBtnClass));
-        this._fieldSet = this._form.querySelector<HTMLFieldSetElement>('fieldset');
-        this._alertsContainer = this._form.querySelector<HTMLDivElement>(selectors.alertsContainerClass);
+        this._selector = Selector.fromString(selectors.formClass);
+
+        this._form = this._selector.closest<HTMLFormElement>(selectors.formClass);
+        this._email = new InputFeedbackText(this._selector.querySelector(selectors.emailInputId), true);
+        this._password = new InputFeedbackText(this._selector.querySelector(selectors.passwordInputId), true);
+        this._passwordConfirm = new InputFeedbackText(this._selector.querySelector(selectors.passwordConfirmInputId), true);
+        this._submitBtn = new SpinnerButton(this._selector.querySelector<HTMLButtonElement>(selectors.submitBtnClass));
+        this._fieldSet = this._selector.querySelector<HTMLFieldSetElement>('fieldset');
+        this._alertsContainer = this._selector.querySelector<HTMLDivElement>(selectors.alertsContainerClass);
 
         this._authService = new AuthService();
     }

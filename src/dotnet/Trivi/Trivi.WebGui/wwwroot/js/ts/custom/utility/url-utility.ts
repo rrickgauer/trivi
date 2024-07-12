@@ -1,15 +1,14 @@
-import { Nullable } from "./nullable";
 
 
 export class UrlUtility
 {
-    public static getCurrentPathValue = (index: number): string =>
+    public static getCurrentPathValue = (index: number): string | null =>
     {
         const url = new URL(window.location.href);
         return UrlUtility.getPathValue(index, url);
     }
 
-    public static getPathValue = (index: number, url: URL): string =>
+    public static getPathValue = (index: number, url: URL): string | null =>
     {
         const pathValues = url.pathname.split('/').filter(v => v !== "");
 
@@ -38,12 +37,15 @@ export class UrlUtility
     {
         const stringValue = this.getQueryParmValue(key);
 
-        if (!Nullable.hasValue(stringValue))
+        if (stringValue)
+        {
+            return parseInt(stringValue);
+        }
+        else
         {
             return null;
         }
 
-        return parseInt(stringValue);
     }
 
 

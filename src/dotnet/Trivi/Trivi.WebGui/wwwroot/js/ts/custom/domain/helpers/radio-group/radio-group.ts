@@ -1,3 +1,4 @@
+import { Selector } from "../element-selector/selector";
 
 
 const RadioGroupElements = {
@@ -9,7 +10,7 @@ export class RadioGroup<T>
 {
     protected readonly _container: HTMLDivElement;
 
-    protected get _groupName(): string
+    protected get _groupName(): string | null
     {
         return this._container.getAttribute(`${RadioGroupElements.groupNameAttr}`);
     }
@@ -45,7 +46,8 @@ export class RadioGroup<T>
 
     constructor(e: Element)
     {
-        this._container = e.closest<HTMLDivElement>(`.${RadioGroupElements.containerClass}`);
+        const selector = Selector.fromClosest<HTMLDivElement>(`.${RadioGroupElements.containerClass}`, e);
+        this._container = selector.element as HTMLDivElement;
     }
 
 

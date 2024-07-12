@@ -28,7 +28,7 @@ export class ServiceUtility
     }
 
 
-    public static async toServiceResponse<T>(response: Response) 
+    public static async toServiceResponse<T>(response: Response): Promise<ServiceResponse<T>> 
     {
         if (response.ok || response.status === HttpStatusCode.BadRequest)
         {
@@ -40,17 +40,16 @@ export class ServiceUtility
         else if (response.status === HttpStatusCode.UnprocessableEntity)
         {
             await ServiceUtility.handleUnprocessableEntityApiResponse(response);
-            return;
+            
         }
         else if (response.status === HttpStatusCode.NotFound)
         {
             ServiceUtility.handleNotFoundApiResponse(response);
-            return;
+            
         }
         else if (response.status === HttpStatusCode.Forbidden)
         {
             ServiceUtility.handleForbiddenApiResponse(response);
-            return;
         }
 
         const responseText = await response.text();

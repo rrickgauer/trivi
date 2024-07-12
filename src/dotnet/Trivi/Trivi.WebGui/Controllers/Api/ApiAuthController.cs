@@ -10,7 +10,7 @@ namespace Trivi.WebGui.Controllers.Api;
 [Route("api/auth")]
 public class ApiAuthController(IAuthService authService) : InternalApiController, IControllerName
 {
-    public static string ControllerRedirectName => IControllerName.RemoveControllerSuffix(nameof(ApiAuthController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(ApiAuthController));
 
     private readonly IAuthService _authService = authService;
 

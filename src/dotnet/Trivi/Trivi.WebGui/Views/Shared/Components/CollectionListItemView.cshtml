@@ -1,0 +1,13 @@
+﻿@using Trivi.Lib.Utility
+@model Trivi.Lib.Domain.TableViews.ViewCollection
+
+
+<li class="list-group-item collections-list-item" data-collection-id="@Model.CollectionId">
+
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="@Model.UriGui">@Model.CollectionName</a>
+        <div>@Model.CollectionCreatedOn.ToDisplayDateOnly()</div>
+    </div>
+
+</li>
+

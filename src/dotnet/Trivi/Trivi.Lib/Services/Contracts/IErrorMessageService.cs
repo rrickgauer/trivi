@@ -1,4 +1,4 @@
-﻿namespace Deadit.Lib.Service.Contracts;
+﻿namespace Trivi.Lib.Services.Contracts;
 
 public interface IErrorMessageService
 {

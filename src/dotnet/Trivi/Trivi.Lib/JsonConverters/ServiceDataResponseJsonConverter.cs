@@ -1,8 +1,7 @@
-﻿
-using Deadit.Lib.Service.Implementations;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using Trivi.Lib.Domain.Responses;
+using Trivi.Lib.Services.Implementations;
 
 namespace Trivi.Lib.JsonConverters;
 

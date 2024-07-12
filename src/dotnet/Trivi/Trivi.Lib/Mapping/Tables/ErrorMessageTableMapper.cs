@@ -1,9 +1,7 @@
-﻿
-using System.Data;
+﻿using System.Data;
 using Trivi.Lib.Domain.Models;
-using Trivi.Lib.Mapping.Tables;
 
-namespace Deadit.Lib.Mapping.Tables;
+namespace Trivi.Lib.Mapping.Tables;
 
 public class ErrorMessageTableMapper : TableMapper<ErrorMessage>
 {

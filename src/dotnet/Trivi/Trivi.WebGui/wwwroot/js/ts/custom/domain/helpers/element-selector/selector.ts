@@ -16,7 +16,7 @@ export class Selector
 
         if (!element)
         {
-            throw new Error(`No element found within container with selector: ${selector}`);
+            throw new Error(`No element found within container (${this.element.classList.toString()}) with selector: ${selector}`);
         }
         return element;
     }
@@ -74,9 +74,10 @@ export class Selector
         return element;
     }
 
-    
-
 }
+
+
+export const DocumentSelector = new Selector(document.body);
 
 
 

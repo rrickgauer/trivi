@@ -1,10 +1,9 @@
-﻿using Deadit.Lib.Service.Contracts;
-using Trivi.Lib.Domain.Attributes;
+﻿using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Models;
 using Trivi.Lib.Repository.Contracts;
 using Trivi.Lib.Services.Contracts;
 
-namespace Deadit.Lib.Service.Implementations;
+namespace Trivi.Lib.Services.Implementations;
 
 [AutoInject<IErrorMessageService>(AutoInjectionType.Singleton, InjectionProject.Always)]
 public class ErrorMessageService(IErrorMessageRepository repo, ITableMapperService tableMapperService) : IErrorMessageService

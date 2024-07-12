@@ -8,7 +8,7 @@ public interface IControllerName
 
     public static abstract string ControllerRedirectName { get; }
 
-    public static string RemoveControllerSuffix(string controllerName)
+    public static string RemoveSuffix(string controllerName)
     {
         string result = controllerName;
 
@@ -26,6 +26,6 @@ public static class ControllerNameExtensions
 {
     public static string RemoveMe(this IControllerName controller, string controllerName)
     {
-        return IControllerName.RemoveControllerSuffix(controllerName);
+        return IControllerName.RemoveSuffix(controllerName);
     }
 }

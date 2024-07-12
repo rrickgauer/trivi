@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
 -- ------------------------------------------------------
@@ -20,6 +20,27 @@
 --
 
 USE `Trivi_Dev`;
+
+--
+-- Table structure for table `Collections`
+--
+
+DROP TABLE IF EXISTS `Collections`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Collections` (
+  `internal_id` int unsigned NOT NULL AUTO_INCREMENT /*!80023 INVISIBLE */,
+  `id` char(36) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `user_id` char(36) NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`internal_id`),
+  UNIQUE KEY `internal_id` (`internal_id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `Collections_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `Error_Message_Groups`
@@ -76,6 +97,21 @@ CREATE TABLE `Users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Temporary view structure for view `View_Collections`
+--
+
+DROP TABLE IF EXISTS `View_Collections`;
+/*!50001 DROP VIEW IF EXISTS `View_Collections`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `View_Collections` AS SELECT 
+ 1 AS `collection_id`,
+ 1 AS `collection_name`,
+ 1 AS `collection_user_id`,
+ 1 AS `collection_created_on`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `View_Error_Messages`
 --
 
@@ -118,6 +154,24 @@ SET character_set_client = @saved_cs_client;
 --
 
 USE `Trivi_Dev`;
+
+--
+-- Final view structure for view `View_Collections`
+--
+
+/*!50001 DROP VIEW IF EXISTS `View_Collections`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`main`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `View_Collections` AS select `c`.`id` AS `collection_id`,`c`.`name` AS `collection_name`,`c`.`user_id` AS `collection_user_id`,`c`.`created_on` AS `collection_created_on` from `Collections` `c` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
 -- Final view structure for view `View_Error_Messages`
@@ -164,8 +218,8 @@ USE `Trivi_Dev`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-12 11:06:30
--- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+-- Dump completed on 2024-07-14 14:51:13
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
 -- ------------------------------------------------------
@@ -213,4 +267,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-12 11:06:34
+-- Dump completed on 2024-07-14 14:51:17

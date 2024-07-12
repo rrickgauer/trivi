@@ -11,7 +11,8 @@ public class PartialRazorFiles
     public static string PageBottom    => Build("_PageBottom");
     public static string PageLoading   => Build("_PageLoading");
     public static string SpinnerCenter => Build("_SpinnerCenter");
-    public static string BundleTop => Build("_IncludeBundle");
+    public static string AlertsPageTop => Build("_AlertsPageTop");
+    public static string BundleTop     => Build("_IncludeBundle");
 
     private static string Build(string path)
     {

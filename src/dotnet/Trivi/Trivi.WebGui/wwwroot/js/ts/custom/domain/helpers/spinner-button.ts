@@ -1,3 +1,4 @@
+import { Selector } from "./element-selector/selector";
 
 
 export class SpinnerButton
@@ -28,5 +29,13 @@ export class SpinnerButton
     {
         this.button.innerText = this._displayText;
         this.button.disabled = false;
+    }
+
+
+    public static inParent(e: Element, buttonSelector: string)
+    {
+        const elementSelector = new Selector(e);
+        const buttonElement = elementSelector.querySelector<HTMLButtonElement>(buttonSelector);
+        return new SpinnerButton(buttonElement);
     }
 }

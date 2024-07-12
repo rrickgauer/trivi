@@ -9,4 +9,10 @@ public class ServiceResponseException(ServiceResponse serviceResponse) : Excepti
     public ServiceResponseException(ErrorCode errorCode) : this(new ServiceResponse(errorCode)) { }
 
     public ServiceResponse Response { get; } = serviceResponse;
+    public List<ErrorCode> Errors => Response.Errors;
+
+
+    
 }
+
+

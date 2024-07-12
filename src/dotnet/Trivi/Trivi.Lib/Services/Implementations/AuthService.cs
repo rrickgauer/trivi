@@ -21,6 +21,8 @@ public class AuthService(IUserService userService, IHttpContextAccessor contextA
     private HttpContext _context => _contextAccessor.HttpContext!;
     private SessionManager _sessionManager => new(_context.Session);
 
+    
+
     public async Task<ServiceDataResponse<ViewUser>> LoginUserAsync(LoginForm credentials)
     {
         try

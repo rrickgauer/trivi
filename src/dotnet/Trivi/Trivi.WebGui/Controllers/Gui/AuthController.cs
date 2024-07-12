@@ -9,7 +9,7 @@ namespace Trivi.WebGui.Controllers.Gui;
 [Route("auth")]
 public class AuthController(IAuthService authService) : GuiController, IControllerName
 {
-    public static string ControllerRedirectName => IControllerName.RemoveControllerSuffix(nameof(AuthController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(AuthController));
 
     private readonly IAuthService _authService = authService;
 
@@ -17,7 +17,7 @@ public class AuthController(IAuthService authService) : GuiController, IControll
     [ActionName(nameof(LoginPage))]
     public IActionResult LoginPage([FromQuery] string? destination)
     {
-        AuthPageViewModel viewModel = new()
+        AuthPageVM viewModel = new()
         {
             Destination = destination,
         };
@@ -29,7 +29,7 @@ public class AuthController(IAuthService authService) : GuiController, IControll
     [ActionName(nameof(SignupPage))]
     public IActionResult SignupPage([FromQuery] string? destination)
     {
-        AuthPageViewModel viewModel = new()
+        AuthPageVM viewModel = new()
         {
             Destination = destination,
         };

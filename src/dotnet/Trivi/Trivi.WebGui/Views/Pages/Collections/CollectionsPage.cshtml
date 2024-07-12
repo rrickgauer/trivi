@@ -1,0 +1,24 @@
+﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.WebGui.ViewComponents
+@model Trivi.Lib.Domain.ViewModels.Gui.CollectionsPageVM
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>Your collections</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+    <div class="container mt-5">
+        <partial name="_CollectionsList.cshtml" />
+    </div>
+
+
+    <partial name="_NewCollectionModal.cshtml" />
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/collections.bundle.js"></script>
+</body>
+</html>

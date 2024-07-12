@@ -7,4 +7,5 @@ export class ApiEndpoints
 {
     public static readonly Login = `${API_PREFIX}/auth/login`;
     public static readonly Signup = `${API_PREFIX}/auth/signup`;
+    public static readonly Collections = `${API_PREFIX}/collections`;
 }

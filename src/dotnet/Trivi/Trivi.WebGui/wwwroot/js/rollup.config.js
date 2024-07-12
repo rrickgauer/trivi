@@ -47,6 +47,8 @@ const configs = [
 
     new RollupConfig('ts/custom/pages/landing/index.ts', 'dist/landing.bundle.js'),
 
+    new RollupConfig('ts/custom/pages/home/index.ts', 'dist/home.bundle.js'),
+
     new RollupConfig('ts/custom/pages/auth/login/index.ts', 'dist/login.bundle.js'),
     new RollupConfig('ts/custom/pages/auth/signup/index.ts', 'dist/signup.bundle.js'),
 

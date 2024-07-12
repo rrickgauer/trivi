@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Trivi.Lib.Domain.Constants;
 using Trivi.Lib.Domain.ViewModels.Gui;
+using Trivi.Lib.Services.Contracts;
 using Trivi.WebGui.Controllers.Contracts;
 
 namespace Trivi.WebGui.Controllers.Gui;
 
 [Controller]
 [Route("auth")]
-public class AuthController : GuiController, IControllerName
+public class AuthController(IAuthService authService) : GuiController, IControllerName
 {
     public static string ControllerRedirectName => IControllerName.RemoveControllerSuffix(nameof(AuthController));
+
+    private readonly IAuthService _authService = authService;
 
     [HttpGet("login")]
     [ActionName(nameof(LoginPage))]
@@ -33,5 +35,14 @@ public class AuthController : GuiController, IControllerName
         };
 
         return View(GuiPages.Signup, viewModel);
+    }
+
+    [HttpGet("logout")]
+    public IActionResult LogoutPage()
+    {
+        _authService.Logout();
+
+        // return to the home page
+        return LocalRedirect("/");
     }
 }

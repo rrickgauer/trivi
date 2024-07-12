@@ -28,6 +28,11 @@ public class SessionManager(ISession session)
         SetSessionValue(GuiSessionKeys.AuthClientId, clientId);
     }
 
+    public void ClearClientId()
+    {
+        StoreClientId(null);
+    }
+
 
     private void SetSessionValue(string key, object? value)
     {

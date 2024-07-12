@@ -24,7 +24,9 @@ public class TableMapperService : ITableMapperService
 
         var modelMapperObjects = subclassTypes.Select(Activator.CreateInstance);
 
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
         return modelMapperObjects.ToList();
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
     }
 
     /// <summary>

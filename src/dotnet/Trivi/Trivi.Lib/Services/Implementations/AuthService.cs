@@ -115,10 +115,6 @@ public class AuthService(IUserService userService, IHttpContextAccessor contextA
         return createUser;
     }
 
-
-
-
-
     public ServiceDataResponse<bool> IsClientLoggedIn()
     {
         if (_sessionManager.ClientId is not Guid clientId)
@@ -127,5 +123,11 @@ public class AuthService(IUserService userService, IHttpContextAccessor contextA
         }
 
         return true;
+    }
+
+    public ServiceResponse Logout()
+    {
+        _sessionManager.ClearClientId();
+        return new();
     }
 }

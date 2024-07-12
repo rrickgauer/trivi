@@ -28,7 +28,7 @@
     "Profile 1": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:7296/auth/login",
+      "launchUrl": "https://localhost:7296/auth/signup",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

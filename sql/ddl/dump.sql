@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
 -- ------------------------------------------------------
@@ -72,7 +72,7 @@ CREATE TABLE `Users` (
   UNIQUE KEY `internal_id` (`internal_id`),
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,8 +164,8 @@ USE `Trivi_Dev`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-11 16:09:31
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- Dump completed on 2024-07-12 11:06:30
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
 -- ------------------------------------------------------
@@ -200,7 +200,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `Error_Messages` WRITE;
 /*!40000 ALTER TABLE `Error_Messages` DISABLE KEYS */;
-REPLACE INTO `Error_Messages` VALUES (200,2,'Invalid email or password.');
+REPLACE INTO `Error_Messages` VALUES (200,2,'Invalid email or password.'),(201,2,'The email you have provided is already associated with an account.'),(202,2,'The passwords do not match.'),(203,2,'Please lengthen the password to 8 or more characters.');
 /*!40000 ALTER TABLE `Error_Messages` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -213,4 +213,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-11 16:09:35
+-- Dump completed on 2024-07-12 11:06:34

@@ -1,21 +1,21 @@
-import { HttpMethods } from "../domain/constants/api-constants";
+﻿import { HttpMethods } from "../domain/constants/api-constants";
 import { ApplicationTypes } from "../domain/constants/application-types";
-import { LoginApiRequest } from "../domain/models/auth-models";
+import { SignupApiRequest } from "../domain/models/auth-models";
 import { MappingUtility } from "../utility/mapping-utility";
 import { ApiEndpoints } from "./api-base";
 
 
 
-export class ApiLogin
+export class ApiSignup 
 {
     private _url: string;
 
-    constructor()
+    constructor() 
     {
-        this._url = ApiEndpoints.Login;
+        this._url = ApiEndpoints.Signup;
     }
 
-    public async post(data: LoginApiRequest)
+    public async post(data: SignupApiRequest) 
     {
         const url = this._url;
 
@@ -26,5 +26,3 @@ export class ApiLogin
         });
     }
 }
-
-

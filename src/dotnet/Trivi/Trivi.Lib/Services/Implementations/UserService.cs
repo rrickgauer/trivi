@@ -1,6 +1,8 @@
-﻿using Trivi.Lib.Domain.Attributes;
+﻿using System.Net;
+using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Errors;
 using Trivi.Lib.Domain.Forms;
+using Trivi.Lib.Domain.Models;
 using Trivi.Lib.Domain.Responses;
 using Trivi.Lib.Domain.TableViews;
 using Trivi.Lib.Repository.Contracts;
@@ -43,6 +45,38 @@ public class UserService(IUserRepository repo, ITableMapperService tableMapperSe
             return _tableMapperService.ToModel<ViewUser>(row);
         }
         catch (RepositoryException ex)
+        {
+            return ex;
+        }
+    }
+
+    public async Task<ServiceDataResponse<ViewUser>> GetUserAsync(string email)
+    {
+        try
+        {
+            var row = await _repo.SelectUserAsync(email);
+
+            if (row == null)
+            {
+                return new();
+            }
+
+            return _tableMapperService.ToModel<ViewUser>(row);
+        }
+        catch (RepositoryException ex)
+        {
+            return ex;
+        }
+    }
+
+    public async Task<ServiceDataResponse<ViewUser>> CreateUserAsync(User user)
+    {
+        try
+        {
+            await _repo.InsertUserAsync(user);
+            return await GetUserAsync(user.Email!);
+        }
+        catch(RepositoryException ex)
         {
             return ex;
         }

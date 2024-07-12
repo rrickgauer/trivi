@@ -1,14 +1,12 @@
-import { DateTimeString, Guid } from "../types/aliases";
 
 
-
-export type LoginApiRequest = {
+export type AuthApiRequest = {
     email: string;
     password: string;
 }
 
-export type UserApiResponse = {
-    userId: Guid | null;
-    userEmail: string | null;
-    userCreatedOn: DateTimeString | null;
+export type LoginApiRequest = AuthApiRequest;
+
+export type SignupApiRequest = AuthApiRequest & {
+    passwordConfirm: string;
 }

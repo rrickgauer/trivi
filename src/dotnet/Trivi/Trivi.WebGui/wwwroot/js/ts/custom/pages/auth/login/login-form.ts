@@ -28,9 +28,12 @@ export class LoginForm implements IController
     private readonly _btnSubmit: SpinnerButton;
     private readonly _authService: AuthService;
     private readonly _alertsContainer: HTMLDivElement;
+    private readonly _destination: string;
 
-    constructor()
+    constructor(destination: string)
     {
+        this._destination = destination;
+
         this._form = document.querySelector<HTMLFormElement>(selectors.formClass);
         this._email = new InputFeedbackText(this._form.querySelector(selectors.emailInputId), true);
         this._password = new InputFeedbackText(this._form.querySelector(selectors.passwordInputId), true);
@@ -73,7 +76,7 @@ export class LoginForm implements IController
                 return;
             }
 
-            window.location.href = '/app';
+            window.location.href = this._destination;
         }
         catch (error)
         {

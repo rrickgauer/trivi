@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Trivi.Lib.Domain.Forms;
-using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.Responses;
 using Trivi.Lib.Services.Contracts;
 using Trivi.WebGui.Controllers.Contracts;
@@ -15,7 +14,11 @@ public class ApiAuthController(IAuthService authService) : InternalApiController
 
     private readonly IAuthService _authService = authService;
 
-
+    /// <summary>
+    /// POST: /api/auth/login
+    /// </summary>
+    /// <param name="form"></param>
+    /// <returns></returns>
     [HttpPost("login")]
     [ActionName(nameof(PostLoginAsync))]
     public async Task<IActionResult> PostLoginAsync([FromBody] LoginForm form)
@@ -32,12 +35,19 @@ public class ApiAuthController(IAuthService authService) : InternalApiController
         return Ok(result);
     }
 
-    [HttpGet("login")]
-    public async Task<IActionResult> GetTest()
+    [HttpPost("signup")]
+    public async Task<IActionResult> PostSignupAsync([FromBody] SignupForm form)
     {
-        SessionManager manager = new(HttpContext.Session);
+        var signupResult = await _authService.SignupUserAsync(form);
 
-        return Ok(manager);
+        if (!signupResult.Successful)
+        {
+            return BadRequest(signupResult);
+        }
+
+        return Ok(signupResult);
     }
+
+
 
 }

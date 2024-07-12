@@ -1,0 +1,72 @@
+﻿@model Trivi.Lib.Domain.ViewModels.Gui.AuthPageViewModel
+@using Trivi.Lib.Domain.Constants
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>Log in</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.MessageBoxes" />
+
+    <div class="feedback-alerts"></div>
+
+    <div class="container my-5">
+        <h1>Sign Up</h1>
+    </div>
+
+    <div class="container my-5">
+
+        <form class="form-signup">
+
+            <div class="alerts-container"></div>
+
+            <fieldset>
+                <div class="input-feedback form-spacing">
+                    <label for="form-signup-input-email" class="form-label">Email</label>
+                    <input type="email" class="form-control input-feedback-input" id="form-signup-input-email" required maxlength="@UserConstants.MaxEmailLength">
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="input-feedback form-spacing">
+                    <label for="form-signup-input-password" class="form-label">Password</label>
+                    <input type="password" class="form-control input-feedback-input" id="form-signup-input-password" required>
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="input-feedback form-spacing">
+                    <label for="form-signup-input-password-confirm" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control input-feedback-input" id="form-signup-input-password-confirm" required>
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback"></div>
+                </div>
+            </fieldset>
+
+            <div class="d-flex align-items-baseline justify-content-between form-spacing">
+                <button type="submit" class="btn btn-success btn-submit">Create account</button>
+
+                @{
+                    string url = "/auth/login";
+
+                    if (!string.IsNullOrEmpty(Model.Destination))
+                    {
+                        url += $"?destination={Model.Destination}";
+                    }
+                }
+
+                <div>Already have an account? <a href="@url">Log In</a></div>
+            </div>
+            
+        </form>
+
+
+    </div>
+
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/signup.bundle.js"></script>
+</body>
+</html>

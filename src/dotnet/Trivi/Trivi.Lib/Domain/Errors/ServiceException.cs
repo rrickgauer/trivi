@@ -4,9 +4,9 @@ using Trivi.Lib.Domain.Responses;
 
 namespace Trivi.Lib.Domain.Errors;
 
-public class ServiceResponseException(ServiceResponse serviceResponse) : Exception()
+public class ServiceException(ServiceResponse serviceResponse) : Exception()
 {
-    public ServiceResponseException(ErrorCode errorCode) : this(new ServiceResponse(errorCode)) { }
+    public ServiceException(ErrorCode errorCode) : this(new ServiceResponse(errorCode)) { }
 
     public ServiceResponse Response { get; } = serviceResponse;
     public List<ErrorCode> Errors => Response.Errors;

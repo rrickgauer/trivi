@@ -38,7 +38,7 @@
 </head>
 <body>
     <partial name="@PartialRazorFiles.BundleTop" />
-    <div class="container mt-5">
+    <div class="container mt-2">
         <ul class="nav nav-underline justify-content-center">
             @{
                 GetNav(ActiveCollectionPage.Settings);
@@ -47,12 +47,14 @@
         </ul>
     </div>
 
-    <div class="container collection-page-content mt-5">
+
+    <div class="collection-page-content mt-2">
         @RenderSection("Body", required: false)
     </div>
 
+
     <partial name="@PartialRazorFiles.Footer" />
-        @RenderSection("Footer", required: false)
+    @RenderSection("Footer", required: false)
 
 </body>
 

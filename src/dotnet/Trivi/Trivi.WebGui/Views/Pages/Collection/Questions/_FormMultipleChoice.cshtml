@@ -1,0 +1,42 @@
+﻿@using Trivi.Lib.Domain.ViewModels.Gui
+@model CollectionPageLayoutModel<CollectionQuestionsPageVM>
+
+
+@{
+    var editorContainerClass = "question-editor-sa";
+    var alertsContainerClass = "alerts-container";
+    var formClass = "form-question-sa";
+    var promptInputId = $"{formClass}-input-prompt";
+}
+
+
+
+<div class="question-editor @editorContainerClass">
+
+    <form class="@formClass">
+
+        <div class="@alertsContainerClass"></div>
+
+        <fieldset>
+
+            <div class="input-feedback form-spacing">
+                <label for="@promptInputId">Prompt</label>
+                <input type="text" class="form-control form-control-lg input-feedback-input" id="@promptInputId" required />
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback"></div>
+            </div>
+
+
+        </fieldset>
+
+        <div class="d-flex form-spacing">
+            <button type="button" class="btn btn-lg btn-success btn-submit">Save</button>
+        </div>
+
+    </form>
+
+
+
+</div>
+
+

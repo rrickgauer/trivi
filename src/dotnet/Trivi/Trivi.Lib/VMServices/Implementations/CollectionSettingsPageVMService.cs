@@ -34,7 +34,7 @@ public class CollectionSettingsPageVMService(ICollectionService collectionServic
 
             return layout;
         }
-        catch(ServiceResponseException ex)
+        catch(ServiceException ex)
         {
             return new(ex.Errors);
         }

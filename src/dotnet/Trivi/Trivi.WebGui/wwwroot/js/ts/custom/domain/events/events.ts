@@ -1,3 +1,4 @@
+import { QuestionId } from "../types/aliases";
 import { CustomEmptyMessage, CustomMessage } from "./custom-events";
 
 
@@ -16,3 +17,12 @@ export type EditCollectionFormSubmittedData = {
 }
 
 export const EditCollectionFormSubmittedEvent = new CustomMessage<EditCollectionFormSubmittedData>();
+
+
+
+
+export type OpenQuestionData = {
+    questionId: QuestionId;
+}
+
+export const OpenQuestionEvent = new CustomMessage<OpenQuestionData>();

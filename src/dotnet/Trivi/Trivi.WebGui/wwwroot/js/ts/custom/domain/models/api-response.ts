@@ -13,7 +13,7 @@ export interface IApiErrors
 export class ApiResponse<T> implements IApiErrors
 {
     public errors: ErrorMessage[] = [];
-    public data?: T | null = null;
+    public data: T | null = null;
 }
 
 export class ApiResponseNoContent implements IApiErrors

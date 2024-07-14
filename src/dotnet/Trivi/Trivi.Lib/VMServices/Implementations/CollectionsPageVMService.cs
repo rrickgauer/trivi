@@ -28,7 +28,7 @@ public class CollectionsPageVMService(ICollectionService collectionService) : IA
             return result;
 
         }
-        catch(ServiceResponseException ex)
+        catch(ServiceException ex)
         {
             return new(ex.Errors);
         }

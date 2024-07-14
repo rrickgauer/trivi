@@ -38,7 +38,7 @@ public class GetCollectionAuth(RequestItems requestItems, ICollectionService col
 
             return new();
         }
-        catch(ServiceResponseException ex)
+        catch(ServiceException ex)
         {
             return ex.Response;
         }

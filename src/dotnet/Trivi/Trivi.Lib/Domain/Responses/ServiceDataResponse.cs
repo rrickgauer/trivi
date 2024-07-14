@@ -38,11 +38,12 @@ public class ServiceDataResponse<T> : ServiceResponse
 
     public static implicit operator ServiceDataResponse<T>(ServiceResponseException ex)
     {
-        return new(ex);
+        return new ServiceDataResponse<T>(ex.Response.Errors);
     }
 
     public static implicit operator ServiceDataResponse<T>(T other)
     {
         return new(other);
     }
+
 }

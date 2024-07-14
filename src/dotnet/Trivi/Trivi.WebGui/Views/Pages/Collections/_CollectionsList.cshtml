@@ -1,0 +1,25 @@
+﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.WebGui.ViewComponents
+@model Trivi.Lib.Domain.ViewModels.Gui.CollectionsPageVM
+
+
+<ul class="list-group collections-list">
+
+    @* Header list item *@
+    <li class="list-group-item list-group-item-secondary">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Your collections</h5>
+
+            <div>
+                <button type="button" class="btn btn-sm btn-success btn-open-new-collection-modal" title="Create a new collection">New</button>
+            </div>
+        </div>
+    </li>
+
+    @* Collection list items *@
+    @foreach (var collection in Model.Collections)
+    {
+        @await Component.InvokeAsync(nameof(CollectionListItemViewComp), collection)
+    }
+
+</ul>

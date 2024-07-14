@@ -6,12 +6,21 @@ namespace Trivi.Lib.Domain.Other;
 
 public class SessionManager(ISession session)
 {
+
+    public static Guid? TESTING_MASTER_USER_ID = null;
+
+
     private readonly ISession _session = session;
 
     public Guid? ClientId
     {
         get
         {
+            if (TESTING_MASTER_USER_ID is Guid masterUserId)
+            {
+                return masterUserId;
+            }
+
             var data = _session.GetString(GuiSessionKeys.AuthClientId);
 
             if (Guid.TryParse(data, out var clientId))

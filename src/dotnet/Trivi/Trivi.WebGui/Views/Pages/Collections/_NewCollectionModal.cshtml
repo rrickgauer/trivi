@@ -1,0 +1,48 @@
+﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.WebGui.ViewComponents
+@model Trivi.Lib.Domain.ViewModels.Gui.CollectionsPageVM
+
+
+
+<div class="modal new-collection-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Collection</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <form class="new-collection-form">
+
+                    <div class="alerts-container"></div>
+
+                    <fieldset>
+
+                        @{
+                            var nameInputId = "new-collection-form-input-name";
+                        }
+
+                        <div class="input-feedback form-spacing-sm">
+                            <label for="@nameInputId">Name</label>
+                            <input type="text" class="form-control input-feedback-input" id="@nameInputId" required />
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="form-spacing-sm d-flex">
+                        <button type="submit" class="btn btn-success btn-submit me-1">Save</button>
+                        <button type="button" class="btn btn-secondary btn-cancel">Close</button>
+                    </div>
+                </form>
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

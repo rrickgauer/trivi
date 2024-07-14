@@ -1,0 +1,59 @@
+﻿@using Trivi.Lib.Domain.Constants
+@model Trivi.Lib.Domain.ViewModels.Gui.CollectionPageLayoutModel
+
+@functions {
+
+    public void GetNav(ActiveCollectionPage page)
+    {
+        bool isActivePage = page == Model.ActivePage;
+
+        string displayText = Enum.GetName(page)!;
+
+        string url = $"{Model.Collection.UriGui}/{displayText.ToLower()}";
+
+        if (isActivePage)
+        {
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="@url">@displayText</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="@url">@displayText</a>
+            </li>
+        }
+    }
+
+
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    @RenderSection("Header", required: false)
+    <title>@Model.PageTitle</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+    <div class="container mt-5">
+        <ul class="nav nav-underline justify-content-center">
+            @{
+                GetNav(ActiveCollectionPage.Settings);
+                GetNav(ActiveCollectionPage.Questions);
+            }
+        </ul>
+    </div>
+
+    <div class="container collection-page-content mt-5">
+        @RenderSection("Body", required: false)
+    </div>
+
+    <partial name="@PartialRazorFiles.Footer" />
+        @RenderSection("Footer", required: false)
+
+</body>
+
+</html>

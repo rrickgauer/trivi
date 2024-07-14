@@ -1,11 +1,10 @@
-using Deadit.Lib.Service.Contracts;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using Trivi.Lib.Domain.Configurations;
-using Trivi.Lib.Domain.Constants;
-using Trivi.Lib.Domain.Enums;
+using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Filters;
 using Trivi.Lib.JsonConverters;
+using Trivi.Lib.Services.Contracts;
 using Trivi.Lib.Utility;
 
 
@@ -13,6 +12,11 @@ bool isProduction = true;
 
 #if DEBUG
 isProduction = false;
+
+
+// DO THIS SO YOU DON'T HAVE TO LOG IN EVERY TIME
+SessionManager.TESTING_MASTER_USER_ID = new(@"00000000-0000-0000-0000-000000000000");
+
 #endif
 
 
@@ -26,7 +30,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<HttpResponseExceptionFilter>();
-    //options.Filters.Add<ValidationErrorFilter>();
+    options.Filters.Add<ValidationErrorFilter>();
     //options.Filters.Add<AccessTokenFilter>();
 
     options.SuppressAsyncSuffixInActionNames = false;

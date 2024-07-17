@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Trivi.Lib.Domain.Constants;
 using Trivi.Lib.Domain.Errors;
+using Trivi.Lib.Domain.Forms;
 using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.Responses;
 
@@ -9,8 +10,8 @@ namespace Trivi.Lib.Utility;
 
 public static class ActionExecutingContextExtensions
 {
-
     public static Guid GetCollectionIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<Guid>(context, RouteKeys.CollectionId);
+    public static QuestionId GetQuestionIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<QuestionId>(context, RouteKeys.QuestionId);
 
 
     /// <summary>
@@ -27,6 +28,11 @@ public static class ActionExecutingContextExtensions
         return value;
     }
 
+
+    public static QuestionForm GetQuestionForm(this ActionExecutingContext context)
+    {
+        return GetForm<QuestionForm>(context);
+    }
 
 
     public static T GetForm<T>(this ActionExecutingContext context)

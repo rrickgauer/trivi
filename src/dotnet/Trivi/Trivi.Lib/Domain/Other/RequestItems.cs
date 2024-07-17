@@ -23,6 +23,12 @@ public class RequestItems
         set => SetItem(RequestItemKey.Collection, value);
     }
 
+    public ViewQuestion Question
+    {
+        get => GetItem<ViewQuestion>(RequestItemKey.Question);
+        set => SetItem(RequestItemKey.Question, value);
+    }
+
 
 
     private T GetItem<T>(RequestItemKey key) where T : class

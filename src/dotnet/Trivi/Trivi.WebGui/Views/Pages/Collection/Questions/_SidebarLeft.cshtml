@@ -1,0 +1,26 @@
+﻿@using Trivi.Lib.Domain.ViewModels.Gui
+@model CollectionPageLayoutModel<CollectionQuestionsPageVM>
+
+
+
+
+<div class="questions-sidebar-left-container">
+
+    <div class="dropend mb-3">
+        <button class="btn btn-sm btn-success w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">New Question</button>
+        <ul class="dropdown-menu">
+            <li><button class="dropdown-item new-question-dropdown-item" type="button" data-new-question-type="@QuestionType.MultipleChoice.GetPrefix()">Multiple choice</button></li>
+            <li><button class="dropdown-item new-question-dropdown-item" type="button" data-new-question-type="@QuestionType.TrueFalse.GetPrefix()">True false</button></li>
+            <li><button class="dropdown-item new-question-dropdown-item" type="button" data-new-question-type="@QuestionType.ShortAnswer.GetPrefix()">Short answer</button></li>
+        </ul>
+    </div>
+
+
+    <div class="list-group questions-list">
+
+
+
+    </div>
+
+
+</div>

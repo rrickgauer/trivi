@@ -21,3 +21,27 @@ body {
 
 
 
+@mixin loading-screen-base {
+    position: absolute; /* Stay in place */
+    width: 100%;
+    height: 50vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    z-index: 50; /* Sit on top */
+    /* Center the loading content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-screen {
+    @include loading-screen-base;
+    height: 70vh;
+}
+
+
+
+

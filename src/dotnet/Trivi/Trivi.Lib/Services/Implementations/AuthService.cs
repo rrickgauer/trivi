@@ -32,7 +32,7 @@ public class AuthService(IUserService userService, IHttpContextAccessor contextA
 
             return user;
         }
-        catch (ServiceResponseException ex)
+        catch (ServiceException ex)
         {
             return new(ex.Response);
         }
@@ -46,7 +46,7 @@ public class AuthService(IUserService userService, IHttpContextAccessor contextA
 
         if (getUser.Data is not ViewUser user)
         {
-            throw new ServiceResponseException(ErrorCode.AuthInvalidEmailOrPassword);
+            throw new ServiceException(ErrorCode.AuthInvalidEmailOrPassword);
         }
 
         return user;

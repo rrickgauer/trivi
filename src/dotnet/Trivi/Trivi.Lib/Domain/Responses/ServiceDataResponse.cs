@@ -36,7 +36,7 @@ public class ServiceDataResponse<T> : ServiceResponse
         return new(ex);
     }
 
-    public static implicit operator ServiceDataResponse<T>(ServiceResponseException ex)
+    public static implicit operator ServiceDataResponse<T>(ServiceException ex)
     {
         return new ServiceDataResponse<T>(ex.Response.Errors);
     }

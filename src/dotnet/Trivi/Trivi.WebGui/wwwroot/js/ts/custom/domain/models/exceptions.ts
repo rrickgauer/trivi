@@ -28,3 +28,14 @@ export class ApiForbiddenException extends Error
     }
 }
 
+
+
+export class NotImplementedException extends Error
+{
+    constructor()
+    {
+        super("Not implemented");
+    }
+}
+
+

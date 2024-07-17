@@ -4,7 +4,7 @@ import { CollectionQuestionsPageController } from "./collection-questions-page-c
 
 
 
-PageUtility.pageReady(() =>
+PageUtility.pageReady(async () =>
 {
     const collectionId = UrlUtility.getCurrentPathValue(2);
 
@@ -14,5 +14,5 @@ PageUtility.pageReady(() =>
     }
 
     const controller = new CollectionQuestionsPageController(collectionId);
-    controller.control();
+    await controller.control();
 });

@@ -7,7 +7,30 @@
 
 @section Body {
 
-    <h1>Collection Questions</h1>
+    <div class="position-relative" id="questions-content">
+
+        <partial name="@PartialRazorFiles.PageLoading" />
+
+        <div class="container-fluid">
+
+            <div class="row p-0">
+
+                <div class="col-lg-2 p-0">
+                    <partial name="~/Views/Pages/Collection/Questions/_SidebarLeft.cshtml" />
+                </div>
+
+                <div class="col-lg-8">
+                    <partial name="~/Views/Pages/Collection/Questions/_Main.cshtml" />
+                </div>
+
+                <div class="col-lg-2 p-0">
+                    <partial name="~/Views/Pages/Collection/Questions/_SidebarRight.cshtml" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
 
 }
 

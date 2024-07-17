@@ -8,54 +8,46 @@
 @section Body {
 
 
-    <div class="collection-settings-page-section">
+    <div class="container">
+        <div class="collection-settings-page-section">
 
-        @{
-            string nameInputId = "edit-collection-form-input-name";
-        }
+            @{
+                string nameInputId = "edit-collection-form-input-name";
+            }
 
-        <h3>Basic Information</h3>
-        
-        <form class="edit-collection-form">
-            
-            <div class="alerts-container"></div>
+            <h3>Basic Information</h3>
 
-            <fieldset>
-                <div class="input-feedback form-spacing-sm">
-                    <label for="@nameInputId">Name</label>
-                    <input type="text" class="form-control input-feedback-input" id="@nameInputId" value="@Model.Collection.CollectionName" required />
-                    <div class="valid-feedback"></div>
-                    <div class="invalid-feedback"></div>
+            <form class="edit-collection-form">
+
+                <div class="alerts-container"></div>
+
+                <fieldset>
+                    <div class="input-feedback form-spacing-sm">
+                        <label for="@nameInputId">Name</label>
+                        <input type="text" class="form-control input-feedback-input" id="@nameInputId" value="@Model.Collection.CollectionName" required />
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                </fieldset>
+
+                <div class="form-spacing-sm d-flex">
+                    <button class="btn btn-success btn-submit" type="submit">Save</button>
                 </div>
+            </form>
 
-            </fieldset>
-
-            <div class="form-spacing-sm d-flex">
-                <button class="btn btn-success btn-submit" type="submit">Save</button>
-            </div>
-        </form>
-
-    </div>
-
-    <div class="collection-settings-page-section mt-5">
-
-        <h3>Danger Zone</h3>
-
-
-        <div class="danger-zone-alerts-container"></div>
-
-        <div class="form-spacing-sm">
-            <button type="button" class="btn btn-danger btn-delete-collection">Delete collection</button>
         </div>
-        
 
+        <div class="collection-settings-page-section mt-5">
+            <h3>Danger Zone</h3>
 
+            <div class="danger-zone-alerts-container"></div>
 
+            <div class="form-spacing-sm">
+                <button type="button" class="btn btn-danger btn-delete-collection">Delete collection</button>
+            </div>
+        </div>
     </div>
-    
-
-
-
 
 }
 

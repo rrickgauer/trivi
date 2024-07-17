@@ -32,7 +32,7 @@ public class CollectionQuestionsPageVMService(ICollectionService collectionServi
             return result;
 
         }
-        catch(ServiceResponseException ex)
+        catch(ServiceException ex)
         {
             return new(ex.Response);
         }

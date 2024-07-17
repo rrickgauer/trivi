@@ -60,7 +60,7 @@ public class ServiceResponse
     {
         if (!Successful)
         {
-            throw new ServiceResponseException(this);
+            throw new ServiceException(this);
         }
     }
 
@@ -69,7 +69,7 @@ public class ServiceResponse
         return new ServiceResponse(ex);
     }
 
-    public static implicit operator ServiceResponse(ServiceResponseException ex)
+    public static implicit operator ServiceResponse(ServiceException ex)
     {
         return new ServiceResponse(ex.Response);
     }

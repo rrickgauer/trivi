@@ -10,6 +10,8 @@ To get the typescript plugin going:
     npm install typescript --save-dev
     npm install @rollup/plugin-typescript --save-dev
     npm install @types/bootstrap --save-dev 
+    npm install nanoid@3 --save-dev
+    
 
 ***************************************************************************/
 
@@ -20,6 +22,7 @@ class RollupConfig
     constructor(input, output) {
         this.input = input;
 
+        //this.external = ['bootstrap', 'nanoid'];
         this.external = ['bootstrap'];
 
         this.output = {
@@ -33,6 +36,7 @@ class RollupConfig
 
             globals: {
                 bootstrap: 'bootstrap',
+                //nanoid: 'nanoid',
             },
         }
 

@@ -94,6 +94,21 @@ public class QuestionId : IParsable<QuestionId>
     }
 
 
+    public static bool operator ==(QuestionId? left, QuestionId? right)
+    {
 
+        var leftId = left?.Id ?? string.Empty;
+        var rightId = right?.Id ?? string.Empty;
+
+        return leftId.Equals(rightId);
+    }
+
+    public static bool operator !=(QuestionId? left, QuestionId? right)
+    {
+        var leftId = left?.Id ?? string.Empty;
+        var rightId = right?.Id ?? string.Empty;
+
+        return !leftId.Equals(rightId);
+    }
 
 }

@@ -29,7 +29,7 @@ public class GetCollectionAuth(RequestItems requestItems, ICollectionService col
         {
             var collection = await GetCollectionAsync(data);
 
-            if (collection.CollectionUserId != data.ClientId)
+            if (collection.UserId != data.ClientId)
             {
                 throw new ForbiddenHttpResponseException();
             }

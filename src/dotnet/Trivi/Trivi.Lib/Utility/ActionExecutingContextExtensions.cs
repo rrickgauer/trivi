@@ -4,6 +4,7 @@ using Trivi.Lib.Domain.Constants;
 using Trivi.Lib.Domain.Errors;
 using Trivi.Lib.Domain.Forms;
 using Trivi.Lib.Domain.Other;
+using Trivi.Lib.Domain.RequestArgs;
 using Trivi.Lib.Domain.Responses;
 
 namespace Trivi.Lib.Utility;
@@ -12,6 +13,7 @@ public static class ActionExecutingContextExtensions
 {
     public static Guid GetCollectionIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<Guid>(context, RouteKeys.CollectionId);
     public static QuestionId GetQuestionIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<QuestionId>(context, RouteKeys.QuestionId);
+    public static string GetAnswerIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<string>(context, RouteKeys.AnswerId);
 
 
     /// <summary>
@@ -23,22 +25,24 @@ public static class ActionExecutingContextExtensions
     /// <returns></returns>
     public static T GetRequestRouteValue<T>(ActionExecutingContext context, string key)
     {
-        var value = (T)context.ActionArguments[key]!;
-
-        return value;
+        //return (T)context.ActionArguments[key]!;
+        return (T)context.ActionArguments[key]!;
     }
 
 
-    public static QuestionForm GetQuestionForm(this ActionExecutingContext context)
-    {
-        return GetForm<QuestionForm>(context);
-    }
 
+
+    public static QuestionForm GetQuestionForm(this ActionExecutingContext context) =>  GetForm<QuestionForm>(context);
+    public static PutAnswerRequest GetPutAnswerRequest(this ActionExecutingContext context) => GetForm<PutAnswerRequest>(context);
 
     public static T GetForm<T>(this ActionExecutingContext context)
     {
         return (T)context.ActionArguments.Values.First(a => a is T)!;
     }
+
+
+
+
 
 
     public static SessionManager GetSessionManager(this ActionExecutingContext context)
@@ -75,6 +79,18 @@ public static class ActionExecutingContextExtensions
 
         return clientId.HasValue;
 
+    }
+
+
+    public static bool NotAuthorized(this ActionExecutingContext context, ServiceResponse serviceResponse)
+    {
+        if (!serviceResponse.Successful)
+        {
+            context.ReturnBadServiceResponse(serviceResponse);
+            return true;
+        }
+
+        return false;
     }
 
 

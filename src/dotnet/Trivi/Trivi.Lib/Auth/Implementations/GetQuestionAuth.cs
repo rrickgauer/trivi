@@ -26,7 +26,7 @@ public class GetQuestionAuth(IQuestionService questionService, RequestItems requ
         {
             var question = await GetQuestionAsync(data);
 
-            if (question.QuestionUserId != data.ClientId)
+            if (question.UserId != data.ClientId)
             {
                 throw new ForbiddenHttpResponseException();
             }
@@ -44,9 +44,6 @@ public class GetQuestionAuth(IQuestionService questionService, RequestItems requ
     private async Task<ViewQuestion> GetQuestionAsync(GetQuestionAuthParms data)
     {
         var getQuestion = await _questionService.GetQuestionAsync(data.QuestionId);
-
-        getQuestion.ThrowIfError();
-
-        return NotFoundHttpResponseException.ThrowIfNot<ViewQuestion>(getQuestion.Data);
+        return getQuestion.GetData();
     }
 }

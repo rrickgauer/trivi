@@ -32,7 +32,7 @@ public class SaveQuestionAuth(IQuestionService questionService, ICollectionServi
             var collection = await GetCollectionAsync(data);
 
             // make sure client owns the specified collection
-            if (collection.CollectionUserId != data.ClientId)
+            if (collection.UserId != data.ClientId)
             {
                 throw new ForbiddenHttpResponseException();
             }
@@ -46,7 +46,7 @@ public class SaveQuestionAuth(IQuestionService questionService, ICollectionServi
             }
 
             // make sure client owns the existing question
-            if (question.QuestionUserId != data.ClientId)
+            if (question.UserId != data.ClientId)
             {
                 throw new ForbiddenHttpResponseException();
             }

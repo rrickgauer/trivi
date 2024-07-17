@@ -19,4 +19,13 @@ public enum ErrorCode : ulong
     AuthPasswordCriteriaNotMet = 203,
 
     #endregion
+
+
+    #region - Answers -
+
+    [ErrorCodeGroup(ErrorCodeGroup.Answers)]
+    AnswersInvalidAnswerIdFormat = 300,
+
+
+    #endregion
 }

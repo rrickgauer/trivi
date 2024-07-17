@@ -29,6 +29,12 @@ public class RequestItems
         set => SetItem(RequestItemKey.Question, value);
     }
 
+    public ViewAnswer Answer
+    {
+        get => GetItem<ViewAnswer>(RequestItemKey.Answer);
+        set => SetItem(RequestItemKey.Answer, value);
+    }
+
 
 
     private T GetItem<T>(RequestItemKey key) where T : class

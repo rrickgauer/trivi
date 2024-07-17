@@ -10,11 +10,11 @@ public class ViewQuestionMapper : TableMapper<ViewQuestion>
     {
         ViewQuestion result = new();
 
-        result.QuestionId           = row.Field<string>(GetColumnName(nameof(result.QuestionId)))!;
-        result.QuestionCollectionId = row.Field<Guid?>(GetColumnName(nameof(result.QuestionCollectionId)));
-        result.QuestionPrompt       = row.Field<string?>(GetColumnName(nameof(result.QuestionPrompt)));
-        result.QuestionCreatedOn    = row.Field<DateTime>(GetColumnName(nameof(result.QuestionCreatedOn)));
-        result.QuestionUserId       = row.Field<Guid?>(GetColumnName(nameof(result.QuestionUserId)));
+        result.Id           = row.Field<string>(GetColumnName(nameof(result.Id)))!;
+        result.CollectionId = row.Field<Guid?>(GetColumnName(nameof(result.CollectionId)));
+        result.Prompt       = row.Field<string?>(GetColumnName(nameof(result.Prompt)));
+        result.CreatedOn    = row.Field<DateTime>(GetColumnName(nameof(result.CreatedOn)));
+        result.UserId       = row.Field<Guid?>(GetColumnName(nameof(result.UserId)));
         result.QuestionType         = row.Field<QuestionType>(GetColumnName(nameof(result.QuestionType)));
 
         return result;
@@ -29,7 +29,7 @@ public class ViewShortAnswerMapper : TableMapper<ViewShortAnswer>
     {
         ViewShortAnswer result = InheritanceUtility.GetParentProperties<ViewQuestion, ViewShortAnswer, ViewQuestionMapper>(row);
 
-        result.QuestionCorrectAnswer = row.Field<string?>(GetColumnName(nameof(result.QuestionCorrectAnswer)));
+        result.CorrectAnswer = row.Field<string?>(GetColumnName(nameof(result.CorrectAnswer)));
 
         return result;
 
@@ -43,7 +43,7 @@ public class ViewTrueFalseMapper : TableMapper<ViewTrueFalse>
     {
         ViewTrueFalse result = InheritanceUtility.GetParentProperties<ViewQuestion, ViewTrueFalse, ViewQuestionMapper>(row);
 
-        result.QuestionCorrectAnswer = row.Field<bool>(GetColumnName(nameof(result.QuestionCorrectAnswer)));
+        result.CorrectAnswer = row.Field<bool>(GetColumnName(nameof(result.CorrectAnswer)));
 
         return result;
 

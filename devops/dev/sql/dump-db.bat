@@ -1,23 +1,22 @@
 mysqldump -u main -h 104.225.208.163 -p ^
 --databases Trivi_Dev ^
 --column-statistics=FALSE ^
+--no-create-db ^
 --routines ^
 --events ^
 --triggers ^
---add-drop-table ^
---allow-keywords ^
---no-create-db ^
+--skip-quote-names ^
 --no-data ^
 --result-file "C:\xampp\htdocs\files\trivi\sql\ddl\.schemas.sql"
 
 
 mysqldump -u main -h 104.225.208.163 -p ^
 --column-statistics=FALSE ^
---allow-keywords ^
 --no-create-db ^
 --no-create-info ^
 --replace ^
 --order-by-primary ^
+--skip-quote-names ^
 --result-file "C:\xampp\htdocs\files\trivi\sql\ddl\.data.sql" ^
 Trivi_Dev Error_Message_Groups Error_Messages Question_Types
 

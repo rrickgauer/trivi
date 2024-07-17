@@ -11,16 +11,26 @@ To get the typescript plugin going:
     npm install @rollup/plugin-typescript --save-dev
     npm install @types/bootstrap --save-dev 
     npm install nanoid@3 --save-dev
+    npm install @rollup/plugin-node-resolve --save-dev 
     
 
 ***************************************************************************/
 
 import typescript from '@rollup/plugin-typescript';
+import resolve from '@rollup/plugin-node-resolve';
+
+
+const inputPrefix = 'ts/custom/pages/';
+const outputPrefix = 'dist/';
+const outputSuffix = '.bundle.js';
 
 class RollupConfig
 {
     constructor(input, output) {
-        this.input = input;
+
+        this.input = `${inputPrefix}${input}`;
+
+
 
         //this.external = ['bootstrap', 'nanoid'];
         this.external = ['bootstrap'];
@@ -29,7 +39,7 @@ class RollupConfig
             // format: 'es',
             compact: true,
             sourcemap: true,
-            file: output,
+            file: `${outputPrefix}${output}${outputSuffix}`,
             inlineDynamicImports: true,
             interop: "auto",
             format: 'iife',
@@ -40,7 +50,12 @@ class RollupConfig
             },
         }
 
-        this.plugins = [typescript()];
+        this.plugins = [
+            typescript(),
+            resolve({
+                browser: true,
+            }),
+        ];
 
     }
 }
@@ -49,18 +64,17 @@ class RollupConfig
 
 const configs = [
 
-    new RollupConfig('ts/custom/pages/landing/index.ts', 'dist/landing.bundle.js'),
+    new RollupConfig('landing/index.ts', 'landing'),
 
-    new RollupConfig('ts/custom/pages/home/index.ts', 'dist/home.bundle.js'),
+    new RollupConfig('home/index.ts', 'home'),
 
-    new RollupConfig('ts/custom/pages/collections/index.ts', 'dist/collections.bundle.js'),
+    new RollupConfig('collections/index.ts', 'collections'),
 
-    new RollupConfig('ts/custom/pages/auth/login/index.ts', 'dist/login.bundle.js'),
-    new RollupConfig('ts/custom/pages/auth/signup/index.ts', 'dist/signup.bundle.js'),
+    new RollupConfig('auth/login/index.ts', 'login'),
+    new RollupConfig('auth/signup/index.ts', 'signup'),
 
-
-    new RollupConfig('ts/custom/pages/collection/settings/index.ts', 'dist/collection-settings.bundle.js'),
-    new RollupConfig('ts/custom/pages/collection/questions/index.ts', 'dist/collection-questions.bundle.js'),
+    new RollupConfig('collection/settings/index.ts', 'collection-settings'),
+    new RollupConfig('collection/questions/index.ts', 'collection-questions'),
 
 ];
 

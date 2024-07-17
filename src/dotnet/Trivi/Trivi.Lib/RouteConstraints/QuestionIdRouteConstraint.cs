@@ -23,3 +23,9 @@ public class ShortAnswerConstraint() : RegexInlineRouteConstraint(NanoIdConstant
 {
 
 }
+
+
+public class AnswerIdConstraint() : RegexInlineRouteConstraint(NanoIdConstants.AnswerIdRegex)
+{
+
+}

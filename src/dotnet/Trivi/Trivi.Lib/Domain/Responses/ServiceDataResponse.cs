@@ -31,6 +31,22 @@ public class ServiceDataResponse<T> : ServiceResponse
         Data = other.Data;
     }
 
+    public T GetData()
+    {
+        ThrowIfError();
+
+        if (Data == null)
+        {
+            throw new NotFoundHttpResponseException();
+        }
+
+        return Data;
+    }
+
+
+
+
+
     public static implicit operator ServiceDataResponse<T>(RepositoryException ex)
     {
         return new(ex);

@@ -6,24 +6,23 @@ using Trivi.Lib.Utility;
 namespace Trivi.Lib.Filters;
 
 [AutoInject(AutoInjectionType.Scoped, InjectionProject.WebGui)]
-public class GetQuestionFilter(GetQuestionAuth auth) : IAsyncActionFilter
+public class PutAnswerFilter(PutAnswerAuth auth) : IAsyncActionFilter
 {
-    private readonly GetQuestionAuth _auth = auth;
+    private readonly PutAnswerAuth _auth = auth;
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var hasPermission = await _auth.HasPermissionAsync(new()
         {
+            AnswerRequest = context.GetPutAnswerRequest(),
             ClientId = context.GetSessionClientId(),
-            QuestionId = context.GetQuestionIdFromUrl(),
         });
 
-        if (!hasPermission.Successful)
+        if (context.NotAuthorized(hasPermission))
         {
-            context.ReturnBadServiceResponse(hasPermission);
             return;
         }
-
+        
         await next();
     }
 }

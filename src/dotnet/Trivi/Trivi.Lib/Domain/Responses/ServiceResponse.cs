@@ -1,6 +1,8 @@
 ﻿
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Text.Json.Serialization;
 using Trivi.Lib.Domain.Errors;
+using Trivi.Lib.Utility;
 
 namespace Trivi.Lib.Domain.Responses;
 
@@ -54,8 +56,6 @@ public class ServiceResponse
         return matchingRecords > 0;
     }
 
-
-
     public void ThrowIfError()
     {
         if (!Successful)
@@ -63,6 +63,10 @@ public class ServiceResponse
             throw new ServiceException(this);
         }
     }
+
+
+
+
 
     public static implicit operator ServiceResponse(RepositoryException ex)
     {

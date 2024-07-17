@@ -10,4 +10,5 @@ public enum RequestItemKey
 {
     Collection,
     Question,
+    Answer,
 }

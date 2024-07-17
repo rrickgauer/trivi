@@ -1,5 +1,6 @@
 ﻿using NanoidDotNet;
 using Trivi.Lib.Domain.Constants;
+using Trivi.Lib.Domain.Contracts;
 
 namespace Trivi.Lib.Utility;
 
@@ -17,5 +18,15 @@ public class NanoIdUtility
             Console.WriteLine($"{type.GetNewNanoId()}");
         }
     }
+
+    public static string BuildNanoId<T>() where T : INanoIdPrefix
+    {
+        var prefix = T.NanoIdPrefix;
+
+        var id = New();
+
+        return $"{prefix}_{id}";
+    }
+
 
 }

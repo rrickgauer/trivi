@@ -9,10 +9,10 @@ public class ViewCollectionMapper : TableMapper<ViewCollection>
     {
         ViewCollection result = new()
         {
-            CollectionId = row.Field<Guid?>(GetColumnName(nameof(result.CollectionId))),
-            CollectionName = row.Field<string?>(GetColumnName(nameof(result.CollectionName))),
-            CollectionUserId = row.Field<Guid?>(GetColumnName(nameof(result.CollectionUserId))),
-            CollectionCreatedOn = row.Field<DateTime>(GetColumnName(nameof(result.CollectionCreatedOn))),
+            Id = row.Field<Guid?>(GetColumnName(nameof(result.Id))),
+            Name = row.Field<string?>(GetColumnName(nameof(result.Name))),
+            UserId = row.Field<Guid?>(GetColumnName(nameof(result.UserId))),
+            CreatedOn = row.Field<DateTime>(GetColumnName(nameof(result.CreatedOn))),
         };
 
         return result;

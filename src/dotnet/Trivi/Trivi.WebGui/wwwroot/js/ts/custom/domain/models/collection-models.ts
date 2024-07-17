@@ -2,11 +2,11 @@ import { DateTimeString, Guid } from "../types/aliases";
 
 
 export type CollectionApiResponse = {
-    collectionId?: Guid;
-    collectionName?: string;
-    collectionUserId?: Guid;
-    collectionCreatedOn?: DateTimeString;
-    uriGui?: string;
+    id: Guid;
+    name: string;
+    userId: Guid;
+    createdOn: DateTimeString;
+    uriGui: string;
 }
 
 

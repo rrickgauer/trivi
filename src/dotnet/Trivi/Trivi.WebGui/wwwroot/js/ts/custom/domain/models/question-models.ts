@@ -4,20 +4,20 @@ import { DateTimeString, Guid, QuestionId } from "../types/aliases";
 
 
 export type QuestionApiResponse = {
-    questionId: QuestionId;
-    questionCollectionId: Guid;
-    questionPrompt: string;
-    questionCreatedOn: DateTimeString;
+    id: QuestionId;
+    collectionId: Guid;
+    prompt: string;
+    createdOn: DateTimeString;
     questionType: QuestionType;
 }
 
 
 export type ShortAnswerApiResponse = QuestionApiResponse & {
-    questionCorrectAnswer: string;
+    correctAnswer: string;
 }
 
 export type TrueFalseAnswerApiResponse = QuestionApiResponse & {
-    questionCorrectAnswer: string;
+    correctAnswer: boolean;
 }
 
 export type MultipleChoiceApiResponse = QuestionApiResponse & {

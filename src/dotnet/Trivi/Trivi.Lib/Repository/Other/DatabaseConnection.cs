@@ -71,6 +71,12 @@ public class DatabaseConnection(IConfigs configs)
     /// <exception cref="RepositoryException"></exception>
     public async Task<bool> ModifyWithTransactionAsync(params MySqlCommand[] commands)
     {
+        return await ModifyWithTransactionAsync(commands);
+    }
+
+
+    public async Task<bool> ModifyWithTransactionAsync(IEnumerable<MySqlCommand> commands)
+    {
         // setup a new database connection object
         using MySqlConnection connection = GetNewConnection();
         await connection.OpenAsync();
@@ -106,6 +112,7 @@ public class DatabaseConnection(IConfigs configs)
 
         return true;
     }
+
 
 
 

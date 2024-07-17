@@ -28,10 +28,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.ConstraintMap.Add("questionId", typeof(QuestionIdRouteConstraint));
-
     options.ConstraintMap.Add("shortAnswerQuestion", typeof(ShortAnswerConstraint));
     options.ConstraintMap.Add("multipleChoiceQuestion", typeof(MultipleChoiceConstraint));
     options.ConstraintMap.Add("trueFalseQuestion", typeof(TrueFalseRouteConstraint));
+    options.ConstraintMap.Add("answerId", typeof(AnswerIdConstraint));
 });
 
 #region - Setup web application builder -

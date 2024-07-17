@@ -9,13 +9,13 @@ export class QuestionSidebarListItemTemplate extends HtmlTemplate<QuestionApiRes
 {
     public toHtml(model: QuestionApiResponse): string 
     {
-        const questionIdAttr = `data-question-id="${model.questionId}"`;
+        const questionIdAttr = `data-question-id="${model.id}"`;
         const questionType = this.getQuestionTypeDisplayText(model.questionType);
 
         let html = `
             <button type="button" class="list-group-item list-group-item-action question-list-item" ${questionIdAttr}>
                 <div class="text-truncate fw-bolder fs-5">
-                    ${model.questionPrompt}
+                    ${model.prompt}
                 </div>
                 <div>${questionType}</div>
             </button>

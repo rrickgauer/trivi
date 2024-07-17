@@ -1,6 +1,7 @@
 
 
-import { customAlphabet } from "../../../node_modules/nanoid/index.browser";
+//import { customAlphabet } from "../../../node_modules/nanoid/index.browser";
+import { customAlphabet } from "nanoid";
 import { QuestionType } from "../domain/enums/question-type";
 import { NanoID } from "../domain/types/aliases";
 

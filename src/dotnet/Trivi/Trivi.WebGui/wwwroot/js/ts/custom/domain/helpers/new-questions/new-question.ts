@@ -39,10 +39,10 @@ export abstract class NewQuestion<TApiRequest extends PutQuestionApiRequest> imp
     public toResponse(): QuestionApiResponse
     {
         const result: QuestionApiResponse = {
-            questionCollectionId: this._collectionId,
-            questionCreatedOn: DateTime.now().toSQL(),
-            questionId: this.questionId,
-            questionPrompt: this._defaultPrompt,
+            collectionId: this._collectionId,
+            createdOn: DateTime.now().toSQL(),
+            id: this.questionId,
+            prompt: this._defaultPrompt,
             questionType: this.getQuestionType(),
         }
 

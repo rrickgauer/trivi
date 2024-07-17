@@ -1,14 +1,14 @@
 import { NativeEvents } from "../../../domain/constants/native-events";
-import { IController, IControllerArgs } from "../../../domain/contracts/icontroller";
+import { IControllerArgs } from "../../../domain/contracts/icontroller";
 import { QuestionType } from "../../../domain/enums/question-type";
-import { OpenQuestionEvent } from "../../../domain/events/events";
+import { OpenQuestionEvent, QuestionUpdatedData, QuestionUpdatedEvent } from "../../../domain/events/events";
 import { Selector } from "../../../domain/helpers/element-selector/selector";
 import { NewMultipleChoice } from "../../../domain/helpers/new-questions/multiple-choice";
 import { NewQuestion } from "../../../domain/helpers/new-questions/new-question";
 import { NewShortAnswer } from "../../../domain/helpers/new-questions/short-answer";
 import { NewTrueFalse } from "../../../domain/helpers/new-questions/true-false";
 import { GetQuestionsApiResponse, PutQuestionApiRequest, QuestionApiResponse } from "../../../domain/models/question-models";
-import { Guid } from "../../../domain/types/aliases";
+import { Guid, QuestionId } from "../../../domain/types/aliases";
 import { QuestionsService } from "../../../services/questions-service";
 import { QuestionSidebarListItemTemplate } from "../../../templates/question-sidebar-item-template";
 import { QuestionSidebarItemElements, QuestionSidebarItem } from "./question-sidebar-item";
@@ -49,6 +49,26 @@ export class QuestionsSidebarController implements IControllerArgs<GetQuestionsA
         this.addListeners();
     }
 
+    public activateQuestion(questionId: QuestionId)
+    {
+        const question = this.getQuestion(questionId);
+
+        if (!question)
+        {
+            return;
+        }
+
+        // activate the question
+        this.deactivateAllQuestions();
+        question.isActive = true;
+    }
+
+    public removeQuestion(questionId: QuestionId)
+    {
+        const question = this.getQuestion(questionId);
+        question?.remove();
+    }
+
     private renderQuestions(questions: QuestionApiResponse[])
     {
         this._listContainer.innerHTML = this._template.toHtmls(questions);
@@ -81,8 +101,25 @@ export class QuestionsSidebarController implements IControllerArgs<GetQuestionsA
                 }
             });
         });
+
+        QuestionUpdatedEvent.addListener((message) =>
+        {
+            this.onQuestionUpdatedEvent(message.data!);
+        });
+
+
     }
 
+    // update the sidebar item when the user has updated the question in the form
+    private onQuestionUpdatedEvent(message: QuestionUpdatedData)
+    {
+        const question = this.getQuestion(message.question.id);
+
+        if (question)
+        {
+            question.promptText = message.question.prompt;
+        }
+    }
 
     private openQuestion(question: QuestionSidebarItem)
     {
@@ -101,13 +138,22 @@ export class QuestionsSidebarController implements IControllerArgs<GetQuestionsA
         this.getAllQuestions().forEach(i => i.isActive = false);
     }
 
+    private getQuestion(questionId: QuestionId): QuestionSidebarItem | null
+    {
+        const questions = this.getAllQuestions();
+
+        const question = questions.find(q => q.questionId === questionId);
+
+        return question ?? null;
+    }
+
     private getAllQuestions(): QuestionSidebarItem[]
     {
-        const elements = this._container.querySelectorAll<HTMLButtonElement>(QuestionSidebarItemElements.containerClass);
-
         const result = [] as QuestionSidebarItem[];
 
-        const items = elements.forEach(e =>
+        const elements = this._container.querySelectorAll<HTMLButtonElement>(QuestionSidebarItemElements.containerClass);
+
+        elements.forEach(e =>
         {
             result.push(new QuestionSidebarItem(e));
         });
@@ -155,6 +201,7 @@ export class QuestionsSidebarController implements IControllerArgs<GetQuestionsA
                 throw new Error("Not implemented");
         }
     }
+
 }
 
 

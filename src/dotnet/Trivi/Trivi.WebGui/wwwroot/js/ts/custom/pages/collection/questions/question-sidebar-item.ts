@@ -3,12 +3,14 @@ import { Selector } from "../../../domain/helpers/element-selector/selector";
 const elements = {
     containerClass: '.question-list-item',
     questionIdAttr: 'data-question-id',
+    promptClass: '.question-list-item-prompt',
 }
 
 export class QuestionSidebarItem
 {
     private _selector: Selector;
     private _container: HTMLButtonElement;
+    private _prompt: HTMLDivElement;
 
     public get questionId()
     {
@@ -40,14 +42,28 @@ export class QuestionSidebarItem
         }
     }
 
+    public get promptText(): string
+    {
+        return this._prompt.innerText;
+    }
+
+    public set promptText(value: string)
+    {
+        this._prompt.innerText = value;
+    }
+
 
     constructor(e: Element)
     {
         this._selector = Selector.fromClosest<HTMLButtonElement>(elements.containerClass, e);
         this._container = this._selector.element as HTMLButtonElement;
+        this._prompt = this._selector.querySelector<HTMLDivElement>(elements.promptClass);
     }
 
-
+    public remove()
+    {
+        this._container.remove();
+    }
 
     public static fromMouseEvent(e: MouseEvent)
     {

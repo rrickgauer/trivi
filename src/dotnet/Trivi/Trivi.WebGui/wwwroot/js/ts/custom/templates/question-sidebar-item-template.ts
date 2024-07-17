@@ -14,7 +14,7 @@ export class QuestionSidebarListItemTemplate extends HtmlTemplate<QuestionApiRes
 
         let html = `
             <button type="button" class="list-group-item list-group-item-action question-list-item" ${questionIdAttr}>
-                <div class="text-truncate fw-bolder fs-5">
+                <div class="text-truncate fw-bolder fs-5 question-list-item-prompt">
                     ${model.prompt}
                 </div>
                 <div>${questionType}</div>

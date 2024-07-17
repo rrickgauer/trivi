@@ -12,10 +12,11 @@ namespace Trivi.Lib.Services.Implementations;
 
 
 [AutoInject<IQuestionService>(AutoInjectionType.Scoped, InjectionProject.Always)]
-public class QuestionService(IQuestionRepository questionRepo, ITableMapperService tableMapperService) : IQuestionService
+public class QuestionService(IQuestionRepository questionRepo, ITableMapperService tableMapperService, IAnswerService answerService) : IQuestionService
 {
     private readonly IQuestionRepository _questionRepo = questionRepo;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
+    private readonly IAnswerService _answerService = answerService;
 
     #region - Get multiple -
 
@@ -44,9 +45,9 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
             ViewQuestion? question = questionId.QuestionType switch
             {
                 QuestionType.MultipleChoice => await GetSpecificQuestionAsync(questionId, GetMultipleChoiceAsync),
-                QuestionType.TrueFalse      => await GetSpecificQuestionAsync(questionId, GetTrueFalseAsync),
-                QuestionType.ShortAnswer    => await GetSpecificQuestionAsync(questionId, GetShortAnswerAsync),
-                _                           => throw new NotImplementedException(),
+                QuestionType.TrueFalse => await GetSpecificQuestionAsync(questionId, GetTrueFalseAsync),
+                QuestionType.ShortAnswer => await GetSpecificQuestionAsync(questionId, GetShortAnswerAsync),
+                _ => throw new NotImplementedException(),
             };
 
             return new(question);
@@ -64,7 +65,7 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
         var getQuestion = await getFunction(questionId);
 
         getQuestion.ThrowIfError();
-        
+
         return getQuestion.Data;
     }
 
@@ -79,21 +80,38 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
 
             return new(result);
         }
-        catch(RepositoryException ex)
+        catch (RepositoryException ex)
         {
             return ex;
         }
     }
 
-    
+
     public async Task<ServiceDataResponse<ViewMultipleChoice>> GetMultipleChoiceAsync(QuestionId questionId)
     {
         try
         {
-            var row = await _questionRepo.SelectMultipleChoiceAsync(questionId);
-            var result = row != null ? _tableMapperService.ToModel<ViewMultipleChoice>(row) : null;
+            ServiceDataResponse<ViewMultipleChoice> result = new();
 
-            return new(result);
+            var row = await _questionRepo.SelectMultipleChoiceAsync(questionId);
+            if (row == null)
+            {
+                return result;
+            }
+
+
+            result.Data = _tableMapperService.ToModel<ViewMultipleChoice>(row);
+
+            var getAnswers = await _answerService.GetAnswersAsync(questionId);
+
+            if (!getAnswers.Successful)
+            {
+                return new(getAnswers);
+            }
+
+            result.Data.Answers = getAnswers.Data ?? new();
+
+            return result;
         }
         catch (RepositoryException ex)
         {
@@ -101,7 +119,7 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
         }
 
     }
-    
+
     public async Task<ServiceDataResponse<ViewTrueFalse>> GetTrueFalseAsync(QuestionId questionId)
     {
         try
@@ -124,20 +142,20 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
 
     #region - Save -
 
-    
-    
+
+
     public async Task<ServiceDataResponse<ViewShortAnswer>> SaveShortAnswerAsync(ShortAnswer question)
     {
         return await SaveQuestionSteps(question, _questionRepo.UpsertShortAnswerAsync, GetShortAnswerAsync);
     }
-    
-    
+
+
     public async Task<ServiceDataResponse<ViewTrueFalse>> SaveTrueFalseAsync(TrueFalse question)
     {
         return await SaveQuestionSteps(question, _questionRepo.UpsertTrueFalseAsync, GetTrueFalseAsync);
     }
-    
-    
+
+
     public async Task<ServiceDataResponse<ViewMultipleChoice>> SaveMultipleChoiceAsync(MultipleChoice question)
     {
         return await SaveQuestionSteps(question, _questionRepo.UpsertMultipleChoiceAsync, GetMultipleChoiceAsync);
@@ -168,6 +186,27 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
     private async Task<int> SaveQuestionBaseAsync(Question question)
     {
         return await _questionRepo.UpsertQuestionAsync(question);
+    }
+
+
+    #endregion
+
+
+
+    #region - Delete Question -
+
+    public async Task<ServiceResponse> DeleteQuestionAsync(QuestionId questionId)
+    {
+        try
+        {
+            await _questionRepo.DeleteQuestionAsync(questionId);
+
+            return new();
+        }
+        catch(RepositoryException ex)
+        {
+            return ex;
+        }
     }
 
 

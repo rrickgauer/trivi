@@ -2,30 +2,25 @@
 @model CollectionPageLayoutModel<CollectionQuestionsPageVM>
 
 
+@{
+    var containerClass = "question-editors";
+    var spinnerContainerClass = "question-editors-spinner";
+    var formsContainerClass = "question-editors-forms";
+}
+
 
 <div class="container d-flex justify-content-around mt-3">
 
     <div class="w-50">
 
-        <nav>
-            <div class="nav nav-pills" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Short Answer</button>
-                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">True False</button>
-                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Multiple Choice</button>
+        <div class="@containerClass position-relative">
+            <div class="@spinnerContainerClass loading-screen loading-screen-less d-none">
+                <partial name="@PartialRazorFiles.SpinnerCenter" />
             </div>
-        </nav>
 
-
-        <div class="tab-content mt-3" id="nav-tabContent">
-            <div class="tab-pane show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+            <div class="@formsContainerClass d-none">
                 <partial name="~/Views/Pages/Collection/Questions/_FormShortAnswer.cshtml" />
-            </div>
-
-            <div class="tab-pane" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
                 <partial name="~/Views/Pages/Collection/Questions/_FormTrueFalse.cshtml" />
-            </div>
-            
-            <div class="tab-pane" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
                 <partial name="~/Views/Pages/Collection/Questions/_FormMultipleChoice.cshtml" />
             </div>
         </div>

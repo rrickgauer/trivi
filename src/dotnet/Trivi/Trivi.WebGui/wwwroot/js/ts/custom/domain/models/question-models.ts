@@ -1,5 +1,6 @@
 import { QuestionType } from "../enums/question-type";
 import { DateTimeString, Guid, QuestionId } from "../types/aliases";
+import { AnswerApiResponse } from "./answer-models";
 
 
 
@@ -21,7 +22,7 @@ export type TrueFalseAnswerApiResponse = QuestionApiResponse & {
 }
 
 export type MultipleChoiceApiResponse = QuestionApiResponse & {
-    
+    answers: AnswerApiResponse[];
 }
 
 

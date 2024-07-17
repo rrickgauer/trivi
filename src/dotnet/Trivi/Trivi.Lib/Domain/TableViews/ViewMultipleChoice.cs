@@ -2,7 +2,7 @@
 
 public class ViewMultipleChoice : ViewQuestion
 {
-    //public List<ViewAnswer> QuestionAnswers { get; set; } = new();
+    public List<ViewAnswer> Answers { get; set; } = new();
 }
 
 

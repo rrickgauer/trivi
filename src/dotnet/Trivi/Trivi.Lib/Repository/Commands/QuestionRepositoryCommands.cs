@@ -91,10 +91,20 @@ public class QuestionRepositoryCommands
 
 
     public const string UpsertMultipleChoice = @"
-        REPLACE INTO
+        INSERT INTO
             Questions_MC (id)
         VALUES
-            (@id);";
+            (@id) AS new_values ON DUPLICATE KEY
+        UPDATE
+            id = new_values.id;";
+
+
+
+    public const string Delete = @"
+        DELETE FROM
+          Questions
+        WHERE
+          id = @id;";
 
 }
 

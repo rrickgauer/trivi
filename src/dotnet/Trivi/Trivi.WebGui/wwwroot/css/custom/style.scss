@@ -1,7 +1,7 @@
 @use "sass:map";
 @import "_custom-bootstrap.scss";
 // @import "_colors.scss";
-// @import "_buttons.scss";
+ @import "_buttons.scss";
 
 
 .form-spacing {
@@ -42,6 +42,39 @@ body {
     height: 70vh;
 }
 
+.loading-screen.loading-screen-less {
+    height: 40vh;
+}
+
+
+.form-question {
+    .btn-submit,
+    .btn-delete {
+        width: 100%;
+    }
+
+    .btn-delete {
+        margin-top: .5rem;
+        @include btn-transition;
+
+        &:hover {
+            filter: brightness(93%);
+        }
+    }
+}
 
 
 
+.btn-reset {
+    --bs-btn-active-border-color: transparent;
+    --bs-btn-disabled-border-color: transparent;
+}
+
+
+.hover-grab:hover {
+    cursor: grab;
+}
+
+.hover-pointer:hover {
+    cursor: pointer; 
+}

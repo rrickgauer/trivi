@@ -2,6 +2,10 @@
 // @import "bootstrap/_variables.scss";
 
 
+@mixin btn-transition {
+    transition: filter 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
 // @mixin btn-standard-colors {
 //     background-color: $custom-color-gray-9;
 //     border: 1px solid $custom-color-gray-8;

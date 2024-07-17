@@ -17,5 +17,7 @@ public interface IQuestionRepository
     public Task<int> UpsertShortAnswerAsync(ShortAnswer question);
     public Task<int> UpsertTrueFalseAsync(TrueFalse question);
     public Task<int> UpsertMultipleChoiceAsync(MultipleChoice question);
+
+    public Task<int> DeleteQuestionAsync(QuestionId questionId);
 }
 

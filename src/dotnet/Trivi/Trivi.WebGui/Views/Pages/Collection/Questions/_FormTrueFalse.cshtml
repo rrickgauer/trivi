@@ -4,12 +4,17 @@
 
 @{
     var editorContainerClass = "question-editor-tf";
+
     var alertsContainerClass = "alerts-container";
-    var formClass = "form-question-tf";
+    var formClass = "form-question";
+    var promptInputClass = "form-question-input-prompt";
+    
+    
     var promptInputId = "form-question-tf-input-prompt";
-    var answerRadioInputName = "form-question-tf-input-answer";
-    var answerRadioInputTrueId = $"{answerRadioInputName}-true";
-    var answerRadioInputFalseId = $"{answerRadioInputName}-false";
+
+    var answerRadioInputName    = "form-question-tf-input-answer";
+    var answerRadioInputTrueId  = "form-question-tf-input-answer-true";
+    var answerRadioInputFalseId = "form-question-tf-input-answer-false";
 
 }
 
@@ -24,10 +29,11 @@
 
             <div class="input-feedback form-spacing">
                 <label for="@promptInputId">Prompt</label>
-                <input type="text" class="form-control form-control-lg input-feedback-input" id="@promptInputId" required />
+                <input type="text" class="form-control form-control-lg input-feedback-input @promptInputClass" id="@promptInputId" required />
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback"></div>
             </div>
+
 
             <div class="form-spacing">
 
@@ -47,8 +53,9 @@
 
         </fieldset>
 
-        <div class="d-flex form-spacing">
-            <button type="button" class="btn btn-lg btn-success btn-submit">Save</button>
+        <div class="form-spacing">
+            <button type="submit" class="btn btn-lg btn-success btn-submit">Save</button>
+            <button type="button" class="btn btn-lg bg-secondary-subtle text-danger btn-delete">Delete</button>
         </div>
 
     </form>

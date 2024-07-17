@@ -3,10 +3,16 @@
 
 
 @{
-    var editorContainerClass = "question-editor-sa";
+    var editorContainerClass = "question-editor-mc";
+
     var alertsContainerClass = "alerts-container";
-    var formClass = "form-question-sa";
+    var formClass = "form-question";
+    var promptInputClass = "form-question-input-prompt";
+
     var promptInputId = $"{formClass}-input-prompt";
+    var answersContainerClass = $"form-question-mc-answers";
+    var answersListClass = "answers-list";
+    
 }
 
 
@@ -19,18 +25,28 @@
 
         <fieldset>
 
+            @* Prompt form *@
             <div class="input-feedback form-spacing">
                 <label for="@promptInputId">Prompt</label>
-                <input type="text" class="form-control form-control-lg input-feedback-input" id="@promptInputId" required />
+                <input type="text" class="form-control form-control-lg input-feedback-input @promptInputClass" id="@promptInputId" required />
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback"></div>
             </div>
 
+            <div class="form-spacing @answersContainerClass">
+                
+                @* Answers *@
+                <ul class="list-unstyled @answersListClass"></ul>
+                
+                @* New answer *@
+                <a class="text-decoration-none btn-new-answer hover-pointer">New question</a>
+            </div>
 
         </fieldset>
 
-        <div class="d-flex form-spacing">
-            <button type="button" class="btn btn-lg btn-success btn-submit">Save</button>
+        <div class="form-spacing">
+            <button type="submit" class="btn btn-lg btn-success btn-submit">Save</button>
+            <button type="button" class="btn btn-lg bg-secondary-subtle text-danger btn-delete">Delete</button>
         </div>
 
     </form>

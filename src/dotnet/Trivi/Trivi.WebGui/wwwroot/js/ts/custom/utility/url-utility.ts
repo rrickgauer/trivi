@@ -61,6 +61,22 @@ export class UrlUtility
         return currentUrl.searchParams.get(key) as T;
     }
 
+    public static setQueryParmQuiet(key: string, value: any)
+    {
+        const url = new URL(window.location.href);
 
+        url.searchParams.set(key, `${value}`);
+
+        window.history.pushState({}, '', url);
+    }
+
+    public static removeQueryParmQuiet(key: string)
+    {
+        const url = new URL(window.location.href);
+
+        url.searchParams.delete(key);
+
+        window.history.pushState({}, '', url);
+    }
     
 }

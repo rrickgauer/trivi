@@ -8,13 +8,15 @@
     var alertsContainerClass = "alerts-container";
     var formClass = "form-question";
     var promptInputClass = "form-question-input-prompt";
-    
-    
+
+
     var promptInputId = "form-question-tf-input-prompt";
 
     var answerRadioInputName    = "form-question-tf-input-answer";
     var answerRadioInputTrueId  = "form-question-tf-input-answer-true";
     var answerRadioInputFalseId = "form-question-tf-input-answer-false";
+
+    var pointsInputId = "form-question-tf-input-points";
 
 }
 
@@ -29,9 +31,15 @@
 
             <div class="input-feedback form-spacing">
                 <label for="@promptInputId">Prompt</label>
-                <input type="text" class="form-control form-control-lg input-feedback-input @promptInputClass" id="@promptInputId" required />
+                <input type="text" class="form-control form-control-lg input-feedback-input @promptInputClass" id="@promptInputId" maxlength="@QuestionConstants.MaxPromptLength" required />
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback"></div>
+            </div>
+
+
+            <div class="form-spacing">
+                <label for="@pointsInputId" class="form-label">Points</label>
+                <input type="range" class="form-range" min="1" max="10" step="1" id="@pointsInputId" value="1">
             </div>
 
 

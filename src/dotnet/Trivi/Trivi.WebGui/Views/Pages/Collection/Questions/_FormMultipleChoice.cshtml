@@ -28,7 +28,7 @@
             @* Prompt form *@
             <div class="input-feedback form-spacing">
                 <label for="@promptInputId">Prompt</label>
-                <input type="text" class="form-control form-control-lg input-feedback-input @promptInputClass" id="@promptInputId" required />
+                <input type="text" class="form-control form-control-lg input-feedback-input @promptInputClass" id="@promptInputId" maxlength="@QuestionConstants.MaxPromptLength" required />
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback"></div>
             </div>
@@ -39,7 +39,7 @@
                 <ul class="list-unstyled @answersListClass"></ul>
                 
                 @* New answer *@
-                <a class="text-decoration-none btn-new-answer hover-pointer">New question</a>
+                <a class="text-decoration-none btn-new-answer hover-pointer">New answer</a>
             </div>
 
         </fieldset>

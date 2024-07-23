@@ -1,0 +1,5 @@
+insert into Answers_MC (id, question_id, is_correct, created_on, answer) values ('mca_DN301SMSVA6EN37G2', 'mc_RBTTU66TLX2MWP4GG', 0, '2024-05-25 08:40:37', 'logistical');
+insert into Answers_MC (id, question_id, is_correct, created_on, answer) values ('mca_CH85KGCZ5AQZJBR5J', 'mc_RBTTU66TLX2MWP4GG', 0, '2024-03-01 01:34:41', 'Progressive');
+insert into Answers_MC (id, question_id, is_correct, created_on, answer) values ('mca_KRRRDETZ5A2R5753Y', 'mc_RBTTU66TLX2MWP4GG', 1, '2023-12-18 18:11:36', 'encompassing');
+insert into Answers_MC (id, question_id, is_correct, created_on, answer) values ('mca_JT3MIU3X0YH3T124G', 'mc_RBTTU66TLX2MWP4GG', 1, '2023-12-19 02:19:01', 'leading edge');
+insert into Answers_MC (id, question_id, is_correct, created_on, answer) values ('mca_ILR2R5DCBB5DM9XAR', 'mc_RBTTU66TLX2MWP4GG', 0, '2024-03-06 23:50:05', 'help-desk');

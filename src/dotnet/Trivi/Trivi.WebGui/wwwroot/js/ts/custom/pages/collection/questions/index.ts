@@ -1,3 +1,4 @@
+import { QuestionId } from "../../../domain/types/aliases";
 import { AnswersService } from "../../../services/answers-service";
 import { NanoIdUtility } from "../../../utility/nanoid-utility";
 import { PageUtility } from "../../../utility/page-utility";
@@ -15,8 +16,14 @@ PageUtility.pageReady(async () =>
         throw new Error(`Invalid collection ID: ${collectionId}`);
     }
 
+    const initialQuestion = UrlUtility.getQueryParmValueStringTyped<QuestionId>('question');
 
-    const controller = new CollectionQuestionsPageController(collectionId);
+
+    const controller = new CollectionQuestionsPageController({
+        collectionId: collectionId,
+        initialQuestion: initialQuestion,
+    });
+
     await controller.control();
 });
 

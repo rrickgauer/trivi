@@ -1,25 +1,35 @@
 import { IControllerAsync } from "../../../domain/contracts/icontroller";
-import { OpenQuestionData, OpenQuestionEvent } from "../../../domain/events/events";
+import { DeleteQuestionButtonClickedData, DeleteQuestionButtonClickedEvent, OpenQuestionData, OpenQuestionEvent } from "../../../domain/events/events";
 import { GetQuestionsApiResponse } from "../../../domain/models/question-models";
-import { Guid } from "../../../domain/types/aliases";
+import { Guid, QuestionId } from "../../../domain/types/aliases";
 import { QuestionsService } from "../../../services/questions-service";
 import { ErrorUtility } from "../../../utility/error-utility";
 import { MessageBoxUtility } from "../../../utility/message-box-utility";
 import { PageLoadingUtility } from "../../../utility/page-loading-utility";
+import { UrlUtility } from "../../../utility/url-utility";
+import { QuestionFormsController } from "./forms-controller";
 import { QuestionsSidebarController } from "./questions-sidebar-controller";
+
+
 
 
 export class CollectionQuestionsPageController implements IControllerAsync
 {
     private readonly _collectionId: string;
-    private _questionsService: QuestionsService;
-    private _questionsSidebar: QuestionsSidebarController;
+    private readonly _questionsService: QuestionsService;
+    private readonly _questionsSidebar: QuestionsSidebarController;
+    private readonly _formsController: QuestionFormsController;
 
-    constructor(collectionId: Guid)
+    private readonly _initialQuestion: QuestionId | null;
+
+    constructor(args: { collectionId: Guid, initialQuestion: QuestionId | null })
     {
-        this._collectionId = collectionId;
+        this._collectionId = args.collectionId;
         this._questionsService = new QuestionsService();
         this._questionsSidebar = new QuestionsSidebarController(this._collectionId);
+        this._formsController = new QuestionFormsController(this._collectionId);
+
+        this._initialQuestion = args.initialQuestion;
     }
 
     public async control()
@@ -33,7 +43,12 @@ export class CollectionQuestionsPageController implements IControllerAsync
 
         this._questionsSidebar.control(getQuestions);
 
+        this._formsController.control();
+
         this.addListeners();
+
+        // load initial question if provided in the url
+        await this.openInitialQuestion();
 
         PageLoadingUtility.hideLoader();
     }
@@ -74,15 +89,47 @@ export class CollectionQuestionsPageController implements IControllerAsync
 
     private addListeners = () =>
     {
-        OpenQuestionEvent.addListener((message) =>
+        OpenQuestionEvent.addListener(async (message) =>
         {
-            this.onOpenQuestionEvent(message.data!);
+            await this.onOpenQuestionEvent(message.data!);
+        });
+
+        DeleteQuestionButtonClickedEvent.addListener(async (message) =>
+        {
+            await this.onDeleteQuestionButtonClickedEvent(message.data!);
         });
     }
 
 
-    private onOpenQuestionEvent(message: OpenQuestionData)
+    private async onOpenQuestionEvent(message: OpenQuestionData)
     {
-        //alert(message.questionId);
+        UrlUtility.setQueryParmQuiet('question', message.questionId);
+        await this._formsController.editQuestion(message.questionId);
+    }
+
+    private async openInitialQuestion()
+    {
+        if (!this._initialQuestion)
+        {
+            return;
+        }
+
+
+        await this._formsController.editQuestion(this._initialQuestion);
+        this._questionsSidebar.activateQuestion(this._initialQuestion);
+    }
+
+
+    private async onDeleteQuestionButtonClickedEvent(message: DeleteQuestionButtonClickedData)
+    {
+        // remove sidebar question item
+        this._questionsSidebar.removeQuestion(message.questionId);
+
+        // hide the current question form
+        this._formsController.hideCurrentQuestion();
+
+        // remove the question id from the url
+        UrlUtility.removeQueryParmQuiet('question');
+
     }
 }

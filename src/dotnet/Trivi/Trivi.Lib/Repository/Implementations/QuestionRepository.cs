@@ -106,5 +106,18 @@ public class QuestionRepository(DatabaseConnection connection) : IQuestionReposi
 
     #endregion
 
+
+    #region - Delete - 
+
+    public async Task<int> DeleteQuestionAsync(QuestionId questionId)
+    {
+        MySqlCommand command = new(QuestionRepositoryCommands.Delete);
+
+        command.Parameters.AddWithValue("@id", questionId.Id);
+
+        return await _connection.ModifyAsync(command);
+    }
+
+    #endregion
 }
 

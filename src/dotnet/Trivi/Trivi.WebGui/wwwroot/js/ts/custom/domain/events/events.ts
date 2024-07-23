@@ -1,3 +1,4 @@
+import { QuestionApiResponse } from "../models/question-models";
 import { QuestionId } from "../types/aliases";
 import { CustomEmptyMessage, CustomMessage } from "./custom-events";
 
@@ -26,3 +27,20 @@ export type OpenQuestionData = {
 }
 
 export const OpenQuestionEvent = new CustomMessage<OpenQuestionData>();
+
+
+export type QuestionUpdatedData = {
+    question: QuestionApiResponse;
+}
+
+export const QuestionUpdatedEvent = new CustomMessage<QuestionUpdatedData>();
+
+
+
+
+export type DeleteQuestionButtonClickedData = {
+    questionId: QuestionId;
+}
+
+export const DeleteQuestionButtonClickedEvent = new CustomMessage<DeleteQuestionButtonClickedData>();
+

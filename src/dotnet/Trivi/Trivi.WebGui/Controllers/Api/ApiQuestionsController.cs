@@ -60,6 +60,17 @@ public class ApiQuestionsController(GetQuestionsApiVMService getQuestionsVMServi
     }
 
 
+    [HttpDelete("{questionId:questionId}")]
+    [ActionName(nameof(DeleteQuestionAsync))]
+    [ServiceFilter<GetQuestionFilter>]
+    public async Task<IActionResult> DeleteQuestionAsync([FromRoute] QuestionId questionId)
+    {
+        var deleteQuestion = await _questionService.DeleteQuestionAsync(questionId);
+
+        return FromServiceResponse(deleteQuestion);
+    }
+
+
 
 
     /// <summary>

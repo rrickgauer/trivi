@@ -78,5 +78,14 @@ export class UrlUtility
 
         window.history.pushState({}, '', url);
     }
+
+
+
+    public static createUrlFromSuffix(path: string)
+    {
+        const prefix = window.location.origin;
+        const uri = `${prefix}${path}`;
+        return new URL(uri);
+    }
     
 }

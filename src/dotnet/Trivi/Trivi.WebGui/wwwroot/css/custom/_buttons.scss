@@ -6,6 +6,13 @@
     transition: filter 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+// Really fucking small button
+.btn-xs {
+    padding: .125rem .25rem;
+    font-size: .75rem;
+    line-height: 1.25;
+}
+
 // @mixin btn-standard-colors {
 //     background-color: $custom-color-gray-9;
 //     border: 1px solid $custom-color-gray-8;

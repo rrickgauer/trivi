@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Trivi.Lib.Domain.Enums;
+﻿namespace Trivi.Lib.Domain.Enums;
 
 public enum RequestItemKey
 {
     Collection,
     Question,
     Answer,
+    Game,
 }

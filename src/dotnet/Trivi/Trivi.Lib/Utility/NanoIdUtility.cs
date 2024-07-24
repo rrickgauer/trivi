@@ -6,16 +6,16 @@ namespace Trivi.Lib.Utility;
 
 public class NanoIdUtility
 {
-    public static string New()
+    public static string NewQuestionId()
     {
-        return Nanoid.Generate(alphabet: NanoIdConstants.Alphabet, size: NanoIdConstants.IdLength);
+        return Nanoid.Generate(alphabet: NanoIdConstants.QuestionAlphabet, size: NanoIdConstants.QuestionIdLength);
     }
 
-    public static void GenerateNewOnes(int number, QuestionType type)
+    public static void GenerateNewQuestionIds(int number, QuestionType type)
     {
         for(int i = 0; i < number; i++)
         {
-            Console.WriteLine($"{type.GetNewNanoId()}");
+            Console.WriteLine($"{type.GetNewQuestionId()}");
         }
     }
 
@@ -23,10 +23,24 @@ public class NanoIdUtility
     {
         var prefix = T.NanoIdPrefix;
 
-        var id = New();
+        var id = NewQuestionId();
 
         return $"{prefix}_{id}";
     }
 
+
+
+    public static void GenerateNewGameIds(int number)
+    {
+        for (int i = 0; i < number; i++)
+        {
+            Console.WriteLine(NewGameId());
+        }
+    }
+
+    public static string NewGameId()
+    {
+        return Nanoid.Generate(alphabet: NanoIdConstants.GameAlphabet, size: NanoIdConstants.GameIdLength);
+    }
 
 }

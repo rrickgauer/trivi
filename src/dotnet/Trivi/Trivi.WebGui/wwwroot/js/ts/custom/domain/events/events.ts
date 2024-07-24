@@ -1,3 +1,5 @@
+import { GameApiResponse } from "../models/game-models";
+import { PlayerApiResponse } from "../models/player-models";
 import { QuestionApiResponse } from "../models/question-models";
 import { QuestionId } from "../types/aliases";
 import { CustomEmptyMessage, CustomMessage } from "./custom-events";
@@ -44,3 +46,18 @@ export type DeleteQuestionButtonClickedData = {
 
 export const DeleteQuestionButtonClickedEvent = new CustomMessage<DeleteQuestionButtonClickedData>();
 
+
+
+
+export type GameCreatedData = {
+    game: GameApiResponse;
+}
+
+export const GameCreatedEvent = new CustomMessage<GameCreatedData>();
+
+
+export type PlayerJoinedGameData = {
+    player: PlayerApiResponse;
+}
+
+export const PlayerJoinedGameEvent = new CustomMessage<PlayerJoinedGameData>();

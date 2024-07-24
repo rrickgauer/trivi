@@ -36,6 +36,12 @@ public class RequestItems
     }
 
 
+    public ViewGame Game
+    {
+        get => GetItem<ViewGame>(RequestItemKey.Game);
+        set => SetItem(RequestItemKey.Game, value);
+    }
+
 
     private T GetItem<T>(RequestItemKey key) where T : class
     {

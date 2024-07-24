@@ -75,6 +75,9 @@ const configs = [
 
     new RollupConfig('collection/settings/index.ts', 'collection-settings'),
     new RollupConfig('collection/questions/index.ts', 'collection-questions'),
+    new RollupConfig('collection/setup/index.ts', 'collection-setup'),
+
+    new RollupConfig('games/join/index.ts', 'games-join'),
 
 ];
 

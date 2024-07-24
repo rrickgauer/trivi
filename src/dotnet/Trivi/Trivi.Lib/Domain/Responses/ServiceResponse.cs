@@ -1,8 +1,5 @@
-﻿
-using Microsoft.AspNetCore.Mvc.Filters;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Trivi.Lib.Domain.Errors;
-using Trivi.Lib.Utility;
 
 namespace Trivi.Lib.Domain.Responses;
 

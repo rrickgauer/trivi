@@ -8,6 +8,7 @@ export type QuestionApiResponse = {
     id: QuestionId;
     collectionId: Guid;
     prompt: string;
+    points: number;
     createdOn: DateTimeString;
     questionType: QuestionType;
 }
@@ -36,6 +37,7 @@ export type GetQuestionsApiResponse = {
 export type PutQuestionApiRequest = {
     collectionId: Guid;
     prompt: string;
+    points: number;
 }
 
 export type PutMultipleChoiceApiRequest = PutQuestionApiRequest;

@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Trivi.Lib.Domain.Attributes;
+using Trivi.Lib.Domain.Constants;
 using Trivi.Lib.Domain.Models;
 using Trivi.Lib.Domain.Other;
 
@@ -25,6 +26,12 @@ public class ViewQuestion
     [CopyToProperty<MultipleChoice>(nameof(MultipleChoice.Prompt))]
     [CopyToProperty<TrueFalse>(nameof(TrueFalse.Prompt))]
     public virtual string? Prompt { get; set; }
+
+    [SqlColumn("question_points")]
+    [CopyToProperty<ShortAnswer>(nameof(ShortAnswer.Points))]
+    [CopyToProperty<MultipleChoice>(nameof(MultipleChoice.Points))]
+    [CopyToProperty<TrueFalse>(nameof(TrueFalse.Points))]
+    public virtual ushort Points { get; set; } = QuestionConstants.MinimumPointsValue;
 
     [SqlColumn("question_created_on")]
     [CopyToProperty<ShortAnswer>(nameof(ShortAnswer.CreatedOn))]

@@ -14,6 +14,7 @@ export class NewMultipleChoice extends NewQuestion<PutMultipleChoiceApiRequest>
         const result: PutMultipleChoiceApiRequest = {
             collectionId: this._collectionId,
             prompt: this._defaultPrompt,
+            points: this._points,
         };
 
         return result;

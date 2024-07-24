@@ -57,6 +57,7 @@ public class QuestionRepositoryCommands
             collection_id,
             question_type_id,
             prompt,
+            points,
             created_on
         )
         VALUES
@@ -65,11 +66,13 @@ public class QuestionRepositoryCommands
             @collection_id,
             @question_type_id,
             @prompt,
+            @points,
             @created_on
         ) 
         AS new_values 
         ON DUPLICATE KEY UPDATE
-            prompt = new_values.prompt;";
+            prompt = new_values.prompt,
+            points = new_values.points;";
 
 
     public const string UpsertShortAnswer = @"

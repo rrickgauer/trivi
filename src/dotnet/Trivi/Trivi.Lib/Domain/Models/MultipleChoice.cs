@@ -14,6 +14,7 @@ public class MultipleChoice : Question
             Id = questionId,
             CollectionId = form.CollectionId,
             Prompt = form.Prompt,
+            Points = form.Points,
         };
     }
 }

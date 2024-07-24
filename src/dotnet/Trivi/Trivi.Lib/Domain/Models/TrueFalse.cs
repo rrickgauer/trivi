@@ -18,6 +18,7 @@ public class TrueFalse : Question
             CollectionId = form.CollectionId,
             CorrectAnswer = form.CorrectAnswer,
             Prompt = form.Prompt,
+            Points = form.Points,
         };
     }
 }

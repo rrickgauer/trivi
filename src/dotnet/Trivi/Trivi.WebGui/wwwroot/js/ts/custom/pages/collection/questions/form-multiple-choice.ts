@@ -48,6 +48,7 @@ export class FormMultipleChoice extends QuestionForm<MultipleChoiceApiResponse>
         this._currentQuestion = question;
 
         this._promptValue = question.prompt;
+        this._ranger.value = question.points;
 
         const answersHtml = this._answerTemplateEngine.toHtmls(question.answers);
         this._answersList.innerHTML = answersHtml;

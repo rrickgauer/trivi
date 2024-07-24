@@ -33,9 +33,6 @@ export abstract class QuestionForm<TQuestion extends QuestionApiResponse> implem
 {
 
     protected abstract _currentQuestion: TQuestion;
-    
-    
-    
     public abstract showQuestion(question: TQuestion): void;
     protected abstract sendPutRequest(): Promise<ServiceResponse<TQuestion> | null>;
 
@@ -244,6 +241,7 @@ export abstract class QuestionForm<TQuestion extends QuestionApiResponse> implem
         const result: PutQuestionApiRequest = {
             collectionId: this._collectionId,
             prompt: this._promptValue,
+            points: this._ranger.value,
         }
 
         return result as TRequest;

@@ -14,6 +14,7 @@ export class NewTrueFalse extends NewQuestion<PutTrueFalseApiRequest>
             collectionId: this._collectionId,
             correctAnswer: true,
             prompt: this._defaultPrompt,
+            points: this._points,
         };
     }
 }

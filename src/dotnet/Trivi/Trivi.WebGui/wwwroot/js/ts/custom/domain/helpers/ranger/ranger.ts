@@ -32,6 +32,7 @@ export class Ranger
         }
 
         this._input.value = value.toString();
+        this.updateValueDisplay();
     }
 
 

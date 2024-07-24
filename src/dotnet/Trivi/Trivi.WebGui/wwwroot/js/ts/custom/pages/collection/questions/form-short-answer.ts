@@ -45,6 +45,7 @@ export class FormShortAnswer extends QuestionForm<ShortAnswerApiResponse>
         this._currentQuestion = question;
 
         this._promptValue = question.prompt;
+        this._ranger.value = question.points;
         this._answerValue = question.correctAnswer;
     }
 

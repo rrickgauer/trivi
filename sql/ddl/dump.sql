@@ -40,7 +40,7 @@ CREATE TABLE Answers_MC (
   UNIQUE KEY id (id),
   KEY question_id (question_id),
   CONSTRAINT Answers_MC_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions_MC (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,6 +129,7 @@ CREATE TABLE Questions (
   collection_id char(36) NOT NULL,
   question_type_id smallint unsigned NOT NULL,
   prompt varchar(40) NOT NULL,
+  points smallint unsigned NOT NULL DEFAULT '1',
   created_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (internal_id),
   UNIQUE KEY internal_id (internal_id),
@@ -137,7 +138,7 @@ CREATE TABLE Questions (
   KEY question_type_id (question_type_id),
   CONSTRAINT Questions_ibfk_1 FOREIGN KEY (collection_id) REFERENCES Collections (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Questions_ibfk_2 FOREIGN KEY (question_type_id) REFERENCES Question_Types (id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +155,7 @@ CREATE TABLE Questions_MC (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Questions_MC_ibfk_1 FOREIGN KEY (id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +173,7 @@ CREATE TABLE Questions_SA (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Questions_SA_ibfk_1 FOREIGN KEY (id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,7 +191,7 @@ CREATE TABLE Questions_TF (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Questions_TF_ibfk_1 FOREIGN KEY (id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,6 +275,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS question_collection_id,
  1 AS question_question_type_id,
  1 AS question_prompt,
+ 1 AS question_points,
  1 AS question_created_on,
  1 AS collection_user_id*/;
 SET character_set_client = @saved_cs_client;
@@ -291,6 +293,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS question_collection_id,
  1 AS question_question_type_id,
  1 AS question_prompt,
+ 1 AS question_points,
  1 AS question_created_on,
  1 AS collection_user_id*/;
 SET character_set_client = @saved_cs_client;
@@ -308,6 +311,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS question_collection_id,
  1 AS question_question_type_id,
  1 AS question_prompt,
+ 1 AS question_points,
  1 AS question_created_on,
  1 AS collection_user_id,
  1 AS question_correct_answer*/;
@@ -326,6 +330,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS question_collection_id,
  1 AS question_question_type_id,
  1 AS question_prompt,
+ 1 AS question_points,
  1 AS question_created_on,
  1 AS collection_user_id,
  1 AS question_correct_answer*/;
@@ -427,7 +432,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Questions AS select q.id AS question_id,c.id AS question_collection_id,q.question_type_id AS question_question_type_id,q.prompt AS question_prompt,q.created_on AS question_created_on,c.user_id AS collection_user_id from (Questions q join Collections c on((c.id = q.collection_id))) */;
+/*!50001 VIEW View_Questions AS select q.id AS question_id,c.id AS question_collection_id,q.question_type_id AS question_question_type_id,q.prompt AS question_prompt,q.points AS question_points,q.created_on AS question_created_on,c.user_id AS collection_user_id from (Questions q join Collections c on((c.id = q.collection_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -445,7 +450,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Questions_MC AS select q.question_id AS question_id,q.question_collection_id AS question_collection_id,q.question_question_type_id AS question_question_type_id,q.question_prompt AS question_prompt,q.question_created_on AS question_created_on,q.collection_user_id AS collection_user_id from View_Questions q */;
+/*!50001 VIEW View_Questions_MC AS select q.question_id AS question_id,q.question_collection_id AS question_collection_id,q.question_question_type_id AS question_question_type_id,q.question_prompt AS question_prompt,q.question_points AS question_points,q.question_created_on AS question_created_on,q.collection_user_id AS collection_user_id from View_Questions q */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -463,7 +468,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Questions_SA AS select q.question_id AS question_id,q.question_collection_id AS question_collection_id,q.question_question_type_id AS question_question_type_id,q.question_prompt AS question_prompt,q.question_created_on AS question_created_on,q.collection_user_id AS collection_user_id,sa.correct_answer AS question_correct_answer from (View_Questions q join Questions_SA sa on((sa.id = q.question_id))) */;
+/*!50001 VIEW View_Questions_SA AS select q.question_id AS question_id,q.question_collection_id AS question_collection_id,q.question_question_type_id AS question_question_type_id,q.question_prompt AS question_prompt,q.question_points AS question_points,q.question_created_on AS question_created_on,q.collection_user_id AS collection_user_id,sa.correct_answer AS question_correct_answer from (View_Questions q join Questions_SA sa on((sa.id = q.question_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -481,7 +486,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Questions_TF AS select q.question_id AS question_id,q.question_collection_id AS question_collection_id,q.question_question_type_id AS question_question_type_id,q.question_prompt AS question_prompt,q.question_created_on AS question_created_on,q.collection_user_id AS collection_user_id,tf.correct_answer AS question_correct_answer from (View_Questions q join Questions_TF tf on((tf.id = q.question_id))) */;
+/*!50001 VIEW View_Questions_TF AS select q.question_id AS question_id,q.question_collection_id AS question_collection_id,q.question_question_type_id AS question_question_type_id,q.question_prompt AS question_prompt,q.question_points AS question_points,q.question_created_on AS question_created_on,q.collection_user_id AS collection_user_id,tf.correct_answer AS question_correct_answer from (View_Questions q join Questions_TF tf on((tf.id = q.question_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -513,7 +518,7 @@ USE Trivi_Dev;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-23  0:06:07
+-- Dump completed on 2024-07-23 20:28:45
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
@@ -573,4 +578,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-23  0:06:12
+-- Dump completed on 2024-07-23 20:28:49

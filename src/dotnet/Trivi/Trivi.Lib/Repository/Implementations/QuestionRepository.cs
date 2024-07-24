@@ -68,6 +68,7 @@ public class QuestionRepository(DatabaseConnection connection) : IQuestionReposi
         command.Parameters.AddWithValue("@collection_id", question.CollectionId);
         command.Parameters.AddWithValue("@question_type_id", question.QuestionType);
         command.Parameters.AddWithValue("@prompt", question.Prompt);
+        command.Parameters.AddWithValue("@points", question.Points);
         command.Parameters.AddWithValue("@created_on", question.CreatedOn);
 
         return await _connection.ModifyAsync(command);

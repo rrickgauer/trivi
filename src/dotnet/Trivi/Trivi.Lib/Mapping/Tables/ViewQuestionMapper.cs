@@ -13,9 +13,10 @@ public class ViewQuestionMapper : TableMapper<ViewQuestion>
         result.Id           = row.Field<string>(GetColumnName(nameof(result.Id)))!;
         result.CollectionId = row.Field<Guid?>(GetColumnName(nameof(result.CollectionId)));
         result.Prompt       = row.Field<string?>(GetColumnName(nameof(result.Prompt)));
+        result.Points       = row.Field<ushort>(GetColumnName(nameof(result.Points)));
         result.CreatedOn    = row.Field<DateTime>(GetColumnName(nameof(result.CreatedOn)));
         result.UserId       = row.Field<Guid?>(GetColumnName(nameof(result.UserId)));
-        result.QuestionType         = row.Field<QuestionType>(GetColumnName(nameof(result.QuestionType)));
+        result.QuestionType = row.Field<QuestionType>(GetColumnName(nameof(result.QuestionType)));
 
         return result;
     }
@@ -56,8 +57,6 @@ public class ViewMultipleChoiceMapper : TableMapper<ViewMultipleChoice>
     public override ViewMultipleChoice ToModel(DataRow row)
     {
         ViewMultipleChoice result = InheritanceUtility.GetParentProperties<ViewQuestion, ViewMultipleChoice, ViewQuestionMapper>(row);
-
-        //result.QuestionCorrectAnswer = row.Field<bool>(GetColumnName(nameof(result.QuestionCorrectAnswer)));
 
         return result;
 

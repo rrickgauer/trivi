@@ -20,8 +20,9 @@ export abstract class NewQuestion<TApiRequest extends PutQuestionApiRequest> imp
     public abstract getQuestionType(): QuestionType;
 
     protected readonly _id = NanoIdUtility.new();
-
     protected readonly _collectionId: string;
+
+    protected readonly _points = 1;
     
 
     public get questionId()
@@ -44,6 +45,7 @@ export abstract class NewQuestion<TApiRequest extends PutQuestionApiRequest> imp
             id: this.questionId,
             prompt: this._defaultPrompt,
             questionType: this.getQuestionType(),
+            points: 1,
         }
 
         return result;

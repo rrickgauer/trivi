@@ -8,8 +8,8 @@
     var alertsContainerClass = "alerts-container";
     var formClass = "form-question";
     var promptInputClass = "form-question-input-prompt";
-    
-    
+
+
     var promptInputId = "form-question-tf-input-prompt";
 
     var answerRadioInputName    = "form-question-tf-input-answer";
@@ -29,9 +29,15 @@
 
             <div class="input-feedback form-spacing">
                 <label for="@promptInputId">Prompt</label>
-                <input type="text" class="form-control form-control-lg input-feedback-input @promptInputClass" id="@promptInputId" required />
+                <input type="text" class="form-control form-control-lg input-feedback-input @promptInputClass" id="@promptInputId" maxlength="@QuestionConstants.MaxPromptLength" required />
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback"></div>
+            </div>
+
+
+            <div class="form-spacing ranger" data-ranger-prefix="Points: ">
+                <div class="ranger-display"></div>
+                <input type="range" class="form-range ranger-input" min="@QuestionConstants.MinimumPointsValue" max="@QuestionConstants.MaximumPointsValue" step="1" value="1">
             </div>
 
 

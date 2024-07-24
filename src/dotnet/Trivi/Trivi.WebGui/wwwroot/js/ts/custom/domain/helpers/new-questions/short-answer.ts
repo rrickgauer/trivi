@@ -14,6 +14,7 @@ export class NewShortAnswer extends NewQuestion<PutShortAnswerApiRequest>
             collectionId: this._collectionId,
             correctAnswer: "None",
             prompt: this._defaultPrompt,
+            points: this._points,
         };
 
         return result;

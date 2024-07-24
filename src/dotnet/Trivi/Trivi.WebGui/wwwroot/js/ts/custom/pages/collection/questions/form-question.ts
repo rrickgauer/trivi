@@ -4,6 +4,7 @@ import { IController } from "../../../domain/contracts/icontroller";
 import { DeleteQuestionButtonClickedEvent, QuestionUpdatedEvent } from "../../../domain/events/events";
 import { Selector } from "../../../domain/helpers/element-selector/selector";
 import { InputFeedbackText } from "../../../domain/helpers/input-feedback";
+import { Ranger } from "../../../domain/helpers/ranger/ranger";
 import { SpinnerButton } from "../../../domain/helpers/spinner-button";
 import { ErrorMessage, ServiceResponse } from "../../../domain/models/api-response";
 import { PutQuestionApiRequest, QuestionApiResponse } from "../../../domain/models/question-models";
@@ -32,7 +33,6 @@ export abstract class QuestionForm<TQuestion extends QuestionApiResponse> implem
 {
 
     protected abstract _currentQuestion: TQuestion;
-    
     public abstract showQuestion(question: TQuestion): void;
     protected abstract sendPutRequest(): Promise<ServiceResponse<TQuestion> | null>;
 
@@ -46,7 +46,7 @@ export abstract class QuestionForm<TQuestion extends QuestionApiResponse> implem
     protected readonly _btnSubmit: SpinnerButton;
     protected readonly _fieldSet: HTMLFieldSetElement;
     protected readonly _btnDelete: SpinnerButton;
-
+    protected readonly _ranger: Ranger;
     protected readonly _questionService: QuestionsService;
 
 
@@ -90,6 +90,9 @@ export abstract class QuestionForm<TQuestion extends QuestionApiResponse> implem
         this._btnSubmit = new SpinnerButton(this._selector.querySelector<HTMLButtonElement>('.btn-submit'));
         this._fieldSet = this._selector.querySelector<HTMLFieldSetElement>('fieldset');
         this._btnDelete = new SpinnerButton(this._selector.querySelector<HTMLButtonElement>(elements.deleteBtnClass));
+
+
+        this._ranger = Ranger.initFromContainer(this._container);
 
         this._questionService = new QuestionsService();
 
@@ -238,6 +241,7 @@ export abstract class QuestionForm<TQuestion extends QuestionApiResponse> implem
         const result: PutQuestionApiRequest = {
             collectionId: this._collectionId,
             prompt: this._promptValue,
+            points: this._ranger.value,
         }
 
         return result as TRequest;

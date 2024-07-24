@@ -18,6 +18,7 @@ public class ShortAnswer : Question
             CollectionId = requestForm.CollectionId,
             CorrectAnswer = requestForm.CorrectAnswer,
             Prompt = requestForm.Prompt,
+            Points = requestForm.Points,
         };
     }
 }

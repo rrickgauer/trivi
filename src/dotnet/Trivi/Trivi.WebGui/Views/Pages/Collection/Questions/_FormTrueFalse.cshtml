@@ -16,8 +16,6 @@
     var answerRadioInputTrueId  = "form-question-tf-input-answer-true";
     var answerRadioInputFalseId = "form-question-tf-input-answer-false";
 
-    var pointsInputId = "form-question-tf-input-points";
-
 }
 
 
@@ -37,9 +35,9 @@
             </div>
 
 
-            <div class="form-spacing">
-                <label for="@pointsInputId" class="form-label">Points</label>
-                <input type="range" class="form-range" min="1" max="10" step="1" id="@pointsInputId" value="1">
+            <div class="form-spacing ranger" data-ranger-prefix="Points: ">
+                <div class="ranger-display"></div>
+                <input type="range" class="form-range ranger-input" min="1" max="10" step="1" value="1">
             </div>
 
 

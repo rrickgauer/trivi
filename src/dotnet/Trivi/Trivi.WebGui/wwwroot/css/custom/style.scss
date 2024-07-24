@@ -78,3 +78,22 @@ body {
 .hover-pointer:hover {
     cursor: pointer; 
 }
+
+
+//.ranger {
+//    .ranger-inputs {
+//        display: flex;
+//        align-items: center;
+//    }
+
+//    .ranger-value {
+//        margin-left: 12px;
+//    }
+//}
+
+.ranger {
+    .ranger-display {
+        display: flex;
+        justify-content: center;
+    }
+}

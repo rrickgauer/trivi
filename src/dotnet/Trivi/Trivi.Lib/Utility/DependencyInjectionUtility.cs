@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Configurations;
+using Trivi.Lib.RouteConstraints;
 
 namespace Trivi.Lib.Utility;
 
-public class DependencyInjectionUtility
+public static class DependencyInjectionUtility
 {
 
     public static void InjectConfigs(IServiceCollection services, bool isProduction)
@@ -20,7 +23,7 @@ public class DependencyInjectionUtility
         }
     }
 
-
+    #region - Auto Inject -
 
     public static void InjectServicesIntoAssembly(IServiceCollection services, InjectionProject projectType, Assembly assembly)
     {
@@ -75,5 +78,34 @@ public class DependencyInjectionUtility
             _ => throw new NotImplementedException(),
         };
     }
+
+    #endregion
+
+
+    public static void ConfigureRouteConstraints(this RouteOptions options)
+    {
+        var assembly = Assembly.GetAssembly(typeof(QuestionIdRouteConstraint));
+
+        if (assembly == null)
+        {
+            return;
+        }
+
+        var customConstraints = assembly.GetTypes().Where(t => t.IsClass && t.GetCustomAttribute<ConstraintKeyAttribute>() != null);
+
+        foreach ( var constraintType in customConstraints)
+        {
+            string key = constraintType.GetCustomAttribute<ConstraintKeyAttribute>()!.Key;
+            options.ConstraintMap.Add(key, constraintType);
+        }
+    }
+
+
+    public static bool IsTypeOf<T>(this Type type)
+    {
+        return typeof(T).IsAssignableFrom(type);
+    }
+
+
 
 }

@@ -4,7 +4,6 @@ using Trivi.Lib.Domain.Configurations;
 using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Filters;
 using Trivi.Lib.JsonConverters;
-using Trivi.Lib.RouteConstraints;
 using Trivi.Lib.Services.Contracts;
 using Trivi.Lib.Utility;
 
@@ -18,6 +17,8 @@ isProduction = false;
 // DO THIS SO YOU DON'T HAVE TO LOG IN EVERY TIME
 SessionManager.TESTING_MASTER_USER_ID = new(@"00000000-0000-0000-0000-000000000000");
 
+// testing game id = mwN5mcux
+
 #endif
 
 
@@ -27,11 +28,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<RouteOptions>(options =>
 {
-    options.ConstraintMap.Add("questionId", typeof(QuestionIdRouteConstraint));
-    options.ConstraintMap.Add("shortAnswerQuestion", typeof(ShortAnswerConstraint));
-    options.ConstraintMap.Add("multipleChoiceQuestion", typeof(MultipleChoiceConstraint));
-    options.ConstraintMap.Add("trueFalseQuestion", typeof(TrueFalseRouteConstraint));
-    options.ConstraintMap.Add("answerId", typeof(AnswerIdConstraint));
+    options.ConfigureRouteConstraints();
 });
 
 #region - Setup web application builder -

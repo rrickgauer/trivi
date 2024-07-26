@@ -20,12 +20,35 @@ public enum ErrorCode : ulong
 
     #endregion
 
-
     #region - Answers -
 
     [ErrorCodeGroup(ErrorCodeGroup.Answers)]
     AnswersInvalidAnswerIdFormat = 300,
 
+    #endregion
+
+    #region - Games -
+
+    [ErrorCodeGroup(ErrorCodeGroup.Games)]
+    GamesInvalidQuestionTimeLimit = 400,
 
     #endregion
+
+
+    #region - Join Game -
+
+    [ErrorCodeGroup(ErrorCodeGroup.JoinGame)]
+    JoinGameNicknameAlreadyTaken = 500,
+    
+    [ErrorCodeGroup(ErrorCodeGroup.JoinGame)]
+    JoinGameNotFound = 501,
+    
+    [ErrorCodeGroup(ErrorCodeGroup.JoinGame)]
+    JoinGameAlreadyFinished = 502,
+
+    [ErrorCodeGroup(ErrorCodeGroup.JoinGame)]
+    JoinGameInvalidNicknameLength = 503,
+
+    #endregion
+
 }

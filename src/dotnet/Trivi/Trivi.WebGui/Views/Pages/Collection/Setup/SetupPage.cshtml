@@ -1,0 +1,86 @@
+﻿@using Trivi.Lib.Domain.Constants
+
+@functions {
+
+    public void GetTimeLimitRadio(string radioInputName, QuestionTimeLimitOption option, string inputId, bool isChecked)
+    {
+        var checkedText = isChecked ? "checked" : string.Empty;
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="@radioInputName" id="@inputId" value="@option" @checkedText disabled>
+            <label class="form-check-label" for="@inputId">@option.GetRadioLabel()</label>
+        </div>
+    }
+}
+
+@{
+    var containerClass = "form-setup-game-container";
+    var alertsContainerClass = "alerts-container";
+    var formClass = "form-setup-game";
+    var randomizeQuestionsInputId = "form-setup-game-input-randomize";
+    var timeLimitInputName = "form-setup-game-input-time-limit";
+    var timeLimitInputNoneId = "form-setup-game-input-time-limit-none";
+    var timeLimitInput15Id = "form-setup-game-input-time-limit-15";
+    var timeLimitInput30Id = "form-setup-game-input-time-limit-30";
+    var timeLimitInput60Id = "form-setup-game-input-time-limit-60";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>Landing Page</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+    <div class="container my-5">
+        <h1>Game setup</h1>
+    </div>
+
+    <div class="container @containerClass">
+
+        <div class="@alertsContainerClass"></div>
+
+        <form class="@formClass">
+            
+            <fieldset>
+                <div class="form-spacing">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="@randomizeQuestionsInputId" checked>
+                        <label class="form-check-label" for="@randomizeQuestionsInputId">Randomize questions</label>
+                    </div>
+                </div>
+
+
+                <div class="form-spacing">
+                    <div>Question time limit</div>
+
+                    <div class="radio-group" data-radio-group-name="@timeLimitInputName">
+
+                        @{
+                            GetTimeLimitRadio(timeLimitInputName, QuestionTimeLimitOption.None, timeLimitInputNoneId, true);
+                            GetTimeLimitRadio(timeLimitInputName, QuestionTimeLimitOption.Fifteen, timeLimitInput15Id, false);
+                            GetTimeLimitRadio(timeLimitInputName, QuestionTimeLimitOption.Thirty, timeLimitInput30Id, false);
+                            GetTimeLimitRadio(timeLimitInputName, QuestionTimeLimitOption.Sixty, timeLimitInput60Id, false);
+                        }
+
+                    </div>
+                </div>
+
+                <div class="form-spacing">
+                    <button type="submit" class="btn btn-success btn-submit">Start Game</button>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+
+
+
+
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/collection-setup.bundle.js"></script>
+</body>
+</html>

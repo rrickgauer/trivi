@@ -1,0 +1,60 @@
+﻿@using Trivi.Lib.Domain.Constants
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>Join Game</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+    <div class="container my-5">
+        <h1>Join Game</h1>
+    </div>
+
+
+    @{
+        var containerClass = "form-join-game-container";
+        var formClass = "form-join-game";
+        var gameIdInputId = "form-join-game-input-game-id";
+        var nicknameInputId = "form-join-game-input-nickname";
+
+    }
+
+    <div class="container @containerClass my-5">
+
+        <div class="alerts-container"></div>
+
+        <form class="@formClass">
+            <fieldset>
+                <div class="form-spacing input-feedback">
+                    <label for="@gameIdInputId" class="form-label">Game ID</label>
+                    <input type="text" class="form-control form-control-lg input-feedback-input" id="@gameIdInputId" required maxlength="@NanoIdConstants.GameIdLength">
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-spacing input-feedback">
+                    <label for="@nicknameInputId" class="form-label">Nickname</label>
+                    <input type="text" class="form-control form-control-lg input-feedback-input" id="@nicknameInputId" required maxlength="@PlayerConstants.MaxNicknameLength" minlength="@PlayerConstants.MinNicknameLength">
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-spacing d-flex">
+                    <button type="submit" class="btn btn-lg btn-success btn-submit">Join game</button>
+                </div>
+            </fieldset>
+
+
+
+        </form>
+
+    </div>
+
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/games-join.bundle.js"></script>
+</body>
+</html>

@@ -28,7 +28,7 @@
     "Profile 1": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:7296/app/collections/0190b30f-1031-76ee-8919-7a4ed56a537f/questions",
+      "launchUrl": "https://localhost:7296/games",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

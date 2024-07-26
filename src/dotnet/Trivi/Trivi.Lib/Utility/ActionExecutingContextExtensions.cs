@@ -14,6 +14,7 @@ public static class ActionExecutingContextExtensions
     public static Guid GetCollectionIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<Guid>(context, RouteKeys.CollectionId);
     public static QuestionId GetQuestionIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<QuestionId>(context, RouteKeys.QuestionId);
     public static string GetAnswerIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<string>(context, RouteKeys.AnswerId);
+    public static string GetGameIdFromUrl(this ActionExecutingContext context) => GetRequestRouteValue<string>(context, RouteKeys.GameId);
 
 
     /// <summary>
@@ -34,6 +35,8 @@ public static class ActionExecutingContextExtensions
 
     public static QuestionForm GetQuestionForm(this ActionExecutingContext context) =>  GetForm<QuestionForm>(context);
     public static PutAnswerRequest GetPutAnswerRequest(this ActionExecutingContext context) => GetForm<PutAnswerRequest>(context);
+    public static NewGameForm GetNewGameForm(this ActionExecutingContext context) => GetForm<NewGameForm>(context);
+    public static JoinGameForm GetJoinGameForm(this ActionExecutingContext context) => GetForm<JoinGameForm>(context);
 
     public static T GetForm<T>(this ActionExecutingContext context)
     {

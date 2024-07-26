@@ -18,6 +18,10 @@ body {
 }
 
 
+// card bg shadow
+.my-shadow {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
+}
 
 
 
@@ -79,17 +83,6 @@ body {
     cursor: pointer; 
 }
 
-
-//.ranger {
-//    .ranger-inputs {
-//        display: flex;
-//        align-items: center;
-//    }
-
-//    .ranger-value {
-//        margin-left: 12px;
-//    }
-//}
 
 .ranger {
     .ranger-display {

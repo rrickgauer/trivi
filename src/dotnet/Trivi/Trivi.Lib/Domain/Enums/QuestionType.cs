@@ -24,9 +24,9 @@ public enum QuestionType : ushort
 public static class QuestionTypeExtensions
 {
 
-    public static string GetNewNanoId(this QuestionType questionType)
+    public static string GetNewQuestionId(this QuestionType questionType)
     {
-        return $"{questionType.GetPrefix()}_{NanoIdUtility.New()}";
+        return $"{questionType.GetPrefix()}_{NanoIdUtility.NewQuestionId()}";
     }
 
     public static string GetPrefix(this QuestionType questionType)

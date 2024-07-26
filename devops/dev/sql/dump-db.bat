@@ -18,7 +18,7 @@ mysqldump -u main -h 104.225.208.163 -p ^
 --order-by-primary ^
 --skip-quote-names ^
 --result-file "C:\xampp\htdocs\files\trivi\sql\ddl\.data.sql" ^
-Trivi_Dev Error_Message_Groups Error_Messages Question_Types
+Trivi_Dev Error_Message_Groups Error_Messages Question_Types Game_Status
 
 
 @echo off

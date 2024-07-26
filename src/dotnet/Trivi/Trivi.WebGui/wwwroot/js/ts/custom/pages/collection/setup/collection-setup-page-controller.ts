@@ -33,7 +33,7 @@ export class CollectionSetupPageController implements IController
 
     private onGameCreatedEvent(message: GameCreatedData)
     {
-        const adminUrl = `/games/${message.game.id}/admin`;
+        const adminUrl = `/games/admin/${message.game.id}`;
         window.location.href = adminUrl;
     }
 }

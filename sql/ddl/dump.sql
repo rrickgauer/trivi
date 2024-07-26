@@ -99,6 +99,45 @@ CREATE TABLE Error_Messages (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `Game_Question_Status`
+--
+
+DROP TABLE IF EXISTS Game_Question_Status;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE Game_Question_Status (
+  id smallint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY id (id)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Game_Questions`
+--
+
+DROP TABLE IF EXISTS Game_Questions;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE Game_Questions (
+  internal_id int unsigned NOT NULL AUTO_INCREMENT /*!80023 INVISIBLE */,
+  question_id varchar(36) NOT NULL,
+  game_id varchar(36) NOT NULL,
+  game_question_status_id smallint unsigned NOT NULL DEFAULT '1',
+  created_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (internal_id),
+  UNIQUE KEY internal_id (internal_id),
+  UNIQUE KEY question_id (question_id,game_id),
+  KEY game_id (game_id),
+  KEY game_question_status_id (game_question_status_id),
+  CONSTRAINT Game_Questions_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT Game_Questions_ibfk_2 FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT Game_Questions_ibfk_3 FOREIGN KEY (game_question_status_id) REFERENCES Game_Question_Status (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `Game_Status`
 --
 
@@ -136,7 +175,7 @@ CREATE TABLE Games (
   KEY game_status_id (game_status_id),
   CONSTRAINT Games_ibfk_1 FOREIGN KEY (collection_id) REFERENCES Collections (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Games_ibfk_2 FOREIGN KEY (game_status_id) REFERENCES Game_Status (id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +196,7 @@ CREATE TABLE Players (
   UNIQUE KEY id (id),
   KEY game_id (game_id),
   CONSTRAINT Players_ibfk_1 FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,6 +364,27 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `View_Game_Questions`
+--
+
+DROP TABLE IF EXISTS View_Game_Questions;
+/*!50001 DROP VIEW IF EXISTS View_Game_Questions*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `View_Game_Questions` AS SELECT 
+ 1 AS question_id,
+ 1 AS question_collection_id,
+ 1 AS question_question_type_id,
+ 1 AS question_prompt,
+ 1 AS question_points,
+ 1 AS question_created_on,
+ 1 AS collection_user_id,
+ 1 AS game_question_game_id,
+ 1 AS game_question_status_id,
+ 1 AS game_status_id*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `View_Games`
 --
 
@@ -457,6 +517,96 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'Trivi_Dev'
 --
+/*!50003 DROP PROCEDURE IF EXISTS Copy_Game_Questions */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=main@`%` PROCEDURE Copy_Game_Questions(
+    IN  in_game_id VARCHAR(36)
+)
+BEGIN
+    DECLARE game_collection_id char(36);
+    DECLARE game_status smallint unsigned;
+    DECLARE game_randomize_questions bool;
+    
+    -- fetch the game data
+    SELECT 
+        g.collection_id, g.game_status_id, g.randomize_questions
+    INTO 
+        game_collection_id, game_status, game_randomize_questions
+    FROM 
+        Games g
+    WHERE 
+        g.id = in_game_id 
+    LIMIT 
+        1;
+    
+    -- can't start a game that is not open
+    IF game_status != 1 then
+        call Throw_Error_Code(401);
+    end if;
+    
+    -- copy over the collection questions
+    INSERT INTO Game_Questions (question_id, game_id, game_question_status_id)
+    (
+        SELECT
+            q.id,
+            in_game_id,
+            1
+        FROM
+            Questions q
+        WHERE
+            q.collection_id = game_collection_id
+        ORDER BY
+            IF(game_randomize_questions, rand(), internal_id)   -- if game has elected to randomize questions, order them by radom
+    );
+    
+    -- return the questions
+    SELECT
+        q.*
+    FROM
+        View_Game_Questions q
+    WHERE
+        q.game_question_game_id = in_game_id;
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS Throw_Error_Code */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=main@`%` PROCEDURE Throw_Error_Code(
+    IN  error_message_id int unsigned
+)
+BEGIN
+    declare error_string text;
+    
+    set error_string = convert(error_message_id, char);
+    
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = error_string;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Current Database: Trivi_Dev
@@ -514,6 +664,24 @@ USE Trivi_Dev;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
 /*!50001 VIEW View_Error_Messages AS select e.id AS error_id,g.`name` AS group_name,e.group_id AS error_group_id,e.message AS error_message from (Error_Messages e left join Error_Message_Groups g on((g.id = e.group_id))) order by e.id */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `View_Game_Questions`
+--
+
+/*!50001 DROP VIEW IF EXISTS View_Game_Questions*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW View_Game_Questions AS select q.question_id AS question_id,q.question_collection_id AS question_collection_id,q.question_question_type_id AS question_question_type_id,q.question_prompt AS question_prompt,q.question_points AS question_points,q.question_created_on AS question_created_on,q.collection_user_id AS collection_user_id,gq.game_id AS game_question_game_id,gq.game_question_status_id AS game_question_status_id,g.game_status_id AS game_status_id from ((Game_Questions gq join View_Questions q on((q.question_id = gq.question_id))) join Games g on((g.id = gq.game_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -653,7 +821,7 @@ USE Trivi_Dev;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-26 13:10:12
+-- Dump completed on 2024-07-30 14:07:58
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
@@ -689,7 +857,7 @@ UNLOCK TABLES;
 
 LOCK TABLES Error_Messages WRITE;
 /*!40000 ALTER TABLE Error_Messages DISABLE KEYS */;
-REPLACE INTO Error_Messages VALUES (200,2,'Invalid email or password.'),(201,2,'The email you have provided is already associated with an account.'),(202,2,'The passwords do not match.'),(203,2,'Please lengthen the password to 8 or more characters.'),(300,3,'Invalid ID format'),(400,4,'Question time limit must be between 15-60 or null.'),(500,5,'Nickname is already taken.'),(501,5,'Could not find a game with matching ID.'),(502,5,'Cannot join a game that has already finished.'),(503,5,'Nickname length must be between 3-30 characters.');
+REPLACE INTO Error_Messages VALUES (200,2,'Invalid email or password.'),(201,2,'The email you have provided is already associated with an account.'),(202,2,'The passwords do not match.'),(203,2,'Please lengthen the password to 8 or more characters.'),(300,3,'Invalid ID format'),(400,4,'Question time limit must be between 15-60 or null.'),(401,4,'Cannot start a game that is not open.'),(500,5,'Nickname is already taken.'),(501,5,'Could not find a game with matching ID.'),(502,5,'Cannot join a game that has already finished.'),(503,5,'Nickname length must be between 3-30 characters.');
 /*!40000 ALTER TABLE Error_Messages ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -714,6 +882,17 @@ LOCK TABLES Game_Status WRITE;
 REPLACE INTO Game_Status VALUES (1,'Open'),(2,'Running'),(3,'Completed'),(4,'Disconnected');
 /*!40000 ALTER TABLE Game_Status ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping data for table `Game_Question_Status`
+--
+-- ORDER BY:  id
+
+LOCK TABLES Game_Question_Status WRITE;
+/*!40000 ALTER TABLE Game_Question_Status DISABLE KEYS */;
+REPLACE INTO Game_Question_Status VALUES (1,'Pending'),(2,'Active'),(3,'Closed');
+/*!40000 ALTER TABLE Game_Question_Status ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -724,4 +903,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-26 13:10:18
+-- Dump completed on 2024-07-30 14:08:04

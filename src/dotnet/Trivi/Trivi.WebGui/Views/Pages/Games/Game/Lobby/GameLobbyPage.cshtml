@@ -1,0 +1,27 @@
+﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.Lib.Domain.ViewModels.Gui
+@model GameLobbyViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>@Model.Game.Id Lobby</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+    <div class="container my-5">
+        <h1>Lobby for Game ID @Model.Game.Id</h1>
+    </div>
+
+    <div class="container my-5">
+        <h3>Player nickname: @Model.Player.Nickname</h3>
+    </div>
+
+
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/game-lobby.bundle.js"></script>
+</body>
+</html>

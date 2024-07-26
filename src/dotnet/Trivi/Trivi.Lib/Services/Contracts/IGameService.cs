@@ -9,4 +9,5 @@ public interface IGameService
     public Task<ServiceDataResponse<List<ViewGame>>> GetUserGamesAsync(Guid userId);
     public Task<ServiceDataResponse<ViewGame>> GetGameAsync(string gameId);
     public Task<ServiceDataResponse<ViewGame>> CreateGameAsync(Game game);
+    public Task<ServiceDataResponse<ViewGame>> StartGameAsync(string gameId);
 }

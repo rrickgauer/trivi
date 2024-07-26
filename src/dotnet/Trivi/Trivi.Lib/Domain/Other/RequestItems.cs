@@ -35,11 +35,16 @@ public class RequestItems
         set => SetItem(RequestItemKey.Answer, value);
     }
 
-
     public ViewGame Game
     {
         get => GetItem<ViewGame>(RequestItemKey.Game);
         set => SetItem(RequestItemKey.Game, value);
+    }
+
+    public ViewPlayer Player
+    {
+        get => GetItem<ViewPlayer>(RequestItemKey.Player);
+        set => SetItem(RequestItemKey.Player, value);
     }
 
 

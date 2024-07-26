@@ -7,8 +7,8 @@ public interface IGameRepository
 {
     public Task<DataTable> SelectUserGamesAsync(Guid userId);
     public Task<DataRow?> SelectGameAsync(string gameId);   
-
     public Task<int> InsertGameAsync(Game game);
+    public Task<int> UpdateGameStatusAsync(string gameId, GameStatus status);
 }
 
 

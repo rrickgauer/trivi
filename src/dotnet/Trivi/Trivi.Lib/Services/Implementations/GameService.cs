@@ -10,10 +10,11 @@ using Trivi.Lib.Services.Contracts;
 namespace Trivi.Lib.Services.Implementations;
 
 [AutoInject<IGameService>(AutoInjectionType.Scoped, InjectionProject.Always)]
-public class GameService(IGameRepository gameRepository, ITableMapperService tableMapperService) : IGameService
+public class GameService(IGameRepository gameRepository, ITableMapperService tableMapperService, IGameQuestionService gameQuestionService) : IGameService
 {
     private readonly IGameRepository _gameRepository = gameRepository;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
+    private readonly IGameQuestionService _gameQuestionService = gameQuestionService;
 
     public async Task<ServiceDataResponse<List<ViewGame>>> GetUserGamesAsync(Guid userId)
     {
@@ -63,7 +64,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         {
             await _gameRepository.InsertGameAsync(game);
         }
-        catch(RepositoryException ex)
+        catch (RepositoryException ex)
         {
             return ex;
         }
@@ -84,5 +85,41 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         }
 
         return result;
+    }
+
+    public async Task<ServiceDataResponse<ViewGame>> StartGameAsync(string gameId)
+    {
+        try
+        {
+            await _gameRepository.UpdateGameStatusAsync(gameId, GameStatus.Running);
+        }
+        catch (RepositoryException ex)
+        {
+            return ex;
+        }
+
+
+        var getQuestions = await _gameQuestionService.CreateGameQuestionsAsync(gameId);
+
+        if (!getQuestions.Successful)
+        {
+            return new(getQuestions.Errors);
+        }
+
+        var questions = getQuestions.Data?.ToList() ?? new();
+
+        var getGame = await GetGameAsync(gameId);
+
+        if (!getGame.Successful)
+        {
+            return getGame;
+        }
+
+        if (getGame.Data is not null)
+        {
+            getGame.Data.Questions = questions;
+        }
+
+        return getGame;
     }
 }

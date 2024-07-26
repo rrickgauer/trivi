@@ -16,8 +16,11 @@ public class GuiPages
     public static string CollectionQuestions => Build("Collection/Questions/CollectionQuestionsPage");
     public static string CollectionSetup => Build("Collection/Setup/SetupPage");
 
-
     public static string GameJoin => Build("Games/Join/JoinGamePage");
+
+    public static string GameLobby => Build("Games/Game/Lobby/GameLobbyPage");
+
+    public static string AdminLobby => Build("Games/Admin/Lobby/AdminLobbyPage");
 
     private static string Build(string path)
     {

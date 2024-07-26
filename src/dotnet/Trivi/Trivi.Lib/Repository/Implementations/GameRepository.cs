@@ -45,6 +45,16 @@ public class GameRepository(DatabaseConnection connection) : IGameRepository
 
         return await _connection.ModifyAsync(command);
     }
+
+    public async Task<int> UpdateGameStatusAsync(string gameId, GameStatus status)
+    {
+        MySqlCommand command = new(GameRepositoryCommands.UpdateStatus);
+
+        command.Parameters.AddWithValue("@game_id", gameId);
+        command.Parameters.AddWithValue("@status_id", (ushort)status);
+
+        return await _connection.ModifyAsync(command);
+    }
 }
 
 

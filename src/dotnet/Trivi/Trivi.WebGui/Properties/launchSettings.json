@@ -28,7 +28,7 @@
     "Profile 1": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:7296/games",
+      "launchUrl": "https://localhost:7296/games/admin/mwN5mcux/lobby",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

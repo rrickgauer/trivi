@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@microsoft/signalr": "^8.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/bootstrap": "^5.2.10",

@@ -32,6 +32,9 @@ public enum ErrorCode : ulong
     [ErrorCodeGroup(ErrorCodeGroup.Games)]
     GamesInvalidQuestionTimeLimit = 400,
 
+    [ErrorCodeGroup(ErrorCodeGroup.Games)]
+    GamesStartNonOpenGame = 401,
+
     #endregion
 
 

@@ -6,4 +6,5 @@ public enum RequestItemKey
     Question,
     Answer,
     Game,
+    Player,
 }

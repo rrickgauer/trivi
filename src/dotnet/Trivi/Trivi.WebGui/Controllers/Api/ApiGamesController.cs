@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Trivi.Lib.Domain.Forms;
 using Trivi.Lib.Domain.Models;
+using Trivi.Lib.Domain.TableViews;
 using Trivi.Lib.Filters;
 using Trivi.Lib.Services.Contracts;
 using Trivi.WebGui.Controllers.Contracts;
@@ -11,11 +12,12 @@ namespace Trivi.WebGui.Controllers.Api;
 [ApiController]
 [Route("api/games")]
 [ServiceFilter<InternalApiAuthFilter>]
-public class ApiGamesController(IGameService gameService) : InternalApiController, IControllerName
+public class ApiGamesController(IGameService gameService, IGameHubService gameHubService) : InternalApiController, IControllerName
 {
     public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(ApiGamesController));
 
     private readonly IGameService _gameService = gameService;
+    private readonly IGameHubService _gameHubService = gameHubService;
 
     [HttpPost]
     [ActionName(nameof(PostGameAsync))]
@@ -49,5 +51,29 @@ public class ApiGamesController(IGameService gameService) : InternalApiControlle
 
         return Ok(getGame);
     }
+
+
+    [HttpPost("{gameId:gameId}/start")]
+    [ActionName(nameof(PatchGameAsync))]
+    [ServiceFilter<StartGameFilter>]
+    public async Task<IActionResult> PatchGameAsync([FromRoute] string gameId)
+    {
+        var updateGame = await _gameService.StartGameAsync(gameId);
+
+        if (!updateGame.Successful)
+        {
+            return BadRequest(updateGame);
+        }
+
+        if (updateGame.Data?.Questions.First() is ViewGameQuestion firstQuestion)
+        {
+            await _gameHubService.NavigateToAsync(gameId, firstQuestion.UriGui);
+        }
+
+        return Ok(updateGame);
+    }
+
+
+    
 
 }

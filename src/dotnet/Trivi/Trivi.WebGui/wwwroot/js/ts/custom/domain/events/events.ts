@@ -1,3 +1,5 @@
+import { AdminLobbyUpdatedData, NavigateToData } from "../../hubs/game/models";
+import { ApiResponse } from "../models/api-response";
 import { GameApiResponse } from "../models/game-models";
 import { PlayerApiResponse } from "../models/player-models";
 import { QuestionApiResponse } from "../models/question-models";
@@ -61,3 +63,9 @@ export type PlayerJoinedGameData = {
 }
 
 export const PlayerJoinedGameEvent = new CustomMessage<PlayerJoinedGameData>();
+
+
+
+
+export const AdminLobbyUpdatedEvent = new CustomMessage<AdminLobbyUpdatedData>();
+export const NavigateToEvent = new CustomMessage<ApiResponse<NavigateToData>>();

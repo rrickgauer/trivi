@@ -45,6 +45,15 @@ public class GameRepositoryCommands
         );";
 
 
+
+    public const string UpdateStatus = @"
+        UPDATE
+            Games
+        SET
+            game_status_id = @status_id
+        WHERE
+            id = @game_id;";
+
 }
 
 

@@ -3,6 +3,7 @@ using System.Reflection;
 using Trivi.Lib.Domain.Configurations;
 using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Filters;
+using Trivi.Lib.Hubs.Lobby;
 using Trivi.Lib.JsonConverters;
 using Trivi.Lib.Services.Contracts;
 using Trivi.Lib.Utility;
@@ -66,6 +67,12 @@ builder.Services.AddControllersWithViews(options =>
     options.JsonSerializerOptions.Converters.Add(new ServiceDataResponseFactory());
 });
 
+
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+    //options.KeepAliveInterval = TimeSpan.FromSeconds(60);
+});
 
 // session management
 builder.Services.AddDistributedMemoryCache();
@@ -132,6 +139,13 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(config.StaticWebFilesPath),
     ServeUnknownFileTypes = true,
+});
+
+
+
+app.MapHub<GameLobbyHub>("/hubs/game", options =>
+{
+    options.AllowStatefulReconnects = true;
 });
 
 

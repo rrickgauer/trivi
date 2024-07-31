@@ -39,4 +39,8 @@ public class ViewGame
     public Guid? UserId { get; set; }
 
 
+    [JsonIgnore]
+    public List<ViewGameQuestion> Questions { get; set; } = new();
 }
+
+

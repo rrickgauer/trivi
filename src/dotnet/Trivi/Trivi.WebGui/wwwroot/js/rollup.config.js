@@ -12,6 +12,7 @@ To get the typescript plugin going:
     npm install @types/bootstrap --save-dev 
     npm install nanoid@3 --save-dev
     npm install @rollup/plugin-node-resolve --save-dev 
+    npm install @microsoft/signalr --save-dev 
     
 
 ***************************************************************************/
@@ -31,9 +32,10 @@ class RollupConfig
         this.input = `${inputPrefix}${input}`;
 
 
-
-        //this.external = ['bootstrap', 'nanoid'];
-        this.external = ['bootstrap'];
+        this.external = [
+            'bootstrap',
+            //'signalr',
+        ];
 
         this.output = {
             // format: 'es',
@@ -46,7 +48,7 @@ class RollupConfig
 
             globals: {
                 bootstrap: 'bootstrap',
-                //nanoid: 'nanoid',
+                //signalr: 'signalr',
             },
         }
 
@@ -78,6 +80,10 @@ const configs = [
     new RollupConfig('collection/setup/index.ts', 'collection-setup'),
 
     new RollupConfig('games/join/index.ts', 'games-join'),
+    new RollupConfig('games/game/lobby/index.ts', 'game-lobby'),
+
+
+    new RollupConfig('games/admin/lobby/index.ts', 'admin-lobby'),
 
 ];
 

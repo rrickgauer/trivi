@@ -1,0 +1,32 @@
+﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.Lib.Domain.ViewModels.Gui
+@model AdminLobbyViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>@Model.Game.Id Admin Lobby</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+    <div class="container my-5">
+        <h1>Admin Lobby Page</h1>
+    </div>
+
+    <div class="container players-lobby-list-container my-5">
+
+        <div>Players in lobby</div>
+
+        <ul class="players-lobby-list"></ul>
+
+        <button type="button" class="btn btn-success btn-start-game">Start game</button>
+
+    </div>
+
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/admin-lobby.bundle.js"></script>
+</body>
+</html>

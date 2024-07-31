@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Trivi.Lib.Domain.RequestArgs;
 
-public class PlayGameRequest
+public class PlayGameGuiRequest
 {
     [BindRequired]
     [FromQuery(Name = "player")]

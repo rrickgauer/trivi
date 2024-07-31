@@ -18,7 +18,7 @@ export class ApiQuestions
 
     public async getAll(collectionId: Guid)
     {
-        const queryParms = UrlUtility.getQueryParmsString({
+        const queryParms = UrlUtility.toQueryParmsString({
             collection: collectionId,
         });
         

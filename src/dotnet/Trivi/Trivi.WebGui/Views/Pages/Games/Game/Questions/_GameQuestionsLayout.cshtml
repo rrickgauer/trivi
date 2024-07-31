@@ -1,0 +1,32 @@
+﻿@using Trivi.Lib.Domain.ViewModels.Gui
+@model GameQuestionLayoutModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    @RenderSection("Header", required: false)
+    <title>@Model.PageTitle</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+
+    <div class="container mt-3">
+        <h3>Game: @Model.Game.Id</h3>
+        <hr />
+    </div>
+
+
+
+    <div class="mt-3">
+        @RenderSection("Body", required: false)
+    </div>
+
+
+    <partial name="@PartialRazorFiles.Footer" />
+    @RenderSection("Footer", required: false)
+
+</body>
+
+</html>

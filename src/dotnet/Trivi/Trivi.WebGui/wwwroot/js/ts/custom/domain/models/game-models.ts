@@ -1,5 +1,5 @@
 import { GameStatus } from "../enums/game-status";
-import { DateTimeString, Guid } from "../types/aliases";
+import { DateTimeString, Guid, QuestionId } from "../types/aliases";
 
 
 
@@ -30,6 +30,10 @@ export type GameApiPatchRequest = {
 export type GamePlayUrlParms = {
     gameId: string;
     playerId: Guid;
+}
+
+export type GameQuestionUrlParms = GamePlayUrlParms & {
+    questionId: QuestionId;
 }
 
 

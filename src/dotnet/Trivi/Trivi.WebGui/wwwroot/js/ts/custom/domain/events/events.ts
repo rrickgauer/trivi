@@ -3,6 +3,7 @@ import { ApiResponse } from "../models/api-response";
 import { GameApiResponse } from "../models/game-models";
 import { PlayerApiResponse } from "../models/player-models";
 import { QuestionApiResponse } from "../models/question-models";
+import { ResponseApiResponse } from "../models/question-response-models";
 import { QuestionId } from "../types/aliases";
 import { CustomEmptyMessage, CustomMessage } from "./custom-events";
 
@@ -69,3 +70,13 @@ export const PlayerJoinedGameEvent = new CustomMessage<PlayerJoinedGameData>();
 
 export const AdminLobbyUpdatedEvent = new CustomMessage<AdminLobbyUpdatedData>();
 export const NavigateToEvent = new CustomMessage<ApiResponse<NavigateToData>>();
+
+
+
+
+export type GameQuestionSubmittedData = {
+    response: ResponseApiResponse;
+}
+
+export const GameQuestionSubmittedEvent = new CustomMessage<GameQuestionSubmittedData>();
+

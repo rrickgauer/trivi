@@ -5,9 +5,16 @@ using Trivi.Lib.Domain.TableViews;
 using Trivi.Lib.Domain.ViewModels.Gui;
 using Trivi.Lib.Services.Contracts;
 using Trivi.Lib.VMServices.Contracts;
-using Trivi.Lib.VMServices.Parms;
 
 namespace Trivi.Lib.VMServices.Implementations;
+
+
+public class CollectionsPageVMParms
+{
+    public required Guid ClientId { get; set; }
+}
+
+
 
 [AutoInject(AutoInjectionType.Scoped, InjectionProject.WebGui)]
 public class CollectionsPageVMService(ICollectionService collectionService) : IAsyncVMService<CollectionsPageVMParms, CollectionsPageVM>

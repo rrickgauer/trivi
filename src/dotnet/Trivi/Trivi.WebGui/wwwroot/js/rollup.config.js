@@ -82,6 +82,7 @@ const configs = [
     new RollupConfig('games/join/index.ts', 'games-join'),
     new RollupConfig('games/game/lobby/index.ts', 'game-lobby'),
 
+    new RollupConfig('games/game/questions/short-answer/index.ts', 'game-question-short-answer'),
 
     new RollupConfig('games/admin/lobby/index.ts', 'admin-lobby'),
 

@@ -1,0 +1,51 @@
+﻿@using Trivi.Lib.Domain.ViewModels.Gui
+@model GameQuestionLayoutModel<ShortAnswerGameQuestionVM>
+
+@{
+    Layout = $"~/{GuiPages.GameQuestionLayout}";
+
+    string answerInputId = "form-game-answer-input-sa";
+    string containerClass = "form-game-answer-container";
+    string formClass = "form-game-answer";
+    string alertsContainerClass = "alerts-container";
+}
+
+
+@section Body {
+
+    <div class="container mb-3">
+        <div class="lead">@Model.PageModel.Question.Prompt</div>
+    </div>
+
+    <div class="container @containerClass">
+
+        <form class="@formClass">
+            <div class="@alertsContainerClass"></div>
+
+            <fieldset>
+
+                <div class="input-feedback form-spacing-sm">
+                    <label for="@answerInputId">Answer</label>
+                    <input type="text" class="form-control form-control-lg input-feedback-input" id="@answerInputId" maxlength="@ResponseConstants.MaxAnswerLength" required />
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-spacing-sm">
+                    <button type="submit" class="btn btn-lg btn-success btn-submit" disabled>Submit answer</button>
+                </div>
+
+            </fieldset>
+
+        </form>
+
+
+    </div>
+    
+}
+
+
+
+@section Footer {
+    <script src="~/js/dist/game-question-short-answer.bundle.js"></script>
+}

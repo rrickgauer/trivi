@@ -20,8 +20,17 @@ export class UrlUtility
         return pathValues[index];
     }
 
+    public static replacePath(newPath: string, url?: string | URL): URL
+    {
+        const result = new URL(url ?? window.location.href);
 
-    public static getQueryParmsString(data: object): string
+        result.pathname = newPath;
+
+        return result;
+    }
+
+
+    public static toQueryParmsString(data: object): string
     {
         const urlParms = new URLSearchParams();
 

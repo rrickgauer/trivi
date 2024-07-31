@@ -134,7 +134,7 @@ CREATE TABLE Game_Questions (
   CONSTRAINT Game_Questions_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Game_Questions_ibfk_2 FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Game_Questions_ibfk_3 FOREIGN KEY (game_question_status_id) REFERENCES Game_Question_Status (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +175,7 @@ CREATE TABLE Games (
   KEY game_status_id (game_status_id),
   CONSTRAINT Games_ibfk_1 FOREIGN KEY (collection_id) REFERENCES Collections (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Games_ibfk_2 FOREIGN KEY (game_status_id) REFERENCES Game_Status (id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,7 +196,7 @@ CREATE TABLE Players (
   UNIQUE KEY id (id),
   KEY game_id (game_id),
   CONSTRAINT Players_ibfk_1 FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,6 +293,47 @@ CREATE TABLE Questions_TF (
   UNIQUE KEY id (id),
   CONSTRAINT Questions_TF_ibfk_1 FOREIGN KEY (id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Responses`
+--
+
+DROP TABLE IF EXISTS Responses;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE Responses (
+  internal_id int unsigned NOT NULL AUTO_INCREMENT /*!80023 INVISIBLE */,
+  id char(36) NOT NULL,
+  question_id varchar(36) NOT NULL,
+  player_id char(36) NOT NULL,
+  created_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (internal_id),
+  UNIQUE KEY internal_id (internal_id),
+  UNIQUE KEY id (id),
+  UNIQUE KEY question_id (question_id,player_id),
+  KEY player_id (player_id),
+  CONSTRAINT Responses_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT Responses_ibfk_2 FOREIGN KEY (player_id) REFERENCES Players (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Responses_SA`
+--
+
+DROP TABLE IF EXISTS Responses_SA;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE Responses_SA (
+  internal_id int unsigned NOT NULL AUTO_INCREMENT /*!80023 INVISIBLE */,
+  id char(36) NOT NULL,
+  answer_given varchar(40) NOT NULL,
+  PRIMARY KEY (internal_id),
+  UNIQUE KEY internal_id (internal_id),
+  UNIQUE KEY id (id),
+  CONSTRAINT Responses_SA_ibfk_1 FOREIGN KEY (id) REFERENCES Responses (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,6 +537,52 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `View_Responses`
+--
+
+DROP TABLE IF EXISTS View_Responses;
+/*!50001 DROP VIEW IF EXISTS View_Responses*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `View_Responses` AS SELECT 
+ 1 AS response_id,
+ 1 AS response_created_on,
+ 1 AS game_id,
+ 1 AS question_id,
+ 1 AS question_type_id,
+ 1 AS question_prompt,
+ 1 AS question_points,
+ 1 AS player_id,
+ 1 AS player_nickname,
+ 1 AS collection_id,
+ 1 AS collection_user_id*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `View_Responses_SA`
+--
+
+DROP TABLE IF EXISTS View_Responses_SA;
+/*!50001 DROP VIEW IF EXISTS View_Responses_SA*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `View_Responses_SA` AS SELECT 
+ 1 AS answer_given,
+ 1 AS correct_answer,
+ 1 AS response_id,
+ 1 AS response_created_on,
+ 1 AS game_id,
+ 1 AS question_id,
+ 1 AS question_type_id,
+ 1 AS question_prompt,
+ 1 AS question_points,
+ 1 AS player_id,
+ 1 AS player_nickname,
+ 1 AS collection_id,
+ 1 AS collection_user_id*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `View_Users`
 --
 
@@ -548,9 +635,12 @@ BEGIN
         1;
     
     -- can't start a game that is not open
-    IF game_status != 1 then
-        call Throw_Error_Code(401);
-    end if;
+    -- IF game_status != 1 then
+       -- call Throw_Error_Code(401);
+    -- end if;
+    
+    
+    delete from Game_Questions where game_id = in_game_id;
     
     -- copy over the collection questions
     INSERT INTO Game_Questions (question_id, game_id, game_question_status_id)
@@ -795,6 +885,42 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `View_Responses`
+--
+
+/*!50001 DROP VIEW IF EXISTS View_Responses*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW View_Responses AS select r.id AS response_id,r.created_on AS response_created_on,p.player_game_id AS game_id,r.question_id AS question_id,q.question_question_type_id AS question_type_id,q.question_prompt AS question_prompt,q.question_points AS question_points,r.player_id AS player_id,p.player_nickname AS player_nickname,q.question_collection_id AS collection_id,q.collection_user_id AS collection_user_id from ((Responses r left join View_Questions q on((q.question_id = r.question_id))) left join View_Players p on((p.player_id = r.player_id))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `View_Responses_SA`
+--
+
+/*!50001 DROP VIEW IF EXISTS View_Responses_SA*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW View_Responses_SA AS select r.answer_given AS answer_given,sa.correct_answer AS correct_answer,v.response_id AS response_id,v.response_created_on AS response_created_on,v.game_id AS game_id,v.question_id AS question_id,v.question_type_id AS question_type_id,v.question_prompt AS question_prompt,v.question_points AS question_points,v.player_id AS player_id,v.player_nickname AS player_nickname,v.collection_id AS collection_id,v.collection_user_id AS collection_user_id from ((Responses_SA r join View_Responses v on((v.response_id = r.id))) join Questions_SA sa on((sa.id = v.question_id))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `View_Users`
 --
 
@@ -821,7 +947,7 @@ USE Trivi_Dev;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-30 14:07:58
+-- Dump completed on 2024-08-06 20:27:43
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
@@ -903,4 +1029,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-30 14:08:04
+-- Dump completed on 2024-08-06 20:27:49

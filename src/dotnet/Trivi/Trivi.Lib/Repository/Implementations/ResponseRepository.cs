@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System.Data;
 using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Models;
@@ -16,7 +15,9 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
     private readonly DatabaseConnection _connection = connection;
     private readonly TransactionConnection _transactionConnection = transactionConnection;
 
-    public async Task<DataTable> SelectShortAnswerResponsesAsync(string gameId, QuestionId questionId)
+    #region - Select short answers -
+
+    public async Task<DataTable> SelectShortAnswersAsync(string gameId, QuestionId questionId)
     {
         MySqlCommand command = new(ResponseRepositoryCommands.SelectShortAnswers);
 
@@ -26,7 +27,7 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
         return await _connection.FetchAllAsync(command);
     }
 
-    public async Task<DataRow?> SelectShortAnswerResponseAsync(Guid responseId)
+    public async Task<DataRow?> SelectShortAnswerAsync(Guid responseId)
     {
         MySqlCommand command = new(ResponseRepositoryCommands.SelectShortAnswerById);
 
@@ -35,7 +36,7 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
         return await _connection.FetchAsync(command);
     }
 
-    public async Task<DataRow?> SelectShortAnswerResponseAsync(PlayerQuestionResponse responseData)
+    public async Task<DataRow?> SelectShortAnswerAsync(PlayerQuestionResponse responseData)
     {
         MySqlCommand command = new(ResponseRepositoryCommands.SelectShortAnswerByQuestionPlayer);
 
@@ -45,6 +46,33 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
         return await _connection.FetchAsync(command);
     }
 
+    #endregion
+
+
+    #region - Select true false -
+
+    public async Task<DataRow?> SelectTrueFalseAsync(Guid responseId)
+    {
+        MySqlCommand command = new(ResponseRepositoryCommands.SelectTrueFalseById);
+
+        command.Parameters.AddWithValue("@response_id", responseId);
+
+        return await _connection.FetchAsync(command);
+    }
+
+    public async Task<DataRow?> SelectTrueFalseAsync(PlayerQuestionResponse responseData)
+    {
+        MySqlCommand command = new(ResponseRepositoryCommands.SelectTrueFalseByQuestionPlayer);
+
+        command.Parameters.AddWithValue("@question_id", responseData.QuestionId.ToString());
+        command.Parameters.AddWithValue("@player_id", responseData.PlayerId);
+
+        return await _connection.FetchAsync(command);
+    }
+
+    #endregion
+
+    #region - Create response -
 
     public async Task<int> CreateResponseAsync(ResponseShortAnswer response)
     {
@@ -57,11 +85,35 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
 
 
         // insert the short answer response record
-        MySqlCommand command = new(ResponseRepositoryCommands.UpsertResponseShortAnswer);
+        MySqlCommand command = new(ResponseRepositoryCommands.UpsertShortAnswer);
         
         command.Parameters.AddWithValue("@id", response.Id);
         command.Parameters.AddWithValue("@answer_given", response.AnswerGiven);
         
+        await _transactionConnection.ExecuteInTransactionAsync(command);
+
+        // commit the changes
+        await _transactionConnection.CommitAsync();
+
+        return 1;
+    }
+
+    public async Task<int> CreateResponseAsync(ResponseTrueFalse response)
+    {
+        // start the transaction
+        await _transactionConnection.StartTransactionAsync();
+
+        // insert the base response record
+        var baseCommand = GetCreateBaseResponseCommand(response);
+        await _transactionConnection.ExecuteInTransactionAsync(baseCommand);
+
+
+        // insert the true false response record
+        MySqlCommand command = new(ResponseRepositoryCommands.UpsertTrueFalse);
+
+        command.Parameters.AddWithValue("@id", response.Id);
+        command.Parameters.AddWithValue("@answer_given", response.AnswerGiven);
+
         await _transactionConnection.ExecuteInTransactionAsync(command);
 
         // commit the changes
@@ -82,6 +134,7 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
         return command;
     }
 
+    #endregion
 
 }
 

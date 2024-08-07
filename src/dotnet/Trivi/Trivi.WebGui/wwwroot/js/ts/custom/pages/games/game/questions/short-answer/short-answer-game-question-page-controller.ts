@@ -1,10 +1,6 @@
-import { GameQuestionSubmittedData, GameQuestionSubmittedEvent } from "../../../../../domain/events/events";
 import { GameQuestionUrlParms } from "../../../../../domain/models/game-models";
-import { UrlUtility } from "../../../../../utility/url-utility";
 import { GameQuestionPageController } from "../game-question-page-controller";
 import { ShortAnswerResponseForm } from "./short-answer-response-form";
-
-
 
 export class ShortAnswerGameQuestionPageController extends GameQuestionPageController
 {
@@ -19,22 +15,14 @@ export class ShortAnswerGameQuestionPageController extends GameQuestionPageContr
 
     public control()
     {
+        super.control();
+
         this.addListeners();
         this._form.control();
     }
 
-    private addListeners()
+    protected addListeners()
     {
-        GameQuestionSubmittedEvent.addListener((message) =>
-        {
-            this.onGameQuestionSubmittedEvent(message.data!);
-        });
-    }
 
-    private onGameQuestionSubmittedEvent(message: GameQuestionSubmittedData)
-    {
-        const newPath = `/games/${message.response.gameId}`;
-        window.location.href = UrlUtility.replacePath(newPath).toString();
-        
     }
 }

@@ -26,3 +26,9 @@ public class ShortAnswerGameQuestionVM : GameQuestionVM<ViewShortAnswer>
 }
 
 
+public class TrueFalseGameQuestionVM : GameQuestionVM<ViewTrueFalse>
+{
+    public override required ViewTrueFalse Question { get; set; }
+}
+
+

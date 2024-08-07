@@ -34,4 +34,21 @@ public class ApiResponsesController(IResponseService responseService) : Internal
     }
 
 
+    [HttpPost("{questionId:trueFalseQuestion}")]
+    [ActionName(nameof(PostTrueFalseAsync))]
+    [ServiceFilter<PostResponseFilter>]
+    public async Task<IActionResult> PostTrueFalseAsync([FromRoute] QuestionId questionId, [FromBody] ResponseTrueFalseForm data)
+    {
+        ResponseTrueFalse response = data.ToResponse(questionId);
+
+        var createResponse = await _responseService.CreateTrueFalseResponseAsync(response);
+
+        if (!createResponse.Successful)
+        {
+            return BadRequest(createResponse);
+        }
+
+        return Ok(createResponse);
+    }
+
 }

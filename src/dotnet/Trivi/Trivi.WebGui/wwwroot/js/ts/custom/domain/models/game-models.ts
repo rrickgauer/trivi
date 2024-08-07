@@ -13,6 +13,7 @@ export type GameApiResponse = {
     createdOn: DateTimeString;
     startedOn: DateTimeString | null;
     userId: Guid;
+    activeQuestionId: QuestionId | null;
 }
 
 

@@ -3,8 +3,7 @@ import { DateTimeString, Guid, QuestionId } from "../types/aliases"
 
 
 
-export type ResponseApiResponse = {
-    answer: string;
+export type ResponseBaseApiResponse = {
     questionId: QuestionId;
     playerId: Guid;
     createdOn: DateTimeString;
@@ -14,6 +13,16 @@ export type ResponseApiResponse = {
     playerNickname: string;
     gameUrl: string;
     gameId: string;
+}
+
+
+export type ResponseShortAnswerApiResponse = ResponseBaseApiResponse & {
+    answer: string;
+}
+
+
+export type ResponseTrueFalseApiResponse = ResponseBaseApiResponse & {
+    answer: boolean;
 }
 
 

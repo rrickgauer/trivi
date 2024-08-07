@@ -1,4 +1,5 @@
 import { IController } from "../../../../domain/contracts/icontroller";
+import { GameQuestionSubmittedData, GameQuestionSubmittedEvent } from "../../../../domain/events/events";
 import { GameQuestionUrlParms } from "../../../../domain/models/game-models";
 import { UrlUtility } from "../../../../utility/url-utility";
 
@@ -6,8 +7,6 @@ import { UrlUtility } from "../../../../utility/url-utility";
 
 export abstract class GameQuestionPageController implements IController
 {
-    public abstract control(): void;
-
     protected readonly _gameId: string;
     protected readonly _playerId: string;
     protected readonly _questionId: string;
@@ -19,6 +18,29 @@ export abstract class GameQuestionPageController implements IController
         this._questionId = data.questionId;
     }
 
+
+    public control()
+    {
+        this.addListenersBase();
+    }
+
+    private addListenersBase()
+    {
+        GameQuestionSubmittedEvent.addListener((message) =>
+        {
+            this.onGameQuestionSubmittedEvent(message.data!);
+        });
+    }
+
+
+    private onGameQuestionSubmittedEvent(message: GameQuestionSubmittedData)
+    {
+        const newPath = `/games/${message.response.gameId}`;
+        window.location.href = UrlUtility.replacePath(newPath).toString();
+
+    }
+
+
     public static getGameQuestionUrlParms(): GameQuestionUrlParms
     {
         const result: GameQuestionUrlParms = {
@@ -29,4 +51,6 @@ export abstract class GameQuestionPageController implements IController
 
         return result;
     }
+
+
 }

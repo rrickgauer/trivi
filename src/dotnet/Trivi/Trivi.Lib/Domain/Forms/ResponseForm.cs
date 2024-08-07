@@ -34,5 +34,25 @@ public class ResponseShortAnswerForm : ResponseForm
 }
 
 
+public class ResponseTrueFalseForm : ResponseForm
+{
+    public override QuestionType QuestionType => QuestionType.TrueFalse;
+
+    [BindRequired]
+    public required bool Answer { get; set; }
+
+    public ResponseTrueFalse ToResponse(QuestionId questionId)
+    {
+        return new()
+        {
+            QuestionId = questionId,
+            PlayerId = PlayerId,
+            Id = GuidUtility.New(),
+            AnswerGiven = Answer,
+        };
+    }
+}
+
+
 
 

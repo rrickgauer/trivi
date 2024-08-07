@@ -4,7 +4,7 @@ using Trivi.Lib.Utility;
 
 namespace Trivi.Lib.Mapping.Tables;
 
-public class ViewResponseSAMapper : TableMapper<ViewResponseShortAnswer>
+public class ViewResponseShortAnswerMapper : TableMapper<ViewResponseShortAnswer>
 {
     public override ViewResponseShortAnswer ToModel(DataRow row)
     {

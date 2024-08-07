@@ -17,6 +17,7 @@ public class ViewGameMapper : TableMapper<ViewGame>
         result.StartedOn          = row.Field<DateTime?>(GetColumnName(nameof(result.StartedOn)));
         result.UserId             = row.Field<Guid?>(GetColumnName(nameof(result.UserId)));
         result.Status             = row.Field<GameStatus>(GetColumnName(nameof(result.Status)));
+        result.ActiveQuestionId   = row.Field<string?>(GetColumnName(nameof(result.ActiveQuestionId)));
 
         return result;
     }

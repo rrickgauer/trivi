@@ -38,6 +38,10 @@ public class ViewGame
     [SqlColumn("game_collection_user_id")]
     public Guid? UserId { get; set; }
 
+    [SqlColumn("active_question_id")]
+    public string? ActiveQuestionId { get; set; }
+
+
 
     [JsonIgnore]
     public List<ViewGameQuestion> Questions { get; set; } = new();

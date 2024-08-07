@@ -3,7 +3,7 @@ import { ApiResponse } from "../models/api-response";
 import { GameApiResponse } from "../models/game-models";
 import { PlayerApiResponse } from "../models/player-models";
 import { QuestionApiResponse } from "../models/question-models";
-import { ResponseApiResponse } from "../models/question-response-models";
+import { ResponseBaseApiResponse } from "../models/question-response-models";
 import { QuestionId } from "../types/aliases";
 import { CustomEmptyMessage, CustomMessage } from "./custom-events";
 
@@ -75,7 +75,7 @@ export const NavigateToEvent = new CustomMessage<ApiResponse<NavigateToData>>();
 
 
 export type GameQuestionSubmittedData = {
-    response: ResponseApiResponse;
+    response: ResponseBaseApiResponse;
 }
 
 export const GameQuestionSubmittedEvent = new CustomMessage<GameQuestionSubmittedData>();

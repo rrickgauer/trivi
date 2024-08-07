@@ -34,6 +34,35 @@ public class ResponseRepositoryCommands
             1;";
 
 
+
+
+
+    public const string SelectTrueFalseById = @"
+        SELECT
+            r.*
+        FROM
+            View_Responses_TF r
+        WHERE
+            r.response_id = @response_id
+        LIMIT 1;";
+
+
+    public const string SelectTrueFalseByQuestionPlayer = @"
+        SELECT
+            r.*
+        FROM
+            View_Responses_TF r
+        WHERE
+            r.question_id = @question_id
+            AND r.player_id = @player_id
+        LIMIT
+            1;";
+
+
+
+
+
+
     public const string InsertResponseBase = @"
         INSERT INTO
             Responses (id, question_id, player_id, created_on)
@@ -41,9 +70,18 @@ public class ResponseRepositoryCommands
             (@id, @question_id, @player_id, @created_on);";
 
 
-    public const string UpsertResponseShortAnswer = @"
+    public const string UpsertShortAnswer = @"
         INSERT INTO
             Responses_SA (id, answer_given)
+        VALUES
+            (@id, @answer_given) AS new_values 
+        ON DUPLICATE KEY UPDATE
+            answer_given = new_values.answer_given;";
+
+
+    public const string UpsertTrueFalse = @"
+        INSERT INTO
+            Responses_TF (id, answer_given)
         VALUES
             (@id, @answer_given) AS new_values 
         ON DUPLICATE KEY UPDATE

@@ -1,6 +1,5 @@
 ﻿using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Errors;
-using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.Responses;
 using Trivi.Lib.Domain.TableViews;
 using Trivi.Lib.Domain.ViewModels.Gui;
@@ -10,36 +9,30 @@ using Trivi.Lib.VMServices.Contracts;
 namespace Trivi.Lib.VMServices.Implementations;
 
 
-public class GameQuestionVMServiceParms
-{
-    public required QuestionId QuestionId { get; set; }
-    public required string GameId { get; set; }
-}
-
-
 [AutoInject(AutoInjectionType.Scoped, InjectionProject.WebGui)]
-public class ShortAnswerGameQuestionVMService(IGameService gameService, IQuestionService questionService) : IAsyncVMService<GameQuestionVMServiceParms, GameQuestionLayoutModel<ShortAnswerGameQuestionVM>>
+public class TrueFalseGameQuestionVMService(IGameService gameService, IQuestionService questionService) : IAsyncVMService<GameQuestionVMServiceParms, GameQuestionLayoutModel<TrueFalseGameQuestionVM>>
 {
     private readonly IGameService _gameService = gameService;
     private readonly IQuestionService _questionService = questionService;
 
-    public async Task<ServiceDataResponse<GameQuestionLayoutModel<ShortAnswerGameQuestionVM>>> GetViewModelAsync(GameQuestionVMServiceParms parms)
+    public async Task<ServiceDataResponse<GameQuestionLayoutModel<TrueFalseGameQuestionVM>>> GetViewModelAsync(GameQuestionVMServiceParms parms)
     {
         try
         {
             var question = await GetQuestionAsync(parms);
             var game = await GetGameAsync(parms);
 
-            ShortAnswerGameQuestionVM viewModel = new()
+            TrueFalseGameQuestionVM viewModel = new()
             {
                 Question = question,
             };
 
-            return new GameQuestionLayoutModel<ShortAnswerGameQuestionVM>(viewModel)
+            return new GameQuestionLayoutModel<TrueFalseGameQuestionVM>(viewModel)
             {
                 Game = game,
-                PageTitle = "Short answer",
+                PageTitle = "True false page title",
             };
+
         }
         catch(ServiceException ex)
         {
@@ -48,9 +41,9 @@ public class ShortAnswerGameQuestionVMService(IGameService gameService, IQuestio
     }
 
 
-    private async Task<ViewShortAnswer> GetQuestionAsync(GameQuestionVMServiceParms parms)
+    private async Task<ViewTrueFalse> GetQuestionAsync(GameQuestionVMServiceParms parms)
     {
-        var getQuestion = await _questionService.GetShortAnswerAsync(parms.QuestionId);
+        var getQuestion = await _questionService.GetTrueFalseAsync(parms.QuestionId);
 
         return getQuestion.GetData();
     }
@@ -58,7 +51,7 @@ public class ShortAnswerGameQuestionVMService(IGameService gameService, IQuestio
     private async Task<ViewGame> GetGameAsync(GameQuestionVMServiceParms parms)
     {
         var getGame = await _gameService.GetGameAsync(parms.GameId);
-                
+
         return getGame.GetData();
     }
 }

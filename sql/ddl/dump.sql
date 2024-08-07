@@ -315,7 +315,7 @@ CREATE TABLE Responses (
   KEY player_id (player_id),
   CONSTRAINT Responses_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Responses_ibfk_2 FOREIGN KEY (player_id) REFERENCES Players (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -334,6 +334,24 @@ CREATE TABLE Responses_SA (
   UNIQUE KEY id (id),
   CONSTRAINT Responses_SA_ibfk_1 FOREIGN KEY (id) REFERENCES Responses (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Responses_TF`
+--
+
+DROP TABLE IF EXISTS Responses_TF;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE Responses_TF (
+  internal_id int unsigned NOT NULL AUTO_INCREMENT,
+  id char(36) NOT NULL,
+  answer_given tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (internal_id),
+  UNIQUE KEY internal_id (internal_id),
+  UNIQUE KEY id (id),
+  CONSTRAINT Responses_TF_ibfk_1 FOREIGN KEY (id) REFERENCES Responses (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -441,7 +459,8 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS game_question_time_limit,
  1 AS game_created_on,
  1 AS game_started_on,
- 1 AS game_collection_user_id*/;
+ 1 AS game_collection_user_id,
+ 1 AS active_question_id*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -567,6 +586,30 @@ DROP TABLE IF EXISTS View_Responses_SA;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `View_Responses_SA` AS SELECT 
+ 1 AS answer_given,
+ 1 AS correct_answer,
+ 1 AS response_id,
+ 1 AS response_created_on,
+ 1 AS game_id,
+ 1 AS question_id,
+ 1 AS question_type_id,
+ 1 AS question_prompt,
+ 1 AS question_points,
+ 1 AS player_id,
+ 1 AS player_nickname,
+ 1 AS collection_id,
+ 1 AS collection_user_id*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `View_Responses_TF`
+--
+
+DROP TABLE IF EXISTS View_Responses_TF;
+/*!50001 DROP VIEW IF EXISTS View_Responses_TF*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `View_Responses_TF` AS SELECT 
  1 AS answer_given,
  1 AS correct_answer,
  1 AS response_id,
@@ -789,7 +832,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Games AS select g.id AS game_id,g.collection_id AS game_collection_id,g.game_status_id AS game_status_id,g.randomize_questions AS game_randomize_questions,g.question_time_limit AS game_question_time_limit,g.created_on AS game_created_on,g.started_on AS game_started_on,c.user_id AS game_collection_user_id from (Games g join Collections c on((c.id = g.collection_id))) */;
+/*!50001 VIEW View_Games AS select g.id AS game_id,g.collection_id AS game_collection_id,g.game_status_id AS game_status_id,g.randomize_questions AS game_randomize_questions,g.question_time_limit AS game_question_time_limit,g.created_on AS game_created_on,g.started_on AS game_started_on,c.user_id AS game_collection_user_id,(select q.question_id from Game_Questions q where ((q.game_id = g.id) and (q.game_question_status_id = 2)) limit 1) AS active_question_id from (Games g join Collections c on((c.id = g.collection_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -921,6 +964,24 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `View_Responses_TF`
+--
+
+/*!50001 DROP VIEW IF EXISTS View_Responses_TF*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW View_Responses_TF AS select r.answer_given AS answer_given,tf.correct_answer AS correct_answer,v.response_id AS response_id,v.response_created_on AS response_created_on,v.game_id AS game_id,v.question_id AS question_id,v.question_type_id AS question_type_id,v.question_prompt AS question_prompt,v.question_points AS question_points,v.player_id AS player_id,v.player_nickname AS player_nickname,v.collection_id AS collection_id,v.collection_user_id AS collection_user_id from ((Responses_TF r join View_Responses v on((v.response_id = r.id))) join Questions_TF tf on((tf.id = v.question_id))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `View_Users`
 --
 
@@ -947,7 +1008,7 @@ USE Trivi_Dev;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-06 20:27:43
+-- Dump completed on 2024-08-07 19:04:12
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
@@ -1029,4 +1090,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-06 20:27:49
+-- Dump completed on 2024-08-07 19:04:17

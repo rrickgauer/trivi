@@ -31,6 +31,13 @@ public class ServiceDataResponse<T> : ServiceResponse
         Data = other.Data;
     }
 
+    /// <summary>
+    /// Throws ServiceException if there are errors in response.
+    /// Also throws NotFoundHttpResponseException if data is null.
+    /// If none of that, it returns the data.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotFoundHttpResponseException"></exception>
     public T GetData()
     {
         ThrowIfError();

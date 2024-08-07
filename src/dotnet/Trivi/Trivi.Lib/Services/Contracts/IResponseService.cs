@@ -7,12 +7,18 @@ namespace Trivi.Lib.Services.Contracts;
 
 public interface IResponseService
 {
-    public Task<ServiceDataResponse<List<ViewResponseShortAnswer>>> GetShortAnswerResponsesAync(string gameId, QuestionId questionId);
-    public Task<ServiceDataResponse<ViewResponseShortAnswer>> GetShortAnswerResponseAsync(Guid responseId);
-    public Task<ServiceDataResponse<ViewResponseShortAnswer>> GetShortAnswerResponseAsync(PlayerQuestionResponse responseData);
+    public Task<ServiceDataResponse<List<ViewResponseShortAnswer>>> GetShortAnswersAsync(string gameId, QuestionId questionId);
+    
+    public Task<ServiceDataResponse<ViewResponseShortAnswer>> GetShortAnswerAsync(Guid responseId);
+    public Task<ServiceDataResponse<ViewResponseShortAnswer>> GetShortAnswerAsync(PlayerQuestionResponse responseData);
+
+    public Task<ServiceDataResponse<ViewResponseTrueFalse>> GetTrueFalseAsync(Guid responseId);
+    public Task<ServiceDataResponse<ViewResponseTrueFalse>> GetTrueFalseAsync(PlayerQuestionResponse responseData);
+
 
     public Task<ServiceDataResponse<ViewResponse>> GetResponseAsync(PlayerQuestionResponse responseData);
 
     
     public Task<ServiceDataResponse<ViewResponseShortAnswer>> CreateShortAnswerResponseAsync(ResponseShortAnswer response);
+    public Task<ServiceDataResponse<ViewResponseTrueFalse>> CreateTrueFalseResponseAsync(ResponseTrueFalse response);
 }

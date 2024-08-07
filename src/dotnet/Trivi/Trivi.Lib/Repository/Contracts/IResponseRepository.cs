@@ -6,14 +6,18 @@ namespace Trivi.Lib.Repository.Contracts;
 
 public interface IResponseRepository
 {
-    public Task<DataTable> SelectShortAnswerResponsesAsync(string gameId, QuestionId questionId);
+    public Task<DataTable> SelectShortAnswersAsync(string gameId, QuestionId questionId);
+    public Task<DataRow?> SelectShortAnswerAsync(Guid responseId);
+    public Task<DataRow?> SelectShortAnswerAsync(PlayerQuestionResponse responseData);
 
-    public Task<DataRow?> SelectShortAnswerResponseAsync(Guid responseId);
-    public Task<DataRow?> SelectShortAnswerResponseAsync(PlayerQuestionResponse responseData);
+    public Task<DataRow?> SelectTrueFalseAsync(Guid responseId);
+    public Task<DataRow?> SelectTrueFalseAsync(PlayerQuestionResponse responseData);
+
 
     public Task<int> CreateResponseAsync(ResponseShortAnswer response);
+    public Task<int> CreateResponseAsync(ResponseTrueFalse response);
 
-    
+
 }
 
 

@@ -12,15 +12,22 @@ namespace Trivi.WebGui.Controllers.Gui;
 [Controller]
 [Route("games/{gameId:gameId}")]
 [ServiceFilter<PlayGameFilter>]
-public class GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService) : GuiController, IControllerName
+public class GameController : GuiController, IControllerName
 {
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(GameController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<GameController>();
 
-    private readonly RequestItems _requestItems = requestItems;
+    private readonly RequestItems _requestItems;
+    private readonly ShortAnswerGameQuestionVMService _shortAnswerVMService;
+    private readonly IResponseService _responseService;
+    private readonly TrueFalseGameQuestionVMService _trueFalseGameQuestionVMService;
 
-    private readonly ShortAnswerGameQuestionVMService _shortAnswerVMService = shortAnswerVMService;
-
-    private readonly IResponseService _responseService = responseService;
+    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService)
+    {
+        _requestItems = requestItems;
+        _shortAnswerVMService = shortAnswerVMService;
+        _responseService = responseService;
+        _trueFalseGameQuestionVMService = trueFalseGameQuestionVMService;
+    }
 
     [HttpGet]
     [ActionName(nameof(GamePageAsync))]
@@ -30,9 +37,9 @@ public class GameController(RequestItems requestItems, ShortAnswerGameQuestionVM
 
         return game.Status switch
         {
-            GameStatus.Open    => RedirectToAction(nameof(LobbyPageAsync), gameRequest.GetRedirectRouteValues()),
+            GameStatus.Open => RedirectToAction(nameof(LobbyPageAsync), gameRequest.GetRedirectRouteValues()),
             GameStatus.Running => Ok("active question page"),
-            _                  => BadRequest("Game is closed"),
+            _ => BadRequest("Game is closed"),
         };
     }
 
@@ -65,6 +72,26 @@ public class GameController(RequestItems requestItems, ShortAnswerGameQuestionVM
         }
 
         return View(GuiPages.GameQuestionShortAnswer, getVM.Data);
+    }
+
+
+
+    [HttpGet("questions/{questionId:trueFalseQuestion}")]
+    [ActionName(nameof(TrueFalseGameQuestionPageAsync))]
+    public async Task<IActionResult> TrueFalseGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
+    {
+        var getVm = await _trueFalseGameQuestionVMService.GetViewModelAsync(new()
+        {
+            GameId = gameRequest.GameId,
+            QuestionId = questionId,
+        });
+
+        if (!getVm.Successful)
+        {
+            return BadRequest(getVm);
+        }
+
+        return View(GuiPages.GameQuestionTrueFalse, getVm.Data);
     }
 
 }

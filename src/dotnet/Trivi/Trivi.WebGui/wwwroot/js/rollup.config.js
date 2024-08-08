@@ -85,6 +85,7 @@ const configs = [
 
     new RollupConfig('games/game/questions/short-answer/index.ts', 'game-question-short-answer'),
     new RollupConfig('games/game/questions/true-false/index.ts', 'game-question-true-false'),
+    new RollupConfig('games/game/questions/multiple-choice/index.ts', 'game-question-multiple-choice'),
 
     new RollupConfig('games/admin/lobby/index.ts', 'admin-lobby'),
 

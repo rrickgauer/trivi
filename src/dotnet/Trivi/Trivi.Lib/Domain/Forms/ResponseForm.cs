@@ -54,5 +54,25 @@ public class ResponseTrueFalseForm : ResponseForm
 }
 
 
+public class ResponseMultipleChoiceForm : ResponseForm
+{
+    public override QuestionType QuestionType => QuestionType.MultipleChoice;
+
+    [BindRequired]
+    public required string Answer { get; set; }
+
+    public ResponseMultipleChoice ToResponse(QuestionId questionId)
+    {
+        return new()
+        {
+            QuestionId = questionId,
+            PlayerId = PlayerId,
+            Id = GuidUtility.New(),
+            AnswerGiven = Answer,
+        };
+    }
+}
+
+
 
 

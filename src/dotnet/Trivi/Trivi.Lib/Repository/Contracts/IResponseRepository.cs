@@ -13,9 +13,12 @@ public interface IResponseRepository
     public Task<DataRow?> SelectTrueFalseAsync(Guid responseId);
     public Task<DataRow?> SelectTrueFalseAsync(PlayerQuestionResponse responseData);
 
+    public Task<DataRow?> SelectMultipleChoiceAsync(Guid responseId);
+    public Task<DataRow?> SelectMultipleChoiceAsync(PlayerQuestionResponse responseData);
 
     public Task<int> CreateResponseAsync(ResponseShortAnswer response);
     public Task<int> CreateResponseAsync(ResponseTrueFalse response);
+    public Task<int> CreateResponseAsync(ResponseMultipleChoice response);
 
 
 }

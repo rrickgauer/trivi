@@ -20,13 +20,15 @@ public class GameController : GuiController, IControllerName
     private readonly ShortAnswerGameQuestionVMService _shortAnswerVMService;
     private readonly IResponseService _responseService;
     private readonly TrueFalseGameQuestionVMService _trueFalseGameQuestionVMService;
+    private readonly MulitpleChoiceGameQuestionVMService _mulitpleChoiceGameQuestionVMService;
 
-    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService)
+    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService, MulitpleChoiceGameQuestionVMService mulitpleChoiceGameQuestionVMService)
     {
         _requestItems = requestItems;
         _shortAnswerVMService = shortAnswerVMService;
         _responseService = responseService;
         _trueFalseGameQuestionVMService = trueFalseGameQuestionVMService;
+        _mulitpleChoiceGameQuestionVMService = mulitpleChoiceGameQuestionVMService;
     }
 
     [HttpGet]
@@ -92,6 +94,25 @@ public class GameController : GuiController, IControllerName
         }
 
         return View(GuiPages.GameQuestionTrueFalse, getVm.Data);
+    }
+
+
+    [HttpGet("questions/{questionId:multipleChoiceQuestion}")]
+    [ActionName(nameof(MultipleChoiceGameQuestionPageAsync))]
+    public async Task<IActionResult> MultipleChoiceGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
+    {
+        var getVM = await _mulitpleChoiceGameQuestionVMService.GetViewModelAsync(new()
+        {
+            GameId = gameRequest.GameId,
+            QuestionId = questionId,
+        });
+
+        if (!getVM.Successful)
+        {
+            return BadRequest(getVM);
+        }
+
+        return View(GuiPages.GameQuestionMulitpleChoice, getVM.Data);
     }
 
 }

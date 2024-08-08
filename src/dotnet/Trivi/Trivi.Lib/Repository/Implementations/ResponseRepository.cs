@@ -72,6 +72,34 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
 
     #endregion
 
+
+    #region - Select MC -
+
+    
+    public async Task<DataRow?> SelectMultipleChoiceAsync(Guid responseId)
+    {
+
+        MySqlCommand command = new(ResponseRepositoryCommands.SelectMulitipleChoiceById);
+
+        command.Parameters.AddWithValue("@response_id", responseId);
+
+        return await _connection.FetchAsync(command);
+    }
+    
+    public async Task<DataRow?> SelectMultipleChoiceAsync(PlayerQuestionResponse responseData)
+    {
+        MySqlCommand command = new(ResponseRepositoryCommands.SelectMultipleChoiceByQuestionPlayer);
+
+        command.Parameters.AddWithValue("@question_id", responseData.QuestionId.ToString());
+        command.Parameters.AddWithValue("@player_id", responseData.PlayerId);
+
+        return await _connection.FetchAsync(command);
+
+    }
+
+    #endregion
+
+
     #region - Create response -
 
     public async Task<int> CreateResponseAsync(ResponseShortAnswer response)
@@ -110,6 +138,30 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
 
         // insert the true false response record
         MySqlCommand command = new(ResponseRepositoryCommands.UpsertTrueFalse);
+
+        command.Parameters.AddWithValue("@id", response.Id);
+        command.Parameters.AddWithValue("@answer_given", response.AnswerGiven);
+
+        await _transactionConnection.ExecuteInTransactionAsync(command);
+
+        // commit the changes
+        await _transactionConnection.CommitAsync();
+
+        return 1;
+    }
+
+    public async Task<int> CreateResponseAsync(ResponseMultipleChoice response)
+    {
+        // start the transaction
+        await _transactionConnection.StartTransactionAsync();
+
+        // insert the base response record
+        var baseCommand = GetCreateBaseResponseCommand(response);
+        await _transactionConnection.ExecuteInTransactionAsync(baseCommand);
+
+
+        // insert the true false response record
+        MySqlCommand command = new(ResponseRepositoryCommands.UpsertMultipleChoice);
 
         command.Parameters.AddWithValue("@id", response.Id);
         command.Parameters.AddWithValue("@answer_given", response.AnswerGiven);

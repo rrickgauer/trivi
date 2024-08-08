@@ -12,7 +12,6 @@ public class ResponseRepositoryCommands
             AND r.game_id = @game_id;";
 
 
-
     public const string SelectShortAnswerById = @"
         SELECT
             r.*
@@ -37,6 +36,7 @@ public class ResponseRepositoryCommands
 
 
 
+
     public const string SelectTrueFalseById = @"
         SELECT
             r.*
@@ -52,6 +52,32 @@ public class ResponseRepositoryCommands
             r.*
         FROM
             View_Responses_TF r
+        WHERE
+            r.question_id = @question_id
+            AND r.player_id = @player_id
+        LIMIT
+            1;";
+
+
+
+
+
+
+    public const string SelectMulitipleChoiceById = @"
+        SELECT
+            r.*
+        FROM
+            View_Responses_MC r
+        WHERE
+            r.response_id = @response_id
+        LIMIT 1;";
+
+
+    public const string SelectMultipleChoiceByQuestionPlayer = @"
+        SELECT
+            r.*
+        FROM
+            View_Responses_MC r
         WHERE
             r.question_id = @question_id
             AND r.player_id = @player_id
@@ -87,6 +113,13 @@ public class ResponseRepositoryCommands
         ON DUPLICATE KEY UPDATE
             answer_given = new_values.answer_given;";
 
+    public const string UpsertMultipleChoice = @"
+        INSERT INTO
+            Responses_MC (id, answer_given)
+        VALUES
+            (@id, @answer_given) AS new_values 
+        ON DUPLICATE KEY UPDATE
+            answer_given = new_values.answer_given;";
 }
 
 

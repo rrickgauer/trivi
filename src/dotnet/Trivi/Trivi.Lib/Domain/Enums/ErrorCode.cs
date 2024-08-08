@@ -54,4 +54,12 @@ public enum ErrorCode : ulong
 
     #endregion
 
+
+    #region - Responses -
+    
+    [ErrorCodeGroup(ErrorCodeGroup.Responses)]
+    ResponsesInvalidMultipleChoiceAnswerId = 600,
+
+    #endregion
+
 }

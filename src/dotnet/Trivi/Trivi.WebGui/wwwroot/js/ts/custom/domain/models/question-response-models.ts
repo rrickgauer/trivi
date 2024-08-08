@@ -25,6 +25,14 @@ export type ResponseTrueFalseApiResponse = ResponseBaseApiResponse & {
     answer: boolean;
 }
 
+export type ResponseMultipleChoiceApiResponse = ResponseBaseApiResponse & {
+    answer: string;
+}
+
+
+
+
+
 
 
 export type ResponseApiPostRequestBase = {
@@ -39,7 +47,12 @@ export type ResponseTrueFalseApiPostRequest = ResponseApiPostRequestBase & {
     answer: boolean;
 }
 
-export type ResponseApiPostRequestTypes = ResponseShortAnswerApiPostRequest | ResponseTrueFalseApiPostRequest;
+export type ResponseMultipleChoiceApiPostRequest = ResponseApiPostRequestBase & {
+    answer: string;
+}
+
+
+export type ResponseApiPostRequestTypes = ResponseShortAnswerApiPostRequest | ResponseTrueFalseApiPostRequest | ResponseMultipleChoiceApiPostRequest;
 
 
 

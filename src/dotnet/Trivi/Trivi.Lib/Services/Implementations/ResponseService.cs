@@ -10,12 +10,13 @@ using Trivi.Lib.Services.Contracts;
 namespace Trivi.Lib.Services.Implementations;
 
 [AutoInject<IResponseService>(AutoInjectionType.Scoped, InjectionProject.Always)]
-public class ResponseService(IResponseRepository responseRepository, ITableMapperService tableMapperService) : IResponseService
+public class ResponseService(IResponseRepository responseRepository, ITableMapperService tableMapperService, IAnswerService answerService) : IResponseService
 {
     #region - Private members -
 
     private readonly IResponseRepository _responseRepository = responseRepository;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
+    private readonly IAnswerService _answerService = answerService;
 
     #endregion
 
@@ -27,6 +28,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         {
             QuestionType.ShortAnswer => await GetResponseAsync(GetShortAnswerAsync, responseData),
             QuestionType.TrueFalse => await GetResponseAsync(GetTrueFalseAsync, responseData),
+            QuestionType.MultipleChoice => await GetResponseAsync(GetMultipleChoiceAsync, responseData),
             _ => throw new NotImplementedException(),
         };
     }
@@ -151,6 +153,52 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         }
     }
 
+    #endregion
+
+    #region - Get Multiple Choice -
+
+    public async Task<ServiceDataResponse<ViewResponseMultipleChoice>> GetMultipleChoiceAsync(Guid responseId)
+    {
+        try
+        {
+            ServiceDataResponse<ViewResponseMultipleChoice> result = new();
+
+            var row = await _responseRepository.SelectMultipleChoiceAsync(responseId);
+
+            if (row != null)
+            {
+                result.Data = _tableMapperService.ToModel<ViewResponseMultipleChoice>(row);
+            }
+
+            return result;
+        }
+        catch (RepositoryException ex)
+        {
+            return ex;
+        }
+    }
+
+    public async Task<ServiceDataResponse<ViewResponseMultipleChoice>> GetMultipleChoiceAsync(PlayerQuestionResponse responseData)
+    {
+        try
+        {
+            ServiceDataResponse<ViewResponseMultipleChoice> result = new();
+
+            var row = await _responseRepository.SelectMultipleChoiceAsync(responseData);
+
+            if (row != null)
+            {
+                result.Data = _tableMapperService.ToModel<ViewResponseMultipleChoice>(row);
+            }
+
+            return result;
+        }
+        catch (RepositoryException ex)
+        {
+            return ex;
+        }
+    }
+
 
     #endregion
 
@@ -193,6 +241,55 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
         return new();
     }
+
+    public async Task<ServiceDataResponse<ViewResponseMultipleChoice>> CreateMultipleChoiceResponseAsync(ResponseMultipleChoice response)
+    {
+        var getValidation = await ValidateNewMultipleChoiceAsync(response);
+
+        if (!getValidation.Successful)
+        {
+            return new(getValidation.Errors);
+        }
+
+
+        try
+        {
+            await _responseRepository.CreateResponseAsync(response);
+        }
+        catch (RepositoryException ex)
+        {
+            return ex;
+        }
+
+        if (response.Id is Guid responseId)
+        {
+            return await GetMultipleChoiceAsync(responseId);
+        }
+
+        return new();
+    }
+
+    private async Task<ServiceResponse> ValidateNewMultipleChoiceAsync(ResponseMultipleChoice response)
+    {
+
+        var getAnswers = await _answerService.GetAnswersAsync(response.QuestionId!);
+
+        if (!getAnswers.Successful)
+        {
+            return new(getAnswers.Errors);
+        }
+
+        var answerIds = getAnswers.Data?.Select(a => a.Id).ToList() ?? new();
+
+        
+        if (!answerIds.Contains(response.AnswerGiven))
+        {
+            return new(ErrorCode.ResponsesInvalidMultipleChoiceAnswerId);
+        }
+
+        return new();
+    }
+
 
     #endregion
 }

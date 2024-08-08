@@ -28,7 +28,7 @@
     "Profile 1": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:7296/games/mwN5mcux/questions/tf_1YFWZ17IRH0BT1V1Q?player=0190f052-681a-76cb-bd9a-5205b29c5405",
+      "launchUrl": "https://localhost:7296/games/mwN5mcux/questions/mc_JW8SB9SBFG7HYHGLU?player=0190f052-681a-76cb-bd9a-5205b29c5405",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

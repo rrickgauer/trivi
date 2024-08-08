@@ -32,3 +32,8 @@ public class TrueFalseGameQuestionVM : GameQuestionVM<ViewTrueFalse>
 }
 
 
+public class MultipleChoiceGameQuestionVM : GameQuestionVM<ViewMultipleChoice>
+{
+    public override required ViewMultipleChoice Question { get; set; }
+}
+

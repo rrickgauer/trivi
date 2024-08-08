@@ -51,4 +51,25 @@ public class ApiResponsesController(IResponseService responseService) : Internal
         return Ok(createResponse);
     }
 
+
+    [HttpPost("{questionId:multipleChoiceQuestion}")]
+    [ActionName(nameof(PostMultipleChoiceAsync))]
+    [ServiceFilter<PostResponseFilter>]
+    public async Task<IActionResult> PostMultipleChoiceAsync([FromRoute] QuestionId questionId, [FromBody] ResponseMultipleChoiceForm data)
+    {
+        ResponseMultipleChoice response = data.ToResponse(questionId);
+
+        var createResponse = await _responseService.CreateMultipleChoiceResponseAsync(response);
+
+        if (!createResponse.Successful)
+        {
+            return BadRequest(createResponse);
+        }
+
+        return Ok(createResponse);
+    }
+
+
+
+
 }

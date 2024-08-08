@@ -18,6 +18,8 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
     private readonly ITableMapperService _tableMapperService = tableMapperService;
     private readonly IAnswerService _answerService = answerService;
 
+    private delegate Task<ServiceDataResponse<TView>> GetFunctionCallback<TView>(PlayerQuestionResponse parms);
+
     #endregion
 
     #region - Get response -
@@ -26,14 +28,12 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
     {
         return responseData.QuestionId.QuestionType switch
         {
-            QuestionType.ShortAnswer => await GetResponseAsync(GetShortAnswerAsync, responseData),
-            QuestionType.TrueFalse => await GetResponseAsync(GetTrueFalseAsync, responseData),
+            QuestionType.ShortAnswer    => await GetResponseAsync(GetShortAnswerAsync, responseData),
+            QuestionType.TrueFalse      => await GetResponseAsync(GetTrueFalseAsync, responseData),
             QuestionType.MultipleChoice => await GetResponseAsync(GetMultipleChoiceAsync, responseData),
-            _ => throw new NotImplementedException(),
+            _                           => throw new NotImplementedException(),
         };
     }
-
-    private delegate Task<ServiceDataResponse<TView>> GetFunctionCallback<TView>(PlayerQuestionResponse parms);
 
     private static async Task<ServiceDataResponse<ViewResponse>> GetResponseAsync<TResponse>(GetFunctionCallback<TResponse> callback, PlayerQuestionResponse callbackParms) where TResponse : ViewResponse
     {
@@ -292,4 +292,21 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
 
     #endregion
+
+
+    public async Task<ServiceDataResponse<List<ViewPlayerQuestionResponse>>> GetPlayerQuestionResponsesAsync(string gameId, QuestionId questionId)
+    {
+        try
+        {
+            var table = await _responseRepository.GetPlayerQuestionResponsesAsync(gameId, questionId);
+            return _tableMapperService.ToModels<ViewPlayerQuestionResponse>(table);
+        }
+        catch(RepositoryException ex)
+        {
+            return ex;
+        }
+    }
+
+
+
 }

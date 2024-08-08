@@ -3,8 +3,8 @@ import { IController, IControllerAsync } from "../../../../domain/contracts/icon
 import { AdminLobbyUpdatedEvent, NavigateToEvent } from "../../../../domain/events/events";
 import { Selector } from "../../../../domain/helpers/element-selector/selector";
 import { SpinnerButton } from "../../../../domain/helpers/spinner-button";
-import { AdminGameHub } from "../../../../hubs/game/game-hub";
-import { AdminLobbyUpdatedData } from "../../../../hubs/game/models";
+import { AdminGameLobbyHub } from "../../../../hubs/game-lobby/game-lobby-hub";
+import { AdminLobbyUpdatedData } from "../../../../hubs/game-lobby/models";
 import { GameService } from "../../../../services/game-service";
 import { PlayersLobbyListTemplate } from "../../../../templates/players-lobby-list-template";
 import { ErrorUtility } from "../../../../utility/error-utility";
@@ -19,7 +19,7 @@ const elements = {
 export class AdminLobbyPageController implements IControllerAsync
 {
     private readonly _gameId: string;
-    private _adminGameHub: AdminGameHub;
+    private _adminGameHub: AdminGameLobbyHub;
     private _selector: Selector;
     private _playersList: HTMLUListElement;
     private _htmlEngine: PlayersLobbyListTemplate;
@@ -30,7 +30,7 @@ export class AdminLobbyPageController implements IControllerAsync
     {
         this._gameId = gameId;
 
-        this._adminGameHub = new AdminGameHub({
+        this._adminGameHub = new AdminGameLobbyHub({
             gameId: this._gameId,
         });
 

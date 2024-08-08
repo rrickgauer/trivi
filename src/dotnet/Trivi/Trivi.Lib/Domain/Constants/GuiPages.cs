@@ -26,8 +26,7 @@ public class GuiPages
     public static string GameQuestionMulitpleChoice => Build("Games/Game/Questions/MultipleChoice/MultipleChoiceGameQuestionPage");
 
     public static string AdminLobby => Build("Games/Admin/Lobby/AdminLobbyPage");
-
-
+    public static string AdminQuestion => Build("Games/Admin/Question/AdminQuestionPage");
 
 
     private static string Build(string path)

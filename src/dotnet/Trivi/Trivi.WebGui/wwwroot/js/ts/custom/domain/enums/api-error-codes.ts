@@ -24,6 +24,7 @@ export enum ApiErrorCode
 
     GamesInvalidQuestionTimeLimit = 400,
     GamesStartNonOpenGame = 401,
+    GamesCloseQuestion = 402,
 
     //#endregion
 

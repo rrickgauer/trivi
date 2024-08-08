@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Models;
+using Trivi.Lib.Domain.Other;
 
 namespace Trivi.Lib.Domain.TableViews;
 
@@ -39,8 +40,10 @@ public class ViewGame
     public Guid? UserId { get; set; }
 
     [SqlColumn("active_question_id")]
-    public string? ActiveQuestionId { get; set; }
+    public QuestionId? ActiveQuestionId { get; set; }
 
+    [SqlColumn("next_question_id")]
+    public QuestionId? NextQuestionId { get; set; }
 
 
     [JsonIgnore]

@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using MySqlX.XDevAPI.Common;
+using System.Data;
+using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.TableViews;
 
 namespace Trivi.Lib.Mapping.Tables;
@@ -17,8 +19,20 @@ public class ViewGameMapper : TableMapper<ViewGame>
         result.StartedOn          = row.Field<DateTime?>(GetColumnName(nameof(result.StartedOn)));
         result.UserId             = row.Field<Guid?>(GetColumnName(nameof(result.UserId)));
         result.Status             = row.Field<GameStatus>(GetColumnName(nameof(result.Status)));
-        result.ActiveQuestionId   = row.Field<string?>(GetColumnName(nameof(result.ActiveQuestionId)));
+        result.ActiveQuestionId   = GetQuestionId(row, nameof(result.ActiveQuestionId));
+        result.NextQuestionId     = GetQuestionId(row, nameof(result.NextQuestionId));
 
         return result;
+    }
+
+
+    private QuestionId? GetQuestionId(DataRow row, string propertyName)
+    {
+        if (row.Field<string?>(GetColumnName(propertyName)) is string questionIdText)
+        {
+            return new(questionIdText);
+        }
+
+        return null;
     }
 }

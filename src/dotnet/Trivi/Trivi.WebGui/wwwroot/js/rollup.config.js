@@ -88,6 +88,7 @@ const configs = [
     new RollupConfig('games/game/questions/multiple-choice/index.ts', 'game-question-multiple-choice'),
 
     new RollupConfig('games/admin/lobby/index.ts', 'admin-lobby'),
+    new RollupConfig('games/admin/question/index.ts', 'admin-question'),
 
 ];
 

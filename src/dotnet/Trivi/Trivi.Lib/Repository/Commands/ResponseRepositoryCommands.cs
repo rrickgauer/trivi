@@ -2,6 +2,11 @@
 
 public class ResponseRepositoryCommands
 {
+
+    public const string GetPlayersQuestionResponsesProcName = "Get_Players_Question_Responses";
+
+
+
     public const string SelectShortAnswers = @"
         SELECT
             r.*

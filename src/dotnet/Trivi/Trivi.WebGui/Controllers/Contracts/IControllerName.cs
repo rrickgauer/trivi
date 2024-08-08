@@ -29,11 +29,3 @@ public interface IControllerName
     }
 }
 
-
-public static class ControllerNameExtensions
-{
-    public static string RemoveMe(this IControllerName controller, string controllerName)
-    {
-        return IControllerName.RemoveSuffix(controllerName);
-    }
-}

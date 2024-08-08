@@ -15,9 +15,9 @@ export class TrueFalseGameQuestionPageController extends GameQuestionPageControl
         this._trueFalseResponseForm = new TrueFalseResponseForm(urlParms);
     }
 
-    public control()
+    public async control()
     {
-        super.control();
+        await super.control();
         this.addListeners();
 
         this._trueFalseResponseForm.control();

@@ -1,4 +1,5 @@
-import { AdminLobbyUpdatedData, NavigateToData } from "../../hubs/game/models";
+import { AdminLobbyUpdatedData, NavigateToData } from "../../hubs/game-lobby/models";
+import { AdminUpdatePlayerQuestionResponsesParms, NavigateToPageParms } from "../../hubs/game-question/models";
 import { ApiResponse } from "../models/api-response";
 import { GameApiResponse } from "../models/game-models";
 import { PlayerApiResponse } from "../models/player-models";
@@ -79,4 +80,12 @@ export type GameQuestionSubmittedData = {
 }
 
 export const GameQuestionSubmittedEvent = new CustomMessage<GameQuestionSubmittedData>();
+
+
+
+export const AdminUpdatePlayerQuestionResponsesEvent = new CustomMessage<AdminUpdatePlayerQuestionResponsesParms>();
+
+export const NavigateToPageEvent = new CustomMessage<NavigateToPageParms>();
+
+
 

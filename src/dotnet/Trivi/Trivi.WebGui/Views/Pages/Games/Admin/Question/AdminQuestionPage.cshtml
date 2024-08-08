@@ -1,0 +1,78 @@
+﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.Lib.Domain.ViewModels.Gui
+@model AdminQuestionViewModel
+
+@{
+    string tableContainerClass = "player-status-table-container";
+    string tableClass = "player-status-table";
+    string btnCloseQuestionClass = "btn-close-question";
+    string alertsContainerClass = "alerts-container";
+
+
+    bool isQuestionClosed = Model.GameQuestion.QuestionStatus == GameQuestionStatus.Closed;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>@Model.Game.Id Admin Lobby</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+
+
+    @if(isQuestionClosed)
+    {
+        <div class="container mt-5">
+            <div class="alert alert-info" role="alert">
+                This question has been closed.
+            </div>
+        </div>
+    }
+
+    <div class="container mt-5">
+        <h1 class="display-3 text-center">@Model.GameQuestion.Prompt</h1>
+    </div>
+
+    <div class="@tableContainerClass">
+
+        <div class="container mt-5">
+            <div class="@alertsContainerClass"></div>
+        </div>
+
+        <div class="container mt-5">
+
+            <table class="table @tableClass">
+                <thead>
+                    <tr>
+                        <th scope="col">Player</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Question Answered</th>
+                        <th scope="col">More</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div class="container">
+
+            @{
+                string disabledText = isQuestionClosed ? "disabled" : string.Empty;
+            }
+
+            <button type="button" class="btn btn-lg btn-secondary @btnCloseQuestionClass" @disabledText>Close question</button>
+        </div>
+
+
+    </div>
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/admin-question.bundle.js"></script>
+</body>
+</html>

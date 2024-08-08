@@ -2,6 +2,8 @@
 using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.ViewModels.Gui;
 using Trivi.Lib.Filters;
+using Trivi.Lib.Services.Contracts;
+using Trivi.Lib.VMServices.Implementations;
 using Trivi.WebGui.Controllers.Contracts;
 using Trivi.WebGui.Filters;
 
@@ -10,18 +12,43 @@ namespace Trivi.WebGui.Controllers.Gui;
 [Controller]
 [Route("games/admin/{gameId:gameId}")]
 [ServiceFilter<LoginFirstRedirectFilter>]
-public class GameAdminController(RequestItems requestItems) : GuiController, IControllerName
+[ServiceFilter<ModifyGameFilter>]
+public class GameAdminController(RequestItems requestItems, IResponseService responseService, AdminQuestionVMService adminQuestionVMService) : GuiController, IControllerName
 {
+    /// <inheritdoc/>
     public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(GameAdminController));
 
     private readonly RequestItems _requestItems = requestItems;
+    private readonly IResponseService _responseService = responseService;
+    private readonly AdminQuestionVMService _adminQuestionVMService = adminQuestionVMService;
 
     [HttpGet]
-    [HttpGet("lobby")]
     [ActionName(nameof(GameAdminPage))]
-    [ServiceFilter<LoginFirstRedirectFilter>]
-    [ServiceFilter<ModifyGameFilter>]
-    public async Task<IActionResult> GameAdminPage([FromRoute] string gameId)
+    public IActionResult GameAdminPage([FromRoute] string gameId)
+    {
+        var game = _requestItems.Game;
+
+        if (game.Status == GameStatus.Open)
+        {
+            return RedirectToAction(nameof(GameAdminLobbyPage), new { gameId });
+        }
+
+        else if (game.Status == GameStatus.Running && game.ActiveQuestionId is QuestionId activeQuestionId)
+        {
+            return RedirectToAction(nameof(GameAdminQuestionPageAsync), new
+            {
+                gameId,
+                questionId = activeQuestionId,
+            });
+        }
+
+        return Ok("game page");
+    }
+
+    
+    [HttpGet("lobby")]
+    [ActionName(nameof(GameAdminLobbyPage))]
+    public IActionResult GameAdminLobbyPage([FromRoute] string gameId)
     {
         return View(GuiPages.AdminLobby, new AdminLobbyViewModel()
         {
@@ -29,4 +56,21 @@ public class GameAdminController(RequestItems requestItems) : GuiController, ICo
         });
     }
 
+    [HttpGet("questions/{questionId:questionId}")]
+    [ActionName(nameof(GameAdminQuestionPageAsync))]
+    public async Task<IActionResult> GameAdminQuestionPageAsync([FromRoute] string gameId, [FromRoute] QuestionId questionId)
+    {
+        var getViewModel = await _adminQuestionVMService.GetViewModelAsync(new()
+        {
+            GameId = gameId,
+            QuestionId = questionId
+        });
+
+        if (!getViewModel.Successful)
+        {
+            return BadRequest(getViewModel);
+        }
+
+        return View(GuiPages.AdminQuestion, getViewModel.Data);
+    }
 }

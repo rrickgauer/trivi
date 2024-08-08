@@ -15,9 +15,9 @@ export class MultipleChoiceGameQuestionPageController extends GameQuestionPageCo
         this._form = new MultipleChoiceResponseForm(urlParms);
     }
 
-    public control()
+    public async control()
     {
-        super.control();
+        await super.control();
 
         this._form.control();
     }

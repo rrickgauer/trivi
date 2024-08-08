@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.Json.Serialization;
+using Trivi.Lib.Domain.Other;
 
 namespace Trivi.Lib.Domain.RequestArgs;
 
@@ -22,6 +23,16 @@ public class PlayGameGuiRequest
         {
             player = PlayerId,
             GameId = GameId,
+        };
+    }
+
+    public object GetRedirectRouteValues(QuestionId questionId)
+    {
+        return new
+        {
+            player = PlayerId,
+            GameId = GameId,
+            questionId = questionId,
         };
     }
 }

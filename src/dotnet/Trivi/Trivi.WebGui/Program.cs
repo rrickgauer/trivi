@@ -4,6 +4,7 @@ using Trivi.Lib.Domain.Configurations;
 using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Filters;
 using Trivi.Lib.Hubs.Lobby;
+using Trivi.Lib.Hubs.Question;
 using Trivi.Lib.JsonConverters;
 using Trivi.Lib.Services.Contracts;
 using Trivi.Lib.Utility;
@@ -143,11 +144,16 @@ app.UseStaticFiles(new StaticFileOptions
 
 
 
-app.MapHub<GameLobbyHub>("/hubs/game", options =>
+app.MapHub<GameLobbyHub>("/hubs/game-lobby", options =>
 {
     options.AllowStatefulReconnects = true;
 });
 
+
+app.MapHub<GameHub>("/hubs/game-question", options =>
+{
+    options.AllowStatefulReconnects = true;
+});
 
 app.UseRouting();
 

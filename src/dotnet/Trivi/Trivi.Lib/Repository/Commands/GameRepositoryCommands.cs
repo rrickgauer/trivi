@@ -2,6 +2,10 @@
 
 public class GameRepositoryCommands
 {
+
+    public const string ActivateNextGameQuestionProcName = "Activate_Next_Game_Question";
+
+
     public const string SelectUserGames = @"
         SELECT
             g.*

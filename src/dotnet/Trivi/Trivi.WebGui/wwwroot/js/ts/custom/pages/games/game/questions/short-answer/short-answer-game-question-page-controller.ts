@@ -13,9 +13,9 @@ export class ShortAnswerGameQuestionPageController extends GameQuestionPageContr
         this._form = new ShortAnswerResponseForm(data);
     }
 
-    public control()
+    public async control()
     {
-        super.control();
+        await super.control();
 
         this.addListeners();
         this._form.control();

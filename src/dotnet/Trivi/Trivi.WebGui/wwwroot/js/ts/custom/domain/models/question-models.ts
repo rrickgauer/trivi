@@ -1,3 +1,5 @@
+import { GameQuestionStatus } from "../enums/game-question-status";
+import { GameStatus } from "../enums/game-status";
 import { QuestionType } from "../enums/question-type";
 import { DateTimeString, Guid, QuestionId } from "../types/aliases";
 import { AnswerApiResponse } from "./answer-models";
@@ -50,3 +52,15 @@ export type PutTrueFalseApiRequest = PutQuestionApiRequest & {
     correctAnswer: boolean;
 }
 
+
+
+
+
+
+
+
+export type GameQuestionApiResponse = QuestionApiResponse & {
+    gameId: string;
+    questionStatus: GameQuestionStatus;
+    gameStatus: GameStatus;
+}

@@ -21,14 +21,16 @@ public class GameController : GuiController, IControllerName
     private readonly IResponseService _responseService;
     private readonly TrueFalseGameQuestionVMService _trueFalseGameQuestionVMService;
     private readonly MulitpleChoiceGameQuestionVMService _mulitpleChoiceGameQuestionVMService;
+    private readonly IGamePageService _gamePageService;
 
-    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService, MulitpleChoiceGameQuestionVMService mulitpleChoiceGameQuestionVMService)
+    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService, MulitpleChoiceGameQuestionVMService mulitpleChoiceGameQuestionVMService, IGamePageService gamePageService)
     {
         _requestItems = requestItems;
         _shortAnswerVMService = shortAnswerVMService;
         _responseService = responseService;
         _trueFalseGameQuestionVMService = trueFalseGameQuestionVMService;
         _mulitpleChoiceGameQuestionVMService = mulitpleChoiceGameQuestionVMService;
+        _gamePageService = gamePageService;
     }
 
     [HttpGet]
@@ -37,12 +39,50 @@ public class GameController : GuiController, IControllerName
     {
         var game = _requestItems.Game;
 
-        return game.Status switch
+        if (game.Status == GameStatus.Open)
         {
-            GameStatus.Open => RedirectToAction(nameof(LobbyPageAsync), gameRequest.GetRedirectRouteValues()),
-            GameStatus.Running => Ok("active question page"),
-            _ => BadRequest("Game is closed"),
+            return RedirectToAction(nameof(LobbyPageAsync), gameRequest.GetRedirectRouteValues());
+        }
+
+        else if (game.Status == GameStatus.Running && game.ActiveQuestionId is QuestionId activeQuestionId)
+        {
+            return await HandleRunning(gameRequest, activeQuestionId);
+        }
+
+        else
+        {
+            return BadRequest("Unknown next step");
+        }
+    }
+
+    private async Task<IActionResult> HandleRunning(PlayGameGuiRequest gameRequest, QuestionId activeQuestionId)
+    {
+        // check if player has already responded to question
+        var getQuestion = await _responseService.GetResponseAsync(new()
+        {
+            PlayerId = gameRequest.PlayerId,
+            QuestionId = activeQuestionId
+        });
+
+        if (getQuestion.Data is not null)
+        {
+            return RedirectToAction(nameof(GetWaitingPageAsync), gameRequest.GetRedirectRouteValues());
+        }
+
+        return activeQuestionId.QuestionType switch
+        {
+            QuestionType.TrueFalse => RedirectToAction(nameof(TrueFalseGameQuestionPageAsync), gameRequest.GetRedirectRouteValues(activeQuestionId)),
+            QuestionType.ShortAnswer => RedirectToAction(nameof(ShortAnswerGameQuestionPageAsync), gameRequest.GetRedirectRouteValues(activeQuestionId)),
+            QuestionType.MultipleChoice => RedirectToAction(nameof(MultipleChoiceGameQuestionPageAsync), gameRequest.GetRedirectRouteValues(activeQuestionId)),
+            _ => throw new NotImplementedException(),
         };
+    }
+
+    [HttpGet("waiting")]
+    [ActionName(nameof(GetWaitingPageAsync))]   
+    public async Task<IActionResult> GetWaitingPageAsync(PlayGameGuiRequest gameRequest)
+    {
+        return Ok("waiting page");
     }
 
 

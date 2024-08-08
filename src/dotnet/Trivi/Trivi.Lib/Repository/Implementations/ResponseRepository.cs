@@ -188,6 +188,22 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
 
     #endregion
 
+
+
+    public async Task<DataTable> GetPlayerQuestionResponsesAsync(string gameId, QuestionId questionId)
+    {
+        MySqlCommand command = new(ResponseRepositoryCommands.GetPlayersQuestionResponsesProcName)
+        {
+            CommandType = CommandType.StoredProcedure,
+        };
+
+        command.Parameters.AddWithValue("in_question_id", questionId.ToString());
+        command.Parameters.AddWithValue("in_game_id", gameId);
+
+        return await _connection.FetchAllAsync(command);
+    }
+
+
 }
 
 

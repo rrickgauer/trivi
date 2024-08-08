@@ -1,7 +1,10 @@
-﻿using Trivi.Lib.Domain.Attributes;
+﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Runtime.Versioning;
+using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Constants;
 using Trivi.Lib.Domain.Errors;
 using Trivi.Lib.Domain.Models;
+using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.Responses;
 using Trivi.Lib.Domain.TableViews;
 using Trivi.Lib.Repository.Contracts;
@@ -121,5 +124,20 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         }
 
         return getGame;
+    }
+
+
+    public async Task<ServiceDataResponse<ViewGame>> ActivateNextGameQuestionAsync(string gameId)
+    {
+        try
+        {
+            await _gameRepository.ActivateNextGameQuestionAsync(gameId);
+        }
+        catch(RepositoryException ex)
+        {
+            return ex;
+        }
+
+        return await GetGameAsync(gameId);
     }
 }

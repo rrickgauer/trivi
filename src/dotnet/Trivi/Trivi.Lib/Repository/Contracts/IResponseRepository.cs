@@ -21,6 +21,8 @@ public interface IResponseRepository
     public Task<int> CreateResponseAsync(ResponseMultipleChoice response);
 
 
+    public Task<DataTable> GetPlayerQuestionResponsesAsync(string gameId, QuestionId questionId);
+
 }
 
 

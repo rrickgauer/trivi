@@ -9,22 +9,22 @@ import { AdminLobbyUpdatedData, NavigateToData } from "./models";
 import { AdminLobbyUpdatedEvent, NavigateToEvent } from "../../domain/events/events";
 
 
-export enum HubEndpoints 
+export enum GameLobbyHubEndpoints 
 {
     ClientJoinSessionRequestAsync = "PlayerJoinGameLobbyAsync",
     AdminJoinGameLobbyAsync = "AdminJoinGameLobbyAsync",
 }
 
-export enum HubEvents
+export enum GameLobbyHubEvents
 {
     AdminLobbyUpdated = "AdminLobbyUpdated",
     NavigateTo = "NavigateTo",
 }
 
 
-export abstract class GameHubBase implements IControllerAsync
+export abstract class GameLobbyHub implements IControllerAsync
 {
-    protected static readonly HUB_URL = '/hubs/game';
+    protected static readonly HUB_URL = '/hubs/game-lobby';
 
     protected _gameId: string;
     protected _connection: HubConnection;
@@ -35,7 +35,7 @@ export abstract class GameHubBase implements IControllerAsync
         this._gameId = gameId;
 
         this._connection = new HubConnectionBuilder()
-            .withUrl(GameHubBase.HUB_URL)
+            .withUrl(GameLobbyHub.HUB_URL)
             //.configureLogging(LogLevel.Debug)
             //.withStatefulReconnect()
             .build();
@@ -54,7 +54,7 @@ export abstract class GameHubBase implements IControllerAsync
 
     protected initListeners()
     {
-        this._connection.on(HubEvents.NavigateTo, (data: ApiResponse<NavigateToData>) =>
+        this._connection.on(GameLobbyHubEvents.NavigateTo, (data: ApiResponse<NavigateToData>) =>
         {
             NavigateToEvent.invoke(this, data);
         });
@@ -65,7 +65,7 @@ export abstract class GameHubBase implements IControllerAsync
 
 
 
-export class PlayerGameHub extends GameHubBase
+export class PlayerGameLobbyHub extends GameLobbyHub
 {
     private readonly _playerId: string;
 
@@ -77,7 +77,7 @@ export class PlayerGameHub extends GameHubBase
 
     protected async sendJoinRequest(): Promise<void> 
     {
-        await this._connection.invoke(HubEndpoints.ClientJoinSessionRequestAsync, {
+        await this._connection.invoke(GameLobbyHubEndpoints.ClientJoinSessionRequestAsync, {
             gameId: this._gameId,
             playerId: this._playerId,
         });
@@ -90,7 +90,7 @@ export class PlayerGameHub extends GameHubBase
 }
 
 
-export class AdminGameHub extends GameHubBase
+export class AdminGameLobbyHub extends GameLobbyHub
 {
     constructor(parms: {gameId: string})
     {
@@ -99,7 +99,7 @@ export class AdminGameHub extends GameHubBase
 
     protected async sendJoinRequest(): Promise<void> 
     {
-        await this._connection.invoke(HubEndpoints.AdminJoinGameLobbyAsync, {
+        await this._connection.invoke(GameLobbyHubEndpoints.AdminJoinGameLobbyAsync, {
             gameId: this._gameId,
         });
     }
@@ -108,7 +108,7 @@ export class AdminGameHub extends GameHubBase
     {
         super.initListeners();
 
-        this._connection.on(HubEvents.AdminLobbyUpdated, (e: ApiResponse<AdminLobbyUpdatedData>) =>
+        this._connection.on(GameLobbyHubEvents.AdminLobbyUpdated, (e: ApiResponse<AdminLobbyUpdatedData>) =>
         {
             AdminLobbyUpdatedEvent.invoke(this, e.data!);
         });

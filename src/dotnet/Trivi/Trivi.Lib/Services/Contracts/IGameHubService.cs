@@ -1,7 +1,9 @@
-﻿namespace Trivi.Lib.Services.Contracts;
+﻿using Trivi.Lib.Domain.Other;
+
+namespace Trivi.Lib.Services.Contracts;
 
 public interface IGameHubService
 {
-    public Task StartGameAsync(string gameId);
-    public Task NavigateToAsync(string gameId, string destination);
+    public Task UpdatePlayerResponseStatusAsync(string gameId, QuestionId questionId);
+    public Task NavigatePlayersToPageAsync(string gameId, string destination);
 }

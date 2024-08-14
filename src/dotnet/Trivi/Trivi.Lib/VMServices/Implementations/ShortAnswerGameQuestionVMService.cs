@@ -23,7 +23,7 @@ public class ShortAnswerGameQuestionVMService(IGameService gameService, IQuestio
     private readonly IGameService _gameService = gameService;
     private readonly IQuestionService _questionService = questionService;
 
-    public async Task<ServiceDataResponse<GameQuestionLayoutModel<ShortAnswerGameQuestionVM>>> GetViewModelAsync(GameQuestionVMServiceParms parms)
+    public async Task<ServiceResponse<GameQuestionLayoutModel<ShortAnswerGameQuestionVM>>> GetViewModelAsync(GameQuestionVMServiceParms parms)
     {
         try
         {

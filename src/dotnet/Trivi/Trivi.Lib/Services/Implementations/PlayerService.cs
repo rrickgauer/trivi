@@ -14,7 +14,7 @@ public class PlayerService(IPlayerRepository playerRepository, ITableMapperServi
     private readonly IPlayerRepository _playerRepository = playerRepository;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
 
-    public async Task<ServiceDataResponse<List<ViewPlayer>>> GetPlayersInGameAsync(string gameId)
+    public async Task<ServiceResponse<List<ViewPlayer>>> GetPlayersInGameAsync(string gameId)
     {
         try
         {
@@ -27,11 +27,11 @@ public class PlayerService(IPlayerRepository playerRepository, ITableMapperServi
         }
     }
 
-    public async Task<ServiceDataResponse<ViewPlayer>> GetPlayerAsync(Guid playerId)
+    public async Task<ServiceResponse<ViewPlayer>> GetPlayerAsync(Guid playerId)
     {
         try
         {
-            ServiceDataResponse<ViewPlayer> result = new();
+            ServiceResponse<ViewPlayer> result = new();
 
             var row = await _playerRepository.SelectPlayerAsync(playerId);
 
@@ -48,11 +48,11 @@ public class PlayerService(IPlayerRepository playerRepository, ITableMapperServi
         }
     }
 
-    public async Task<ServiceDataResponse<ViewPlayer>> GetPlayerAsync(string gameId, string nickname)
+    public async Task<ServiceResponse<ViewPlayer>> GetPlayerAsync(string gameId, string nickname)
     {
         try
         {
-            ServiceDataResponse<ViewPlayer> result = new();
+            ServiceResponse<ViewPlayer> result = new();
 
             var row = await _playerRepository.SelectPlayerAsync(gameId, nickname);
 
@@ -70,7 +70,7 @@ public class PlayerService(IPlayerRepository playerRepository, ITableMapperServi
     }
 
 
-    public async Task<ServiceDataResponse<ViewPlayer>> CreatePlayerAsync(Player player)
+    public async Task<ServiceResponse<ViewPlayer>> CreatePlayerAsync(Player player)
     {
         try
         {

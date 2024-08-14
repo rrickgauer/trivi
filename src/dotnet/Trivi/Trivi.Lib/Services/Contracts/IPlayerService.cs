@@ -6,9 +6,9 @@ namespace Trivi.Lib.Services.Contracts;
 
 public interface IPlayerService
 {
-    public Task<ServiceDataResponse<List<ViewPlayer>>> GetPlayersInGameAsync(string gameId);
-    public Task<ServiceDataResponse<ViewPlayer>> GetPlayerAsync(Guid playerId);
-    public Task<ServiceDataResponse<ViewPlayer>> GetPlayerAsync(string gameId, string nickname);
+    public Task<ServiceResponse<List<ViewPlayer>>> GetPlayersInGameAsync(string gameId);
+    public Task<ServiceResponse<ViewPlayer>> GetPlayerAsync(Guid playerId);
+    public Task<ServiceResponse<ViewPlayer>> GetPlayerAsync(string gameId, string nickname);
 
-    public Task<ServiceDataResponse<ViewPlayer>> CreatePlayerAsync(Player player);
+    public Task<ServiceResponse<ViewPlayer>> CreatePlayerAsync(Player player);
 }

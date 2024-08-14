@@ -12,11 +12,15 @@
     <partial name="@PartialRazorFiles.BundleTop" />
 
 
-    <div class="container mt-3">
-        <h3>Game: @Model.Game.Id</h3>
-        <hr />
-    </div>
+    <div class="position-relative">
+        
+        <partial name="@PartialRazorFiles.PageLoading" />
 
+        <div class="container mt-3">
+            <h3>Game: @Model.Game.Id - #@Model.Game.ActiveQuestionIndex</h3>
+            <hr />
+        </div>
+    </div>
 
 
     <div class="mt-3">

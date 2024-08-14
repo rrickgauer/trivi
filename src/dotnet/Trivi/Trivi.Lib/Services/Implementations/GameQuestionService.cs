@@ -14,7 +14,7 @@ public class GameQuestionService(IGameQuestionRepository repo, ITableMapperServi
     private readonly IGameQuestionRepository _repo = repo;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
 
-    public async Task<ServiceDataResponse<List<ViewGameQuestion>>> CreateGameQuestionsAsync(string gameId)
+    public async Task<ServiceResponse<List<ViewGameQuestion>>> CreateGameQuestionsAsync(string gameId)
     {
         try
         {
@@ -31,11 +31,11 @@ public class GameQuestionService(IGameQuestionRepository repo, ITableMapperServi
         }
     }
 
-    public async Task<ServiceDataResponse<ViewGameQuestion>> GetGameQuestionAsync(GameQuestionLookup gameQuestionLookup)
+    public async Task<ServiceResponse<ViewGameQuestion>> GetGameQuestionAsync(GameQuestionLookup gameQuestionLookup)
     {
         try
         {
-            ServiceDataResponse<ViewGameQuestion> result = new();
+            ServiceResponse<ViewGameQuestion> result = new();
 
             var row = await _repo.SelectGameQuestionAsync(gameQuestionLookup);
 
@@ -52,7 +52,7 @@ public class GameQuestionService(IGameQuestionRepository repo, ITableMapperServi
         }
     }
 
-    public async Task<ServiceDataResponse<ViewGameQuestion>> UpdateGameQuestionStatusAsync(GameQuestionLookup gameQuestionLookup, GameQuestionStatus gameQuestionStatus)
+    public async Task<ServiceResponse<ViewGameQuestion>> UpdateGameQuestionStatusAsync(GameQuestionLookup gameQuestionLookup, GameQuestionStatus gameQuestionStatus)
     {
         try
         {

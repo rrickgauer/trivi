@@ -5,7 +5,7 @@ using Trivi.Lib.Domain.Errors;
 namespace Trivi.Lib.Domain.Responses;
 
 
-public class ServiceDataResponse<T> : ServiceResponse
+public class ServiceResponse<T> : ServiceResponse
 {
     public T? Data { get; set; }
 
@@ -13,20 +13,20 @@ public class ServiceDataResponse<T> : ServiceResponse
     public bool HasData => Data != null;
 
 
-    public ServiceDataResponse() : base() { }
-    public ServiceDataResponse(IEnumerable<ErrorCode> errors) : base(errors) { }
-    public ServiceDataResponse(ErrorCode errorCode) : base(errorCode) { }
-    public ServiceDataResponse(ServiceResponse other) : base(other) { }
-    public ServiceDataResponse(RepositoryException ex) : base(ex) { }
+    public ServiceResponse() : base() { }
+    public ServiceResponse(IEnumerable<ErrorCode> errors) : base(errors) { }
+    public ServiceResponse(ErrorCode errorCode) : base(errorCode) { }
+    public ServiceResponse(ServiceResponse other) : base(other) { }
+    public ServiceResponse(RepositoryException ex) : base(ex) { }
 
 
-    public ServiceDataResponse(T? data) : base()
+    public ServiceResponse(T? data) : base()
     {
         Data = data;
     }
 
 
-    public ServiceDataResponse(ServiceDataResponse<T> other) : base(other)
+    public ServiceResponse(ServiceResponse<T> other) : base(other)
     {
         Data = other.Data;
     }
@@ -54,17 +54,17 @@ public class ServiceDataResponse<T> : ServiceResponse
 
 
 
-    public static implicit operator ServiceDataResponse<T>(RepositoryException ex)
+    public static implicit operator ServiceResponse<T>(RepositoryException ex)
     {
         return new(ex);
     }
 
-    public static implicit operator ServiceDataResponse<T>(ServiceException ex)
+    public static implicit operator ServiceResponse<T>(ServiceException ex)
     {
-        return new ServiceDataResponse<T>(ex.Response.Errors);
+        return new ServiceResponse<T>(ex.Response.Errors);
     }
 
-    public static implicit operator ServiceDataResponse<T>(T other)
+    public static implicit operator ServiceResponse<T>(T other)
     {
         return new(other);
     }

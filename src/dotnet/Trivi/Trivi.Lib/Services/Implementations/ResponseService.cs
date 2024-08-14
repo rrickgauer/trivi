@@ -18,13 +18,13 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
     private readonly ITableMapperService _tableMapperService = tableMapperService;
     private readonly IAnswerService _answerService = answerService;
 
-    private delegate Task<ServiceDataResponse<TView>> GetFunctionCallback<TView>(PlayerQuestionResponse parms);
+    private delegate Task<ServiceResponse<TView>> GetFunctionCallback<TView>(PlayerQuestionResponse parms);
 
     #endregion
 
     #region - Get response -
 
-    public async Task<ServiceDataResponse<ViewResponse>> GetResponseAsync(PlayerQuestionResponse responseData)
+    public async Task<ServiceResponse<ViewResponse>> GetResponseAsync(PlayerQuestionResponse responseData)
     {
         return responseData.QuestionId.QuestionType switch
         {
@@ -35,7 +35,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         };
     }
 
-    private static async Task<ServiceDataResponse<ViewResponse>> GetResponseAsync<TResponse>(GetFunctionCallback<TResponse> callback, PlayerQuestionResponse callbackParms) where TResponse : ViewResponse
+    private static async Task<ServiceResponse<ViewResponse>> GetResponseAsync<TResponse>(GetFunctionCallback<TResponse> callback, PlayerQuestionResponse callbackParms) where TResponse : ViewResponse
     {
         var serviceResult = await callback(callbackParms);
 
@@ -51,7 +51,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
     #region - Get Short Answers -
 
-    public async Task<ServiceDataResponse<List<ViewResponseShortAnswer>>> GetShortAnswersAsync(string gameId, QuestionId questionId)
+    public async Task<ServiceResponse<List<ViewResponseShortAnswer>>> GetShortAnswersAsync(string gameId, QuestionId questionId)
     {
         try
         {
@@ -65,11 +65,11 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
     }
 
 
-    public async Task<ServiceDataResponse<ViewResponseShortAnswer>> GetShortAnswerAsync(Guid responseId)
+    public async Task<ServiceResponse<ViewResponseShortAnswer>> GetShortAnswerAsync(Guid responseId)
     {
         try
         {
-            ServiceDataResponse<ViewResponseShortAnswer> result = new();
+            ServiceResponse<ViewResponseShortAnswer> result = new();
 
             var row = await _responseRepository.SelectShortAnswerAsync(responseId);
 
@@ -86,11 +86,11 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         }
     }
 
-    public async Task<ServiceDataResponse<ViewResponseShortAnswer>> GetShortAnswerAsync(PlayerQuestionResponse responseData)
+    public async Task<ServiceResponse<ViewResponseShortAnswer>> GetShortAnswerAsync(PlayerQuestionResponse responseData)
     {
         try
         {
-            ServiceDataResponse<ViewResponseShortAnswer> result = new();
+            ServiceResponse<ViewResponseShortAnswer> result = new();
 
             var row = await _responseRepository.SelectShortAnswerAsync(responseData);
 
@@ -111,11 +111,11 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
     #region - Get True False -
 
-    public async Task<ServiceDataResponse<ViewResponseTrueFalse>> GetTrueFalseAsync(Guid responseId)
+    public async Task<ServiceResponse<ViewResponseTrueFalse>> GetTrueFalseAsync(Guid responseId)
     {
         try
         {
-            ServiceDataResponse<ViewResponseTrueFalse> result = new();
+            ServiceResponse<ViewResponseTrueFalse> result = new();
 
             var row = await _responseRepository.SelectTrueFalseAsync(responseId);
 
@@ -132,11 +132,11 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         }
     }
 
-    public async Task<ServiceDataResponse<ViewResponseTrueFalse>> GetTrueFalseAsync(PlayerQuestionResponse responseData)
+    public async Task<ServiceResponse<ViewResponseTrueFalse>> GetTrueFalseAsync(PlayerQuestionResponse responseData)
     {
         try
         {
-            ServiceDataResponse<ViewResponseTrueFalse> result = new();
+            ServiceResponse<ViewResponseTrueFalse> result = new();
 
             var row = await _responseRepository.SelectTrueFalseAsync(responseData);
 
@@ -157,11 +157,11 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
     #region - Get Multiple Choice -
 
-    public async Task<ServiceDataResponse<ViewResponseMultipleChoice>> GetMultipleChoiceAsync(Guid responseId)
+    public async Task<ServiceResponse<ViewResponseMultipleChoice>> GetMultipleChoiceAsync(Guid responseId)
     {
         try
         {
-            ServiceDataResponse<ViewResponseMultipleChoice> result = new();
+            ServiceResponse<ViewResponseMultipleChoice> result = new();
 
             var row = await _responseRepository.SelectMultipleChoiceAsync(responseId);
 
@@ -178,11 +178,11 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         }
     }
 
-    public async Task<ServiceDataResponse<ViewResponseMultipleChoice>> GetMultipleChoiceAsync(PlayerQuestionResponse responseData)
+    public async Task<ServiceResponse<ViewResponseMultipleChoice>> GetMultipleChoiceAsync(PlayerQuestionResponse responseData)
     {
         try
         {
-            ServiceDataResponse<ViewResponseMultipleChoice> result = new();
+            ServiceResponse<ViewResponseMultipleChoice> result = new();
 
             var row = await _responseRepository.SelectMultipleChoiceAsync(responseData);
 
@@ -204,7 +204,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
     #region - Create response -
 
-    public async Task<ServiceDataResponse<ViewResponseShortAnswer>> CreateShortAnswerResponseAsync(ResponseShortAnswer response)
+    public async Task<ServiceResponse<ViewResponseShortAnswer>> CreateShortAnswerResponseAsync(ResponseShortAnswer response)
     {
         try
         {
@@ -223,7 +223,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         return new();
     }
 
-    public async Task<ServiceDataResponse<ViewResponseTrueFalse>> CreateTrueFalseResponseAsync(ResponseTrueFalse response)
+    public async Task<ServiceResponse<ViewResponseTrueFalse>> CreateTrueFalseResponseAsync(ResponseTrueFalse response)
     {
         try
         {
@@ -242,7 +242,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         return new();
     }
 
-    public async Task<ServiceDataResponse<ViewResponseMultipleChoice>> CreateMultipleChoiceResponseAsync(ResponseMultipleChoice response)
+    public async Task<ServiceResponse<ViewResponseMultipleChoice>> CreateMultipleChoiceResponseAsync(ResponseMultipleChoice response)
     {
         var getValidation = await ValidateNewMultipleChoiceAsync(response);
 
@@ -294,7 +294,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
     #endregion
 
 
-    public async Task<ServiceDataResponse<List<ViewPlayerQuestionResponse>>> GetPlayerQuestionResponsesAsync(string gameId, QuestionId questionId)
+    public async Task<ServiceResponse<List<ViewPlayerQuestionResponse>>> GetPlayerQuestionResponsesAsync(string gameId, QuestionId questionId)
     {
         try
         {

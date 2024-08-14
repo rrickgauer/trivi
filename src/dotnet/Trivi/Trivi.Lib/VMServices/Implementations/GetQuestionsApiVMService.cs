@@ -19,7 +19,7 @@ public class GetQuestionsApiVMService(IQuestionService questionService) : IAsync
 {
     private readonly IQuestionService _questionService = questionService;
 
-    public async Task<ServiceDataResponse<GetQuestionsApiVM>> GetViewModelAsync(GetQuestionsApiVMParms parms)
+    public async Task<ServiceResponse<GetQuestionsApiVM>> GetViewModelAsync(GetQuestionsApiVMParms parms)
     {
         try
         {

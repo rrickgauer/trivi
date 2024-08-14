@@ -26,7 +26,7 @@ public class ApiGamesController(IGameService gameService, IGameLobbyHubService g
     [HttpPost]
     [ActionName(nameof(PostGameAsync))]
     [ServiceFilter<PostGameFilter>]
-    public async Task<ActionResult<ServiceDataResponse<ViewGame>>> PostGameAsync([FromBody] NewGameForm newGameForm)
+    public async Task<ActionResult<ServiceResponse<ViewGame>>> PostGameAsync([FromBody] NewGameForm newGameForm)
     {
         var game = Game.FromNewGameForm(newGameForm);
 
@@ -44,7 +44,7 @@ public class ApiGamesController(IGameService gameService, IGameLobbyHubService g
 
     [HttpGet("{gameId:gameId}")]
     [ActionName(nameof(GetGameAsync))]
-    public async Task<ActionResult<ServiceDataResponse<ViewGame>>> GetGameAsync([FromRoute] string gameId)
+    public async Task<ActionResult<ServiceResponse<ViewGame>>> GetGameAsync([FromRoute] string gameId)
     {
         var getGame = await _gameService.GetGameAsync(gameId);
 
@@ -60,7 +60,7 @@ public class ApiGamesController(IGameService gameService, IGameLobbyHubService g
     [HttpPost("{gameId:gameId}/start")]
     [ActionName(nameof(PostGameStartAsync))]
     [ServiceFilter<StartGameFilter>]
-    public async Task<ActionResult<ServiceDataResponse<ViewGame>>> PostGameStartAsync([FromRoute] string gameId)
+    public async Task<ActionResult<ServiceResponse<ViewGame>>> PostGameStartAsync([FromRoute] string gameId)
     {
         var updateGame = await _gameService.StartGameAsync(gameId);
 

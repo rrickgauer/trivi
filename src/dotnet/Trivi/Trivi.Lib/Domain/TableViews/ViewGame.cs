@@ -45,6 +45,12 @@ public class ViewGame
     [SqlColumn("next_question_id")]
     public QuestionId? NextQuestionId { get; set; }
 
+    [SqlColumn("count_game_questions")]
+    public long CountQuestions { get; set; } = 0;
+
+    [SqlColumn("active_question_index")]
+    public ulong? ActiveQuestionIndex { get; set; }
+
 
     [JsonIgnore]
     public List<ViewGameQuestion> Questions { get; set; } = new();

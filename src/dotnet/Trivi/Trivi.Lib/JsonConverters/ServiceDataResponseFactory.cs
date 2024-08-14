@@ -58,7 +58,7 @@ public class ServiceDataResponseFactory : JsonConverterFactory
             return false;
         }
 
-        if (typeToConvert.GetGenericTypeDefinition() == typeof(ServiceDataResponse<>))
+        if (typeToConvert.GetGenericTypeDefinition() == typeof(ServiceResponse<>))
         {
             return true;
         }

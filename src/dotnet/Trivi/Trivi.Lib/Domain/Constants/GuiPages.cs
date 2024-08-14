@@ -20,6 +20,8 @@ public class GuiPages
 
     public static string GameLobby => Build("Games/Game/Lobby/GameLobbyPage");
 
+    public static string GameWaiting => Build("Games/Game/Waiting/GameWaitingPage");
+
     public static string GameQuestionLayout => Build("Games/Game/Questions/_GameQuestionsLayout");
     public static string GameQuestionShortAnswer => Build("Games/Game/Questions/ShortAnswer/ShortAnswerGameQuestionPage");
     public static string GameQuestionTrueFalse => Build("Games/Game/Questions/TrueFalse/TrueFalseGameQuestionPage");

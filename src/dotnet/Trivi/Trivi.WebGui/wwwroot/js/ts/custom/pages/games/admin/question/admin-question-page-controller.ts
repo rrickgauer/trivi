@@ -57,7 +57,7 @@ export class AdminQuestionPageController implements IControllerAsync
     {
         this.addListeners();
 
-        await this._gameHub.startConnection();
+        await this._gameHub.control();
         await this._gameHub.adminJoinQuestionPage(this._urlParms.questionId);
     }
 

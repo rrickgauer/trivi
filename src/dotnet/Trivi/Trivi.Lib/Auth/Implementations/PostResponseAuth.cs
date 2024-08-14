@@ -7,14 +7,11 @@ using Trivi.Lib.Services.Contracts;
 
 namespace Trivi.Lib.Auth.Implementations;
 
-
 public class PostResponseAuthParms
 {
     public required QuestionId QuestionId { get; set; }
     public required Guid PlayerId { get; set; }
 }
-
-
 
 [AutoInject(AutoInjectionType.Scoped, InjectionProject.Always)] 
 public class PostResponseAuth(IResponseService responseService, RequestItems requestItems) : IAsyncPermissionsAuth<PostResponseAuthParms>

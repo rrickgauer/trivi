@@ -61,7 +61,7 @@ CREATE TABLE Collections (
   UNIQUE KEY id (id),
   KEY user_id (user_id),
   CONSTRAINT Collections_ibfk_1 FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,7 +134,7 @@ CREATE TABLE Game_Questions (
   CONSTRAINT Game_Questions_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Game_Questions_ibfk_2 FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Game_Questions_ibfk_3 FOREIGN KEY (game_question_status_id) REFERENCES Game_Question_Status (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +175,7 @@ CREATE TABLE Games (
   KEY game_status_id (game_status_id),
   CONSTRAINT Games_ibfk_1 FOREIGN KEY (collection_id) REFERENCES Collections (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Games_ibfk_2 FOREIGN KEY (game_status_id) REFERENCES Game_Status (id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,7 +196,7 @@ CREATE TABLE Players (
   UNIQUE KEY id (id),
   KEY game_id (game_id),
   CONSTRAINT Players_ibfk_1 FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -239,7 +239,7 @@ CREATE TABLE Questions (
   KEY question_type_id (question_type_id),
   CONSTRAINT Questions_ibfk_1 FOREIGN KEY (collection_id) REFERENCES Collections (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Questions_ibfk_2 FOREIGN KEY (question_type_id) REFERENCES Question_Types (id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=178 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,7 +274,7 @@ CREATE TABLE Questions_SA (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Questions_SA_ibfk_1 FOREIGN KEY (id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,7 +292,7 @@ CREATE TABLE Questions_TF (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Questions_TF_ibfk_1 FOREIGN KEY (id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +315,7 @@ CREATE TABLE Responses (
   KEY player_id (player_id),
   CONSTRAINT Responses_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Responses_ibfk_2 FOREIGN KEY (player_id) REFERENCES Players (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -333,7 +333,7 @@ CREATE TABLE Responses_MC (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Responses_MC_ibfk_1 FOREIGN KEY (id) REFERENCES Responses (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -369,7 +369,7 @@ CREATE TABLE Responses_TF (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Responses_TF_ibfk_1 FOREIGN KEY (id) REFERENCES Responses (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -479,7 +479,9 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS game_started_on,
  1 AS game_collection_user_id,
  1 AS active_question_id,
- 1 AS next_question_id*/;
+ 1 AS next_question_id,
+ 1 AS count_game_questions,
+ 1 AS active_question_index*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -975,7 +977,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Games AS select g.id AS game_id,g.collection_id AS game_collection_id,g.game_status_id AS game_status_id,g.randomize_questions AS game_randomize_questions,g.question_time_limit AS game_question_time_limit,g.created_on AS game_created_on,g.started_on AS game_started_on,c.user_id AS game_collection_user_id,(select q.question_id from Game_Questions q where ((q.game_id = g.id) and (q.game_question_status_id = 2)) limit 1) AS active_question_id,(select q.question_id from Game_Questions q where ((q.game_id = g.id) and (q.game_question_status_id = 1)) limit 1) AS next_question_id from (Games g join Collections c on((c.id = g.collection_id))) */;
+/*!50001 VIEW View_Games AS with Game_Questions_Ranked as (select q.question_id AS question_id,q.game_id AS game_id,q.game_question_status_id AS game_question_status_id,q.created_on AS created_on,row_number() OVER (PARTITION BY q.game_id ORDER BY q.game_id )  AS question_index from Game_Questions q) select g.id AS game_id,g.collection_id AS game_collection_id,g.game_status_id AS game_status_id,g.randomize_questions AS game_randomize_questions,g.question_time_limit AS game_question_time_limit,g.created_on AS game_created_on,g.started_on AS game_started_on,c.user_id AS game_collection_user_id,(select q.question_id from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.game_question_status_id = 2)) limit 1) AS active_question_id,(select q.question_id from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.game_question_status_id = 1)) limit 1) AS next_question_id,(select count(0) from Game_Questions_Ranked q where (q.game_id = q.game_id)) AS count_game_questions,(select q.question_index from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.question_id = active_question_id)) limit 1) AS active_question_index from (Games g join Collections c on((c.id = g.collection_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1169,7 +1171,7 @@ USE Trivi_Dev;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-14 11:05:43
+-- Dump completed on 2024-08-14 15:37:44
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
@@ -1251,4 +1253,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-14 11:05:49
+-- Dump completed on 2024-08-14 15:37:50

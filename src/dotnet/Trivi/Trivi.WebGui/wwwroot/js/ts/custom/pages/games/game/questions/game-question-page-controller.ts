@@ -2,6 +2,7 @@ import { IController, IControllerAsync } from "../../../../domain/contracts/icon
 import { GameQuestionSubmittedData, GameQuestionSubmittedEvent, NavigateToPageEvent } from "../../../../domain/events/events";
 import { GameQuestionUrlParms } from "../../../../domain/models/game-models";
 import { GameQuestionHub } from "../../../../hubs/game-question/game-question-hub";
+import { PageLoadingUtility } from "../../../../utility/page-loading-utility";
 import { UrlUtility } from "../../../../utility/url-utility";
 
 
@@ -15,6 +16,8 @@ export abstract class GameQuestionPageController implements IControllerAsync
 
     constructor(data: GameQuestionUrlParms)
     {
+        PageLoadingUtility.hideLoader();
+
         this._gameId = data.gameId;
         this._playerId = data.playerId;
         this._questionId = data.questionId;
@@ -27,12 +30,12 @@ export abstract class GameQuestionPageController implements IControllerAsync
     {
         this.addListenersBase();
 
-        await this._gameHub.startConnection();
+        await this._gameHub.control();
 
         await this._gameHub.playerJoinPage({
             gameId: this._gameId,
             playerId: this._playerId,
-            questionId: this._questionId,
+            //questionId: this._questionId,
         });
     }
 
@@ -52,8 +55,7 @@ export abstract class GameQuestionPageController implements IControllerAsync
 
     private onGameQuestionSubmittedEvent(message: GameQuestionSubmittedData)
     {
-        const newPath = `/games/${message.response.gameId}`;
-        window.location.href = UrlUtility.replacePath(newPath).toString();
+        PageLoadingUtility.showLoader();
     }
 
 

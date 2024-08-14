@@ -4,5 +4,5 @@ namespace Trivi.Lib.Services.Contracts;
 
 public interface IGamePageService
 {
-    public Task<ServiceDataResponse<string>> GetPlayerPageUrl(string gameId, Guid playerId);
+    public Task<ServiceResponse<string>> GetPlayerPageUrl(string gameId, Guid playerId);
 }

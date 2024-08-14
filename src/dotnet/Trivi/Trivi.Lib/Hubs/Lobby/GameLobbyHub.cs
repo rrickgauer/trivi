@@ -8,8 +8,8 @@ namespace Trivi.Lib.Hubs.Lobby;
 
 public interface IGameHubClientEvents
 {
-    public Task AdminLobbyUpdated(ServiceDataResponse<AdminLobbyUpdatedData> data);
-    public Task NavigateTo(ServiceDataResponse<NavigateToData> data);
+    public Task AdminLobbyUpdated(ServiceResponse<AdminLobbyUpdatedData> data);
+    public Task NavigateTo(ServiceResponse<NavigateToData> data);
 }
 
 public class GameLobbyHub(IGamePoolService gamePoolService) : Hub<IGameHubClientEvents>

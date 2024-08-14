@@ -15,7 +15,7 @@ public class TrueFalseGameQuestionVMService(IGameService gameService, IQuestionS
     private readonly IGameService _gameService = gameService;
     private readonly IQuestionService _questionService = questionService;
 
-    public async Task<ServiceDataResponse<GameQuestionLayoutModel<TrueFalseGameQuestionVM>>> GetViewModelAsync(GameQuestionVMServiceParms parms)
+    public async Task<ServiceResponse<GameQuestionLayoutModel<TrueFalseGameQuestionVM>>> GetViewModelAsync(GameQuestionVMServiceParms parms)
     {
         try
         {

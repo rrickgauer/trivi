@@ -24,7 +24,7 @@ public class AdminQuestionVMService(IResponseService responseService, IGameServi
     private readonly IGameService _gameService = gameService;
     private readonly IGameQuestionService _gameQuestionService = gameQuestionService;
 
-    public async Task<ServiceDataResponse<AdminQuestionViewModel>> GetViewModelAsync(AdminQuestionVMServiceParms parms)
+    public async Task<ServiceResponse<AdminQuestionViewModel>> GetViewModelAsync(AdminQuestionVMServiceParms parms)
     {
         try
         {

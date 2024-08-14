@@ -12,14 +12,13 @@ public class PlayGameFilter(PlayGameAuth auth) : IAsyncActionFilter
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        var playGameRequest = context.GetPlayGameRequest();
+        var playGameRequest = context.GetPlayGameRequestForm();
 
         var hasPermission = await _auth.HasPermissionAsync(new()
         {
             GameId = playGameRequest.GameId,
             PlayerId = playGameRequest.PlayerId,
         });
-
 
         if (!hasPermission.Successful)
         {

@@ -21,7 +21,7 @@ export enum GameQuestionHubEvents
 }
 
 
-export class GameQuestionHub
+export class GameQuestionHub implements IControllerAsync
 {
     protected static readonly HUB_URL = '/hubs/game-question';
     private _gameId: string;
@@ -42,13 +42,11 @@ export class GameQuestionHub
         this.addListeners();
     }
 
-    public async startConnection()
+    public async control()
     {
         await this._connection.start();
 
         this._connectionStarted = true;
-
-        return this;
     }
 
     public async adminJoinQuestionPage(questionId: QuestionId)
@@ -88,7 +86,7 @@ export class GameQuestionHub
     {
         if (this._connection.state != HubConnectionState.Connected)
         {
-            await this.startConnection();
+            await this.control();
         }
     }
 

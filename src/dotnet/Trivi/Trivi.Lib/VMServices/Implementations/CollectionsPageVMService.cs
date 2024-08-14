@@ -21,7 +21,7 @@ public class CollectionsPageVMService(ICollectionService collectionService) : IA
 {
     private readonly ICollectionService _collectionService = collectionService;
 
-    public async Task<ServiceDataResponse<CollectionsPageVM>> GetViewModelAsync(CollectionsPageVMParms parms)
+    public async Task<ServiceResponse<CollectionsPageVM>> GetViewModelAsync(CollectionsPageVMParms parms)
     {
         try
         {

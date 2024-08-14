@@ -19,7 +19,7 @@ public class CollectionQuestionsPageVMService(ICollectionService collectionServi
 {
     private readonly ICollectionService _collectionService = collectionService;
 
-    public async Task<ServiceDataResponse<CollectionPageLayoutModel<CollectionQuestionsPageVM>>> GetViewModelAsync(CollectionQuestionsPageVMParms parms)
+    public async Task<ServiceResponse<CollectionPageLayoutModel<CollectionQuestionsPageVM>>> GetViewModelAsync(CollectionQuestionsPageVMParms parms)
     {
         try
         {

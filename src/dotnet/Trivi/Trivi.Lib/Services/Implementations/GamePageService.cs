@@ -7,7 +7,7 @@ namespace Trivi.Lib.Services.Implementations;
 [AutoInject<IGamePageService>(AutoInjectionType.Scoped, InjectionProject.Always)]
 public class GamePageService : IGamePageService
 {
-    public async Task<ServiceDataResponse<string>> GetPlayerPageUrl(string gameId, Guid playerId)
+    public async Task<ServiceResponse<string>> GetPlayerPageUrl(string gameId, Guid playerId)
     {
         throw new NotImplementedException();
     }

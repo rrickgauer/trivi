@@ -14,7 +14,7 @@ public class CollectionService(ICollectionRepository repo, ITableMapperService t
     private readonly ICollectionRepository _repo = repo;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
 
-    public async Task<ServiceDataResponse<List<ViewCollection>>> GetUserCollectionsAsync(Guid userId)
+    public async Task<ServiceResponse<List<ViewCollection>>> GetUserCollectionsAsync(Guid userId)
     {
         try
         {
@@ -27,7 +27,7 @@ public class CollectionService(ICollectionRepository repo, ITableMapperService t
         }
     }
 
-    public async Task<ServiceDataResponse<ViewCollection>> GetCollectionAsync(Guid collectionId)
+    public async Task<ServiceResponse<ViewCollection>> GetCollectionAsync(Guid collectionId)
     {
         try
         {
@@ -46,7 +46,7 @@ public class CollectionService(ICollectionRepository repo, ITableMapperService t
         }
     }
 
-    public async Task<ServiceDataResponse<ViewCollection>> CreateCollectionAsync(Collection newCollection)
+    public async Task<ServiceResponse<ViewCollection>> CreateCollectionAsync(Collection newCollection)
     {
         try
         {
@@ -59,7 +59,7 @@ public class CollectionService(ICollectionRepository repo, ITableMapperService t
         }
     }
 
-    public async Task<ServiceDataResponse<ViewCollection>> UpdateCollectionAsync(Collection newCollection)
+    public async Task<ServiceResponse<ViewCollection>> UpdateCollectionAsync(Collection newCollection)
     {
         try
         {

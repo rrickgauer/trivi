@@ -14,7 +14,7 @@ public class MulitpleChoiceGameQuestionVMService(IGameService gameService, IQues
     private readonly IGameService _gameService = gameService;
     private readonly IQuestionService _questionService = questionService;
 
-    public async Task<ServiceDataResponse<GameQuestionLayoutModel<MultipleChoiceGameQuestionVM>>> GetViewModelAsync(GameQuestionVMServiceParms parms)
+    public async Task<ServiceResponse<GameQuestionLayoutModel<MultipleChoiceGameQuestionVM>>> GetViewModelAsync(GameQuestionVMServiceParms parms)
     {
         try
         {

@@ -4,6 +4,6 @@ namespace Trivi.Lib.VMServices.Contracts;
 
 public interface IVMService<in TParms, TViewModel>
 {
-    public ServiceDataResponse<TViewModel> GetViewModel(TParms parms);
+    public ServiceResponse<TViewModel> GetViewModel(TParms parms);
 }
 

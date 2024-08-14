@@ -26,7 +26,7 @@ public class GamePoolService(IGameService gameService, IPlayerService playerServ
         return value;
     }
 
-    public async Task<ServiceDataResponse<ConnectionsPool>> AddPlayerToGameAsync(string gameId, Guid playerId)
+    public async Task<ServiceResponse<ConnectionsPool>> AddPlayerToGameAsync(string gameId, Guid playerId)
     {
         var gamepool = GetConnectionPool(gameId);
 

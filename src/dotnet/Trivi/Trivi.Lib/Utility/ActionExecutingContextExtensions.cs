@@ -37,7 +37,7 @@ public static class ActionExecutingContextExtensions
     public static PutAnswerRequest GetPutAnswerRequest(this ActionExecutingContext context) => GetForm<PutAnswerRequest>(context);
     public static NewGameForm GetNewGameForm(this ActionExecutingContext context) => GetForm<NewGameForm>(context);
     public static JoinGameForm GetJoinGameForm(this ActionExecutingContext context) => GetForm<JoinGameForm>(context);
-    public static PlayGameGuiRequest GetPlayGameRequest(this ActionExecutingContext context) => GetForm<PlayGameGuiRequest>(context);
+    public static PlayGameGuiRequest GetPlayGameRequestForm(this ActionExecutingContext context) => GetForm<PlayGameGuiRequest>(context);
     public static ResponseForm GetResponseForm(this ActionExecutingContext context) => GetForm<ResponseForm>(context);
 
 

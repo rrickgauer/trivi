@@ -24,7 +24,6 @@ public class ApiResponsesController(IResponseService responseService, RequestIte
 
     [HttpPost("{questionId:shortAnswerQuestion}")]
     [ActionName(nameof(PostShortAnswerAsync))]
-
     public async Task<IActionResult> PostShortAnswerAsync([FromRoute] QuestionId questionId, [FromBody] ResponseShortAnswerForm data)
     {
         ResponseShortAnswer response = data.ToResponse(questionId);

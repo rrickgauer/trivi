@@ -23,7 +23,7 @@ public class AuthService(IUserService userService, IHttpContextAccessor contextA
 
     
 
-    public async Task<ServiceDataResponse<ViewUser>> LoginUserAsync(LoginForm credentials)
+    public async Task<ServiceResponse<ViewUser>> LoginUserAsync(LoginForm credentials)
     {
         try
         {
@@ -108,7 +108,7 @@ public class AuthService(IUserService userService, IHttpContextAccessor contextA
         return result;
     }
 
-    private async Task<ServiceDataResponse<ViewUser>> CreateUserAsync(SignupForm credentials)
+    private async Task<ServiceResponse<ViewUser>> CreateUserAsync(SignupForm credentials)
     {
         var newUserModel = User.FromSignup(credentials);
 
@@ -117,7 +117,7 @@ public class AuthService(IUserService userService, IHttpContextAccessor contextA
         return createUser;
     }
 
-    public ServiceDataResponse<bool> IsClientLoggedIn()
+    public ServiceResponse<bool> IsClientLoggedIn()
     {
         if (_sessionManager.ClientId is not Guid clientId)
         {

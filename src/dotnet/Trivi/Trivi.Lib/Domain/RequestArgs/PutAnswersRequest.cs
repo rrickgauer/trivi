@@ -16,7 +16,7 @@ public class PutAnswersRequest
     public required List<AnswerForm> AnswerForms { get; set; }
 
 
-    public ServiceDataResponse<List<Answer>> ToModels()
+    public ServiceResponse<List<Answer>> ToModels()
     {
         var answers = AnswerForms.Select(a => new Answer()
         {

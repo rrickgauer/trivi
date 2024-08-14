@@ -17,7 +17,7 @@ export type AdminUpdatePlayerQuestionResponsesParms = {
 
 export type PlayerConnectParms = {
     gameId: string;
-    questionId: QuestionId;
+    //questionId: QuestionId;
     playerId: Guid;
 }
 

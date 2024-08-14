@@ -4,6 +4,6 @@ namespace Trivi.Lib.VMServices.Contracts;
 
 public interface IAsyncVMService<in TParms, TViewModel>
 {
-    public Task<ServiceDataResponse<TViewModel>> GetViewModelAsync(TParms parms);
+    public Task<ServiceResponse<TViewModel>> GetViewModelAsync(TParms parms);
 }
 

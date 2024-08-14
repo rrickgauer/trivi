@@ -19,7 +19,7 @@ public class CollectionSettingsPageVMService(ICollectionService collectionServic
 {
     private readonly ICollectionService _collectionService = collectionService;
 
-    public async Task<ServiceDataResponse<CollectionPageLayoutModel<CollectionSettingsPageVM>>> GetViewModelAsync(CollectionSettingsPageVMParms parms)
+    public async Task<ServiceResponse<CollectionPageLayoutModel<CollectionSettingsPageVM>>> GetViewModelAsync(CollectionSettingsPageVMParms parms)
     {
         try
         {

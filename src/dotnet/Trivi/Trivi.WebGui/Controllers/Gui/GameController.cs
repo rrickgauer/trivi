@@ -6,6 +6,7 @@ using Trivi.Lib.Filters;
 using Trivi.Lib.Services.Contracts;
 using Trivi.Lib.VMServices.Implementations;
 using Trivi.WebGui.Controllers.Contracts;
+using Trivi.WebGui.Filters;
 
 namespace Trivi.WebGui.Controllers.Gui;
 
@@ -82,7 +83,7 @@ public class GameController : GuiController, IControllerName
     [ActionName(nameof(GetWaitingPageAsync))]   
     public async Task<IActionResult> GetWaitingPageAsync(PlayGameGuiRequest gameRequest)
     {
-        return Ok("waiting page");
+        return View(GuiPages.GameWaiting);
     }
 
 
@@ -100,6 +101,7 @@ public class GameController : GuiController, IControllerName
 
     [HttpGet("questions/{questionId:shortAnswerQuestion}")]
     [ActionName(nameof(ShortAnswerGameQuestionPageAsync))]
+    [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
     public async Task<IActionResult> ShortAnswerGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVM = await _shortAnswerVMService.GetViewModelAsync(new()
@@ -120,6 +122,7 @@ public class GameController : GuiController, IControllerName
 
     [HttpGet("questions/{questionId:trueFalseQuestion}")]
     [ActionName(nameof(TrueFalseGameQuestionPageAsync))]
+    [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
     public async Task<IActionResult> TrueFalseGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVm = await _trueFalseGameQuestionVMService.GetViewModelAsync(new()
@@ -139,6 +142,7 @@ public class GameController : GuiController, IControllerName
 
     [HttpGet("questions/{questionId:multipleChoiceQuestion}")]
     [ActionName(nameof(MultipleChoiceGameQuestionPageAsync))]
+    [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
     public async Task<IActionResult> MultipleChoiceGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVM = await _mulitpleChoiceGameQuestionVMService.GetViewModelAsync(new()

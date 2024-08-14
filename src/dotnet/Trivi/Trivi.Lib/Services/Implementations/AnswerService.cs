@@ -16,7 +16,7 @@ public class AnswerService(IAnswerRepository repo, ITableMapperService mapperSer
     private readonly IAnswerRepository _repo = repo;
     private readonly ITableMapperService _mapperService = mapperService;
 
-    public async Task<ServiceDataResponse<List<ViewAnswer>>> GetAnswersAsync(QuestionId questionId)
+    public async Task<ServiceResponse<List<ViewAnswer>>> GetAnswersAsync(QuestionId questionId)
     {
         try
         {
@@ -30,11 +30,11 @@ public class AnswerService(IAnswerRepository repo, ITableMapperService mapperSer
         }
     }
 
-    public async Task<ServiceDataResponse<ViewAnswer>> GetAnswerAsync(string answerId)
+    public async Task<ServiceResponse<ViewAnswer>> GetAnswerAsync(string answerId)
     {
         try
         {
-            ServiceDataResponse<ViewAnswer> result = new();
+            ServiceResponse<ViewAnswer> result = new();
             
             var row = await _repo.SelectAnswerAsync(answerId);
 
@@ -51,7 +51,7 @@ public class AnswerService(IAnswerRepository repo, ITableMapperService mapperSer
         }
     }
 
-    public async Task<ServiceDataResponse<ViewAnswer>> SaveAnswerAsync(Answer answer)
+    public async Task<ServiceResponse<ViewAnswer>> SaveAnswerAsync(Answer answer)
     {
         try
         {
@@ -64,7 +64,7 @@ public class AnswerService(IAnswerRepository repo, ITableMapperService mapperSer
         }
     }
 
-    public async Task<ServiceDataResponse<List<ViewAnswer>>> ReplaceAnswersAsync(PutAnswersRequest answersRequest)
+    public async Task<ServiceResponse<List<ViewAnswer>>> ReplaceAnswersAsync(PutAnswersRequest answersRequest)
     {
         var answers = answersRequest.ToModels();
         

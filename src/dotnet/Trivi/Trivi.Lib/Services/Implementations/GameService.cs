@@ -19,7 +19,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
     private readonly ITableMapperService _tableMapperService = tableMapperService;
     private readonly IGameQuestionService _gameQuestionService = gameQuestionService;
 
-    public async Task<ServiceDataResponse<List<ViewGame>>> GetUserGamesAsync(Guid userId)
+    public async Task<ServiceResponse<List<ViewGame>>> GetUserGamesAsync(Guid userId)
     {
         try
         {
@@ -32,11 +32,11 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         }
     }
 
-    public async Task<ServiceDataResponse<ViewGame>> GetGameAsync(string gameId)
+    public async Task<ServiceResponse<ViewGame>> GetGameAsync(string gameId)
     {
         try
         {
-            ServiceDataResponse<ViewGame> result = new();
+            ServiceResponse<ViewGame> result = new();
 
             var row = await _gameRepository.SelectGameAsync(gameId);
 
@@ -54,7 +54,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
     }
 
 
-    public async Task<ServiceDataResponse<ViewGame>> CreateGameAsync(Game game)
+    public async Task<ServiceResponse<ViewGame>> CreateGameAsync(Game game)
     {
         var validateResult = await ValidateNewGameAsync(game);
 
@@ -90,7 +90,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         return result;
     }
 
-    public async Task<ServiceDataResponse<ViewGame>> StartGameAsync(string gameId)
+    public async Task<ServiceResponse<ViewGame>> StartGameAsync(string gameId)
     {
         try
         {
@@ -127,7 +127,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
     }
 
 
-    public async Task<ServiceDataResponse<ViewGame>> ActivateNextGameQuestionAsync(string gameId)
+    public async Task<ServiceResponse<ViewGame>> ActivateNextGameQuestionAsync(string gameId)
     {
         try
         {

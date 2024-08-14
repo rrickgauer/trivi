@@ -30,6 +30,8 @@ public class MulitpleChoiceGameQuestionVMService(IGameService gameService, IQues
             {
                 Game = game,
                 PageTitle = "Multiple Choice",
+                Points = question.Points,
+                Prompt = question.Prompt!,
             };
         }
         catch(ServiceException ex)

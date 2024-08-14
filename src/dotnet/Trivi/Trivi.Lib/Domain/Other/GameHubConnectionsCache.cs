@@ -1,12 +1,14 @@
-﻿using System.Collections.Concurrent;
-
-namespace Trivi.Lib.Domain.Other;
+﻿namespace Trivi.Lib.Domain.Other;
 
 public class GameHubConnectionsCache(string gameId)
 {
     public string GameId { get; } = gameId;
     public string? AdminConnectionId { get; set; }
-    public List<string> PlayerConnections { get; set; } = new();
+
+
+    // player id, connection id
+    public Dictionary<Guid, string> Players = new();
+    public List<string> PlayerConnectionIds => Players.Values.ToList();
 
     public void RemoveConnection(string connectionId)
     {
@@ -16,53 +18,37 @@ public class GameHubConnectionsCache(string gameId)
             return;
         }
 
-        PlayerConnections.Remove(connectionId);
+        if (TryGetPlayerId(connectionId, out var playerId))
+        {
+            Players.Remove(playerId);
+        }
     }
-}
 
+    
 
-public static class GameHubConnectionsCacheExtensions
-{
-    public static GameHubConnectionsCache SetAdminConnectionId(this ConcurrentDictionary<string, GameHubConnectionsCache> gamesCache, string gameId, string connectionId)
+    public bool TryGetPlayerId(string connectionId, out Guid playerId)
     {
-        var gameConnections = gamesCache.AddOrUpdate(gameId, (key) =>
-        {
-            // add
-            return new(gameId)
-            {
-                AdminConnectionId = connectionId,
-            };
-        },
+        playerId = Guid.Empty;
+        
+        var foundId = Players.Where(p => p.Value == connectionId)?.FirstOrDefault().Key;
 
-        (key, value) =>
+        if (foundId is Guid result)
         {
-            // update
-            value.AdminConnectionId = connectionId;
-            return value;
-        });
+            playerId = result;
+            return true;
+        }
 
-        return gameConnections;
+        return false;
     }
 
-    public static GameHubConnectionsCache SetPlayerConnectionId(this ConcurrentDictionary<string, GameHubConnectionsCache> gamesCache, string gameId, string connectionId)
+
+    public GameHubConnectionsCache AddPlayer(Guid playerId, string connectionId)
     {
-        var gameConnections = gamesCache.AddOrUpdate(gameId, (key) =>
+        if (!Players.TryAdd(playerId, connectionId))
         {
-            // add 
-            GameHubConnectionsCache newResult = new(gameId);
-            newResult.PlayerConnections.Add(connectionId);
+            Players[playerId] = connectionId;
+        }
 
-            return newResult;
-        },
-
-        (key, value) =>
-        {
-            // update
-            value.PlayerConnections.Add(connectionId);
-            return value;
-        });
-
-        return gameConnections;
+        return this;
     }
-
 }

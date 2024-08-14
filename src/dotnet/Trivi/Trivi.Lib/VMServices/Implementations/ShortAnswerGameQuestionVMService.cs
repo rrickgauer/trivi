@@ -39,6 +39,8 @@ public class ShortAnswerGameQuestionVMService(IGameService gameService, IQuestio
             {
                 Game = game,
                 PageTitle = "Short answer",
+                Points = question.Points,
+                Prompt = question.Prompt!,
             };
         }
         catch(ServiceException ex)

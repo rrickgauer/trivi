@@ -13,6 +13,7 @@ public class PartialRazorFiles
     public static string SpinnerCenter => Build("_SpinnerCenter");
     public static string AlertsPageTop => Build("_AlertsPageTop");
     public static string BundleTop     => Build("_IncludeBundle");
+    public static string Toasts        => Build("_ToastsContainer");
 
     private static string Build(string path)
     {

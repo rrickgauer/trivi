@@ -1,8 +1,8 @@
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
 import { IControllerAsync } from "../../domain/contracts/icontroller";
 import { QuestionId } from "../../domain/types/aliases";
-import { AdminJoinParms, AdminUpdatePlayerQuestionResponsesParms, NavigateToPageParms, PlayerConnectParms } from "./models";
-import { AdminUpdatePlayerQuestionResponsesEvent, NavigateToPageEvent } from "../../domain/events/events";
+import { AdminJoinParms, AdminSendAllPlayersMessageParms, AdminSendPlayerMessageParms, AdminUpdatePlayerQuestionResponsesParms, DisplayToastParms, NavigateToPageParms, PlayerConnectParms } from "./models";
+import { AdminUpdatePlayerQuestionResponsesEvent, DisplayToastEvent, NavigateToPageEvent } from "../../domain/events/events";
 
 
 
@@ -11,6 +11,8 @@ export enum GameQuestionHubEndpoints
 {
     AdminConnectAsync = "AdminConnectAsync",
     PlayerConnectAsync = "PlayerConnectAsync",
+    AdminSendPlayerMessageAsync = "AdminSendPlayerMessageAsync",
+    AdminSendAllPlayersMessageAsync = "AdminSendAllPlayersMessageAsync",
 }
 
 
@@ -18,6 +20,7 @@ export enum GameQuestionHubEvents
 {
     AdminUpdatePlayerQuestionResponses = "AdminUpdatePlayerQuestionResponses",
     NavigateToPage = "NavigateToPage",
+    DisplayToast = "DisplayToast",
 }
 
 
@@ -68,6 +71,18 @@ export class GameQuestionHub implements IControllerAsync
         await this._connection.invoke(GameQuestionHubEndpoints.PlayerConnectAsync, data);
     }
 
+    public async adminSendPlayerMessage(data: AdminSendPlayerMessageParms)
+    {
+        await this.ensureConnection();
+        await this._connection.invoke(GameQuestionHubEndpoints.AdminSendPlayerMessageAsync, data);
+    }
+
+    public async adminSendAllPlayersMessage(data: AdminSendAllPlayersMessageParms)
+    {
+        await this.ensureConnection();
+        await this._connection.invoke(GameQuestionHubEndpoints.AdminSendAllPlayersMessageAsync, data);
+    }
+
 
     private addListeners()
     {
@@ -79,6 +94,11 @@ export class GameQuestionHub implements IControllerAsync
         this._connection.on(GameQuestionHubEvents.NavigateToPage, (data: NavigateToPageParms) =>
         {
             NavigateToPageEvent.invoke(this, data);
+        });
+
+        this._connection.on(GameQuestionHubEvents.DisplayToast, (data: DisplayToastParms) =>
+        {
+            DisplayToastEvent.invoke(this, data);
         });
     }
 

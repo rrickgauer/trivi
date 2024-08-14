@@ -1,6 +1,7 @@
+import bootstrap from "bootstrap";
 import { NativeEvents } from "../../../../domain/constants/native-events";
 import { IController, IControllerAsync } from "../../../../domain/contracts/icontroller";
-import { AdminUpdatePlayerQuestionResponsesEvent } from "../../../../domain/events/events";
+import { AdminUpdatePlayerQuestionResponsesEvent, OpenSendAllPlayersMessageModalEvent, SendAllPlayersMessageEvent, SendPlayerToastEvent } from "../../../../domain/events/events";
 import { Selector } from "../../../../domain/helpers/element-selector/selector";
 import { SpinnerButton } from "../../../../domain/helpers/spinner-button";
 import { QuestionId } from "../../../../domain/types/aliases";
@@ -12,6 +13,9 @@ import { AlertUtility } from "../../../../utility/alert-utility";
 import { ErrorUtility } from "../../../../utility/error-utility";
 import { PageUtility } from "../../../../utility/page-utility";
 import { UrlUtility } from "../../../../utility/url-utility";
+import { ModalMessageAllPlayers } from "./modal-message-all-players";
+import { ModalPlayerQuestionSettings } from "./modal-player-question-settings";
+import { PlayerStatusListItem, PlayerStatusListItemElements } from "./player-status-list-item";
 
 
 export type AdminQuestionPageUrlParms = {
@@ -22,9 +26,13 @@ export type AdminQuestionPageUrlParms = {
 
 const elements = {
     tableContainerClass:  ".player-status-table-container",
-    tableClass: ".player-status-table",
+    tableClass: ".player-status-list",
     btnCloseQuestionClass: ".btn-close-question",
     alertsContainerClass: ".alerts-container",
+    btnMessageAllPlayersClass: '.btn-message-all-players',
+    btnSetQuestionTimerClass: ".btn-set-question-timer",
+    timerSecondsAttr: "data-timer-seconds",
+    btnOpenSetQuestionTimerClass: ".btn-open-set-question-timer",
 }
 
 export const AdminQuestionPageControllerElements = elements;
@@ -34,10 +42,12 @@ export class AdminQuestionPageController implements IControllerAsync
     private _urlParms: AdminQuestionPageUrlParms;
     private _gameHub: GameQuestionHub;
     private _selector: Selector;
-    private _table: HTMLTableElement;
+    private _playersList: HTMLUListElement;
     private _htmlEngine: PlayerQuestionResponseTemplate;
     private _btnCloseQuestion: SpinnerButton;
     private _alertsContainer: HTMLDivElement;
+    private _btnMessageAllPlayers: SpinnerButton;
+    private _btnOpenSetQuestionTimer: SpinnerButton;
 
     constructor(urlParms: AdminQuestionPageUrlParms)
     {
@@ -46,11 +56,12 @@ export class AdminQuestionPageController implements IControllerAsync
         this._gameHub = new GameQuestionHub(this._urlParms.gameId);
 
         this._selector = Selector.fromString(elements.tableContainerClass);
-        this._table = this._selector.querySelector<HTMLTableElement>(elements.tableClass);
+        this._playersList = this._selector.querySelector<HTMLUListElement>(elements.tableClass);
         this._htmlEngine = new PlayerQuestionResponseTemplate();
         this._btnCloseQuestion = SpinnerButton.inParent(this._selector.element, elements.btnCloseQuestionClass);
         this._alertsContainer = this._selector.querySelector<HTMLDivElement>(elements.alertsContainerClass);
-        
+        this._btnMessageAllPlayers = SpinnerButton.inParent(this._selector.element, elements.btnMessageAllPlayersClass);
+        this._btnOpenSetQuestionTimer = SpinnerButton.inParent(this._selector.element, elements.btnOpenSetQuestionTimerClass);
     }
 
     public async control()
@@ -59,6 +70,9 @@ export class AdminQuestionPageController implements IControllerAsync
 
         await this._gameHub.control();
         await this._gameHub.adminJoinQuestionPage(this._urlParms.questionId);
+
+        ModalPlayerQuestionSettings.init();
+        ModalMessageAllPlayers.init();
     }
 
     private addListeners()
@@ -72,14 +86,55 @@ export class AdminQuestionPageController implements IControllerAsync
         {
             await this.onBtnCloseQuestionClicked();
         });
+
+        // listen for player list item click
+        this._playersList.addEventListener(NativeEvents.Click, (e) =>
+        {
+            const target = e.target as Element;
+
+            if (!target) return;
+
+            if (target.classList.contains(PlayerStatusListItemElements.playerNicknameClass.substring(1)))
+            {
+                e.preventDefault();
+                this.onPlayerListItemClick(target);
+            }
+        });
+
+        SendPlayerToastEvent.addListener(async (message) =>
+        {
+            await this._gameHub.adminSendPlayerMessage({
+                message: message.data!.message,
+                playerId: message.data!.playerId,
+            });
+        });
+
+
+        this._btnMessageAllPlayers.button.addEventListener(NativeEvents.Click, (e) =>
+        {
+            this.onBtnMessageAllPlayersClick();
+        });
+
+        SendAllPlayersMessageEvent.addListener(async (message) =>
+        {
+            await this._gameHub.adminSendAllPlayersMessage({
+                message: message.data!.message,
+            });
+        });
+
+        this._selector.element.querySelectorAll<HTMLButtonElement>(elements.btnSetQuestionTimerClass)?.forEach((button) =>
+        {
+            button.addEventListener(NativeEvents.Click, async (e) =>
+            {
+                const seconds = parseInt(button.getAttribute(elements.timerSecondsAttr)!);
+                await this.setQuestionTimer(seconds);
+            });
+        });
     }
 
     private onAdminUpdatePlayerQuestionResponsesEvent(message: AdminUpdatePlayerQuestionResponsesParms)
     {
-        if (this._table.tBodies[0])
-        {
-            this._table.tBodies[0].innerHTML = this._htmlEngine.toHtmls(message.responses);
-        }
+        this._playersList.innerHTML = this._htmlEngine.toHtmls(message.responses);
     }
 
     private async onBtnCloseQuestionClicked()
@@ -137,5 +192,43 @@ export class AdminQuestionPageController implements IControllerAsync
             container: this._alertsContainer,
             message: message,
         });
+    }
+
+
+    private onPlayerListItemClick(e: Element)
+    {
+        const playerListItem = new PlayerStatusListItem(e);
+        playerListItem.openSettingsModal();
+    }
+
+
+    private onBtnMessageAllPlayersClick()
+    {
+        OpenSendAllPlayersMessageModalEvent.invoke(this);
+    }
+
+
+    private async setQuestionTimer(seconds: number)
+    {
+        // hide the dropdown menu
+        const dropdownMenu = bootstrap.Dropdown.getOrCreateInstance(this._btnOpenSetQuestionTimer.button.closest('.dropup')!);
+        dropdownMenu.hide();
+
+        // disable button
+        this._btnOpenSetQuestionTimer.spin();
+
+        // notify players that the question has a timer
+        await this._gameHub.adminSendAllPlayersMessage({
+            message: `Question closing in ${seconds} seconds!`,
+        });
+
+        // close the question after specified seconds
+        const milliseconds = seconds * 1000;
+            
+        setTimeout(async () =>
+        {
+            await this.onBtnCloseQuestionClicked();
+            this._btnOpenSetQuestionTimer.reset();
+        }, milliseconds);
     }
 }

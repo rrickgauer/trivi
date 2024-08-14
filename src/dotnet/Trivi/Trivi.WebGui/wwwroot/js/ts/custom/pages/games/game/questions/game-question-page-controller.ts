@@ -1,8 +1,9 @@
 import { IController, IControllerAsync } from "../../../../domain/contracts/icontroller";
-import { GameQuestionSubmittedData, GameQuestionSubmittedEvent, NavigateToPageEvent } from "../../../../domain/events/events";
+import { DisplayToastEvent, GameQuestionSubmittedData, GameQuestionSubmittedEvent, NavigateToPageEvent } from "../../../../domain/events/events";
 import { GameQuestionUrlParms } from "../../../../domain/models/game-models";
 import { GameQuestionHub } from "../../../../hubs/game-question/game-question-hub";
 import { PageLoadingUtility } from "../../../../utility/page-loading-utility";
+import { ToastUtility } from "../../../../utility/toast-utility";
 import { UrlUtility } from "../../../../utility/url-utility";
 
 
@@ -49,6 +50,14 @@ export abstract class GameQuestionPageController implements IControllerAsync
         NavigateToPageEvent.addListener((message) =>
         {
             window.location.href = UrlUtility.replacePath(message.data!.destination).toString();
+        });
+
+        DisplayToastEvent.addListener((message) =>
+        {
+            ToastUtility.showStandard({
+                message: message.data!.message,
+                title: 'Message',
+            });
         });
     }
 

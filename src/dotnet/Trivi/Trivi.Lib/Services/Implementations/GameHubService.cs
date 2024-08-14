@@ -50,7 +50,7 @@ public class GameHubService : IGameHubService
             return;
         }
 
-        var playerConnectionIds = connections?.PlayerConnections ?? new();
+        var playerConnectionIds = connections?.PlayerConnectionIds ?? new();
 
         await _gameHub.Clients.Clients(playerConnectionIds).NavigateToPage(new()
         {

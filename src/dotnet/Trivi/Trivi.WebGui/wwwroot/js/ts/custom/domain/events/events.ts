@@ -1,11 +1,11 @@
 import { AdminLobbyUpdatedData, NavigateToData } from "../../hubs/game-lobby/models";
-import { AdminUpdatePlayerQuestionResponsesParms, NavigateToPageParms } from "../../hubs/game-question/models";
+import { AdminUpdatePlayerQuestionResponsesParms, DisplayToastParms, NavigateToPageParms } from "../../hubs/game-question/models";
 import { ApiResponse } from "../models/api-response";
 import { GameApiResponse } from "../models/game-models";
 import { PlayerApiResponse } from "../models/player-models";
 import { QuestionApiResponse } from "../models/question-models";
 import { ResponseBaseApiResponse } from "../models/question-response-models";
-import { QuestionId } from "../types/aliases";
+import { Guid, QuestionId } from "../types/aliases";
 import { CustomEmptyMessage, CustomMessage } from "./custom-events";
 
 
@@ -87,5 +87,31 @@ export const AdminUpdatePlayerQuestionResponsesEvent = new CustomMessage<AdminUp
 
 export const NavigateToPageEvent = new CustomMessage<NavigateToPageParms>();
 
+export const DisplayToastEvent = new CustomMessage<DisplayToastParms>();
 
 
+
+export type OpenModalPlayerQuestionSettingsData = {
+    playerId: Guid;
+}
+
+export const OpenModalPlayerQuestionSettingsEvent = new CustomMessage<OpenModalPlayerQuestionSettingsData>();
+
+
+
+export type SendPlayerMessageData = {
+    playerId: Guid;
+    message: string;
+}
+
+export const SendPlayerToastEvent = new CustomMessage<SendPlayerMessageData>();
+
+
+
+export const OpenSendAllPlayersMessageModalEvent = new CustomEmptyMessage();
+
+export type SendAllPlayersMessageData = {
+    message: string;
+}
+
+export const SendAllPlayersMessageEvent = new CustomMessage<SendAllPlayersMessageData>();

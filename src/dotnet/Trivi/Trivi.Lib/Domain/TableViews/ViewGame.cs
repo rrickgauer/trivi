@@ -52,6 +52,25 @@ public class ViewGame
     public ulong? ActiveQuestionIndex { get; set; }
 
 
+    public int? Percentage
+    {
+        get
+        {
+            if (ActiveQuestionIndex is  null)
+            {
+                return null;
+            }
+
+
+            var divide = (decimal)ActiveQuestionIndex / (decimal)CountQuestions;
+
+
+            var result = (int)Math.Round(divide * 100);
+
+            return result;
+        }
+    }
+
     [JsonIgnore]
     public List<ViewGameQuestion> Questions { get; set; } = new();
 }

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.FileProviders;
 using Trivi.Lib.Domain.Configurations;
+using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Hubs.Lobby;
 using Trivi.Lib.Hubs.Question;
 using Trivi.Lib.Services.Contracts;
@@ -12,7 +13,7 @@ bool isProduction = true;
 isProduction = false;
 
 // DO THIS SO YOU DON'T HAVE TO LOG IN EVERY TIME
-//SessionManager.TESTING_MASTER_USER_ID = new(@"00000000-0000-0000-0000-000000000000");
+SessionManager.TESTING_MASTER_USER_ID = new(@"00000000-0000-0000-0000-000000000000");
 
 // testing game id = mwN5mcux
 

@@ -25,3 +25,17 @@ export type PlayerConnectParms = {
 export type NavigateToPageParms = {
     destination: string;
 }
+
+
+
+export type AdminSendAllPlayersMessageParms = {
+    message: string;
+}
+
+export type AdminSendPlayerMessageParms = AdminSendAllPlayersMessageParms & {
+    playerId: Guid;
+}
+
+export type DisplayToastParms = {
+    message: string;
+}

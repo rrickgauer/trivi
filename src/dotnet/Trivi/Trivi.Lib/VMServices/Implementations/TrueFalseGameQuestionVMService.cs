@@ -31,6 +31,8 @@ public class TrueFalseGameQuestionVMService(IGameService gameService, IQuestionS
             {
                 Game = game,
                 PageTitle = "True false page title",
+                Points = question.Points,
+                Prompt = question.Prompt!,
             };
 
         }

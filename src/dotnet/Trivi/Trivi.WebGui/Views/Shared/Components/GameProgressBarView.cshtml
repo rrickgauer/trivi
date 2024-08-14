@@ -1,0 +1,12 @@
+﻿@model Trivi.Lib.Domain.TableViews.ViewGame
+
+
+
+@if (Model.Percentage is int percentage)
+{
+    <div class="container mt-3">
+        <div class="progress" role="progressbar" aria-label="Info example" aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar bg-info text-dark" style="width: @percentage%">@Model.ActiveQuestionIndex of @Model.CountQuestions</div>
+        </div>
+    </div>
+}

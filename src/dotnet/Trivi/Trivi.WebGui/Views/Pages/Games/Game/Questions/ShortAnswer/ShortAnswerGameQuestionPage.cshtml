@@ -10,12 +10,7 @@
     string alertsContainerClass = "alerts-container";
 }
 
-
 @section Body {
-
-    <div class="container mb-3">
-        <div class="lead">@Model.PageModel.Question.Prompt</div>
-    </div>
 
     <div class="container @containerClass">
 
@@ -32,7 +27,7 @@
                 </div>
 
                 <div class="form-spacing-sm">
-                    <button type="submit" class="btn btn-lg btn-success btn-submit" disabled>Submit answer</button>
+                    <button type="submit" class="btn btn-lg btn-success btn-submit w-100" disabled>Submit answer</button>
                 </div>
 
             </fieldset>

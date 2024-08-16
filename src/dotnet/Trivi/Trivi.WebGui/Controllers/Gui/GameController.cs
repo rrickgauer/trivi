@@ -39,7 +39,7 @@ public class GameController : GuiController, IControllerName
     /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(GamePageAsync))]
-    public async Task<ActionResult<ViewResult>> GamePageAsync(PlayGameGuiRequest gameRequest)
+    public async Task<ActionResult> GamePageAsync(PlayGameGuiRequest gameRequest)
     {
         var game = _requestItems.Game;
 
@@ -59,7 +59,7 @@ public class GameController : GuiController, IControllerName
         }
     }
 
-    private async Task<ActionResult<ViewResult>> HandleRunning(PlayGameGuiRequest gameRequest, QuestionId activeQuestionId)
+    private async Task<ActionResult> HandleRunning(PlayGameGuiRequest gameRequest, QuestionId activeQuestionId)
     {
         // check if player has already responded to question
         var getQuestion = await _responseService.GetResponseAsync(new()
@@ -89,7 +89,7 @@ public class GameController : GuiController, IControllerName
     /// <returns></returns>
     [HttpGet("waiting")]
     [ActionName(nameof(GetWaitingPage))]   
-    public ActionResult<ViewResult> GetWaitingPage(PlayGameGuiRequest gameRequest)
+    public ActionResult GetWaitingPage(PlayGameGuiRequest gameRequest)
     {
         return View(GuiPages.GameWaiting);
     }
@@ -101,7 +101,7 @@ public class GameController : GuiController, IControllerName
     /// <returns></returns>
     [HttpGet("lobby")]
     [ActionName(nameof(GetLobbyPage))]
-    public ActionResult<ViewResult> GetLobbyPage(PlayGameGuiRequest gameRequest)
+    public ActionResult GetLobbyPage(PlayGameGuiRequest gameRequest)
     {
         return View(GuiPages.GameLobby, new GameLobbyViewModel()
         {
@@ -119,7 +119,7 @@ public class GameController : GuiController, IControllerName
     [HttpGet("questions/{questionId:shortAnswerQuestion}")]
     [ActionName(nameof(ShortAnswerGameQuestionPageAsync))]
     [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
-    public async Task<ActionResult<ViewResult>> ShortAnswerGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
+    public async Task<ActionResult> ShortAnswerGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVM = await _shortAnswerVMService.GetViewModelAsync(new()
         {
@@ -145,7 +145,7 @@ public class GameController : GuiController, IControllerName
     [HttpGet("questions/{questionId:trueFalseQuestion}")]
     [ActionName(nameof(TrueFalseGameQuestionPageAsync))]
     [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
-    public async Task<ActionResult<ViewResult>> TrueFalseGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
+    public async Task<ActionResult> TrueFalseGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVm = await _trueFalseGameQuestionVMService.GetViewModelAsync(new()
         {
@@ -170,7 +170,7 @@ public class GameController : GuiController, IControllerName
     [HttpGet("questions/{questionId:multipleChoiceQuestion}")]
     [ActionName(nameof(MultipleChoiceGameQuestionPageAsync))]
     [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
-    public async Task<ActionResult<ViewResult>> MultipleChoiceGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
+    public async Task<ActionResult> MultipleChoiceGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVM = await _mulitpleChoiceGameQuestionVMService.GetViewModelAsync(new()
         {

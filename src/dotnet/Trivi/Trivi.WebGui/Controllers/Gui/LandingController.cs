@@ -17,7 +17,7 @@ public class LandingController(IUserService userService) : GuiController, IContr
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<ViewResult>> GetLandingPage()
+    public async Task<ViewResult> GetLandingPage()
     {
         var getUsers = await _userService.GetUsersAsync();
         return View("Views/Pages/Landing/LandingPage.cshtml");

@@ -29,7 +29,7 @@ public class GameAdminController(RequestItems requestItems, IResponseService res
     /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(GameAdminPage))]
-    public ActionResult<ViewResult> GameAdminPage([FromRoute] string gameId)
+    public ActionResult GameAdminPage([FromRoute] string gameId)
     {
         var game = _requestItems.Game;
 
@@ -57,7 +57,7 @@ public class GameAdminController(RequestItems requestItems, IResponseService res
     /// <returns></returns>
     [HttpGet("lobby")]
     [ActionName(nameof(GameAdminLobbyPage))]
-    public ActionResult<ViewResult> GameAdminLobbyPage([FromRoute] string gameId)
+    public ActionResult GameAdminLobbyPage([FromRoute] string gameId)
     {
         return View(GuiPages.AdminLobby, new AdminLobbyViewModel()
         {
@@ -73,7 +73,7 @@ public class GameAdminController(RequestItems requestItems, IResponseService res
     /// <returns></returns>
     [HttpGet("questions/{questionId:questionId}")]
     [ActionName(nameof(GameAdminQuestionPageAsync))]
-    public async Task<ActionResult<ViewResult>> GameAdminQuestionPageAsync([FromRoute] string gameId, [FromRoute] QuestionId questionId)
+    public async Task<ActionResult> GameAdminQuestionPageAsync([FromRoute] string gameId, [FromRoute] QuestionId questionId)
     {
         var getViewModel = await _adminQuestionVMService.GetViewModelAsync(new()
         {

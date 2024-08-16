@@ -26,7 +26,7 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
     /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(CollectionsPageAsync))]
-    public async Task<ActionResult<ViewResult>> CollectionsPageAsync()
+    public async Task<ActionResult> CollectionsPageAsync()
     {
         var getViewModel = await _collectionsPageVM.GetViewModelAsync(new()
         {
@@ -51,7 +51,7 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
     [HttpGet("{collectionId}/questions")]
     [ActionName(nameof(CollectionQuestionsPageAsync))]
     [ServiceFilter<GetCollectionFilter>]
-    public async Task<ActionResult<ViewResult>> CollectionQuestionsPageAsync([FromRoute] Guid collectionId)
+    public async Task<ActionResult> CollectionQuestionsPageAsync([FromRoute] Guid collectionId)
     {
         var getVM = await _questionsVMService.GetViewModelAsync(new()
         {
@@ -74,7 +74,7 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
     [HttpGet("{collectionId}/settings")]
     [ActionName(nameof(CollectionPageAsync))]
     [ServiceFilter<GetCollectionFilter>]
-    public async Task<ActionResult<ViewResult>> CollectionPageAsync([FromRoute] Guid collectionId)
+    public async Task<ActionResult> CollectionPageAsync([FromRoute] Guid collectionId)
     {
         var getVM = await _collectionSettingsPageVM.GetViewModelAsync(new()
         {
@@ -94,7 +94,7 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
     [HttpGet("{collectionId}/setup")]
     [ActionName(nameof(SetupPageAsync))]
     [ServiceFilter<GetCollectionFilter>]
-    public ActionResult<ViewResult> SetupPageAsync([FromRoute] Guid collectionId)
+    public ActionResult SetupPageAsync([FromRoute] Guid collectionId)
     {
         return View(GuiPages.CollectionSetup);
     }

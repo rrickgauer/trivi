@@ -16,7 +16,7 @@ public class JoinGameController : GuiController, IControllerName
     /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(JoinGamePage))]
-    public ActionResult<ViewResult> JoinGamePage()
+    public ActionResult JoinGamePage()
     {
         return View(GuiPages.GameJoin);
     }

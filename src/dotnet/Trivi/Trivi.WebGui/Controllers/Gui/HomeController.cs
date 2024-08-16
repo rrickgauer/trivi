@@ -15,7 +15,7 @@ public class HomeController : GuiController
     /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(HomePage))]
-    public ActionResult<ViewResult> HomePage()
+    public ActionResult HomePage()
     {
         return View(GuiPages.Home);
     }

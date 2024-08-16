@@ -20,7 +20,7 @@ public class AuthController(IAuthService authService) : GuiController, IControll
     /// <returns></returns>
     [HttpGet("login")]
     [ActionName(nameof(LoginPage))]
-    public ActionResult<ViewResult> LoginPage([FromQuery] string? destination)
+    public ViewResult LoginPage([FromQuery] string? destination)
     {
         AuthPageVM viewModel = new()
         {
@@ -37,7 +37,7 @@ public class AuthController(IAuthService authService) : GuiController, IControll
     /// <returns></returns>
     [HttpGet("signup")]
     [ActionName(nameof(SignupPage))]
-    public ActionResult<ViewResult> SignupPage([FromQuery] string? destination)
+    public ViewResult SignupPage([FromQuery] string? destination)
     {
         AuthPageVM viewModel = new()
         {
@@ -52,7 +52,7 @@ public class AuthController(IAuthService authService) : GuiController, IControll
     /// </summary>
     /// <returns></returns>
     [HttpGet("logout")]
-    public ActionResult<ViewResult> LogoutPage()
+    public ActionResult LogoutPage()
     {
         _authService.Logout();
 

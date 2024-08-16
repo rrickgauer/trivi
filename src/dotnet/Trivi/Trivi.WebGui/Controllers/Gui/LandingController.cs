@@ -10,14 +10,16 @@ public class LandingController(IUserService userService) : GuiController, IContr
 {
     private readonly IUserService _userService = userService;
 
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(LandingController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<LandingController>();
 
+    /// <summary>
+    /// /
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> GetLandingPage()
+    public async Task<ActionResult<ViewResult>> GetLandingPage()
     {
-
         var getUsers = await _userService.GetUsersAsync();
-
         return View("Views/Pages/Landing/LandingPage.cshtml");
     }
 

@@ -10,7 +10,7 @@ using Trivi.Lib.Repository.Other;
 namespace Trivi.Lib.Repository.Implementations;
 
 [AutoInject<IAnswerRepository>(AutoInjectionType.Scoped, InjectionProject.Always)]
-public class AnswerRepository(DatabaseConnection connection, TransactionConnection transactionConnection) : IAnswerRepository
+public class AnswerRepository(DatabaseConnection connection) : IAnswerRepository
 {
     private readonly DatabaseConnection _connection = connection;
 

@@ -9,9 +9,13 @@ namespace Trivi.WebGui.Controllers.Gui;
 [ServiceFilter<LoginFirstRedirectFilter>]
 public class HomeController : GuiController
 {
+    /// <summary>
+    /// /app
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(HomePage))]
-    public IActionResult HomePage()
+    public ActionResult<ViewResult> HomePage()
     {
         return View(GuiPages.Home);
     }

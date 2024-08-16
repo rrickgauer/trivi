@@ -23,6 +23,11 @@ public class ApiGamesController(IGameService gameService, IGameLobbyHubService g
     private readonly IGameQuestionService _gameQuestionService = gameQuestionService;
     private readonly ResultFilterCache _resultFilterCache = resultFilterCache;
 
+    /// <summary>
+    /// POST: /api/games
+    /// </summary>
+    /// <param name="newGameForm"></param>
+    /// <returns></returns>
     [HttpPost]
     [ActionName(nameof(PostGameAsync))]
     [ServiceFilter<PostGameFilter>]
@@ -32,31 +37,28 @@ public class ApiGamesController(IGameService gameService, IGameLobbyHubService g
 
         var createGame = await _gameService.CreateGameAsync(game);
 
-        if (!createGame.Successful)
-        {
-            return BadRequest(createGame);
-        }
-
-        var uri = $"/api/games/{game.Id}";
-
-        return Created(uri, createGame);
+        return createGame.ToActionCreated($"/api/games/{game.Id}");
     }
 
+    /// <summary>
+    /// GET: /api/games/:gameId
+    /// </summary>
+    /// <param name="gameId"></param>
+    /// <returns></returns>
     [HttpGet("{gameId:gameId}")]
     [ActionName(nameof(GetGameAsync))]
     public async Task<ActionResult<ServiceResponse<ViewGame>>> GetGameAsync([FromRoute] string gameId)
     {
         var getGame = await _gameService.GetGameAsync(gameId);
 
-        if (!getGame.Successful)
-        {
-            return BadRequest(getGame);
-        }
-
-        return Ok(getGame);
+        return getGame.ToAction();
     }
 
-
+    /// <summary>
+    /// POST: /api/games/:gameId/start
+    /// </summary>
+    /// <param name="gameId"></param>
+    /// <returns></returns>
     [HttpPost("{gameId:gameId}/start")]
     [ActionName(nameof(PostGameStartAsync))]
     [ServiceFilter<StartGameFilter>]
@@ -84,6 +86,12 @@ public class ApiGamesController(IGameService gameService, IGameLobbyHubService g
     }
 
 
+    /// <summary>
+    /// POST: /api/games/:gameId/close
+    /// </summary>
+    /// <param name="gameId"></param>
+    /// <param name="questionId"></param>
+    /// <returns></returns>
     [HttpPost("{gameId:gameId}/questions/{questionId:questionId}/close")]
     [ActionName(nameof(CloseQuestionAsync))]
     [ServiceFilter<CloseGameQuestionFilter>]

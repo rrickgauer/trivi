@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 using Trivi.Lib.Domain.Errors;
 
 namespace Trivi.Lib.Domain.Responses;
@@ -59,6 +60,17 @@ public class ServiceResponse
         {
             throw new ServiceException(this);
         }
+    }
+
+
+    public virtual ActionResult<ServiceResponse> ToAction()
+    {
+        if (!Successful)
+        {
+            return new BadRequestObjectResult(this);
+        }
+
+        return new NoContentResult();
     }
 
 

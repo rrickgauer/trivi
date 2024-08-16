@@ -19,58 +19,86 @@ public class ApiAnswersController(IAnswerService answerService, RequestItems req
     public static string ControllerRedirectName => IControllerName.RemoveSuffix<ApiAnswersController>();
 
     private readonly IAnswerService _answerService = answerService;
-
     private readonly RequestItems _requestItems = requestItems;
 
+    /// <summary>
+    /// GET: /api/questions/:questionId/answers
+    /// </summary>
+    /// <param name="questionId"></param>
+    /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(GetAnswersAsync))]
     [ServiceFilter<GetQuestionFilter>]
-    public async Task<IActionResult> GetAnswersAsync([FromRoute] QuestionId questionId)
+    public async Task<ActionResult<ServiceResponse<List<ViewAnswer>>>> GetAnswersAsync([FromRoute] QuestionId questionId)
     {
-        var getanswers = await _answerService.GetAnswersAsync(questionId);
-
-        return Ok(getanswers);
+        var getAnswers = await _answerService.GetAnswersAsync(questionId);
+        
+        return getAnswers.ToAction();
     }
 
-
+    /// <summary>
+    /// PUT: /api/questions/:questionId/answers
+    /// </summary>
+    /// <param name="questionId"></param>
+    /// <param name="answersRequest"></param>
+    /// <returns></returns>
     [HttpPut]
     [ActionName(nameof(PutAnswersAsync))]
     [ServiceFilter<GetQuestionFilter>]
-    public async Task<IActionResult> PutAnswersAsync([FromRoute] QuestionId questionId, PutAnswersRequest answersRequest)
+    public async Task<ActionResult<ServiceResponse<List<ViewAnswer>>>> PutAnswersAsync([FromRoute] QuestionId questionId, PutAnswersRequest answersRequest)
     {
         var replaceAnswers = await _answerService.ReplaceAnswersAsync(answersRequest);
-        return FromServiceDataResponse(replaceAnswers);
+        
+        return replaceAnswers.ToAction();
     }
 
 
+    /// <summary>
+    /// GET: /api/questions/:questionId/answers/:answerId
+    /// </summary>
+    /// <param name="questionId"></param>
+    /// <param name="answerId"></param>
+    /// <returns></returns>
     [HttpGet("{answerId:answerId}")]
-    [ActionName(nameof(GetAnswerAsync))]
+    [ActionName(nameof(GetAnswer))]
     [ServiceFilter<GetAnswerFilter>]
-    public async Task<IActionResult> GetAnswerAsync([FromRoute] QuestionId questionId, [FromRoute] string answerId)
+    public ActionResult<ServiceResponse<ViewAnswer>> GetAnswer([FromRoute] QuestionId questionId, [FromRoute] string answerId)
     {
         var answer = _requestItems.Answer;
 
-        return Ok(new ServiceResponse<ViewAnswer>(answer));
-    }   
+        ServiceResponse<ViewAnswer> result = new(answer);
 
+        return result.ToAction();
+    }
+
+    /// <summary>
+    /// DELETE: /api/questions/:questionId/answers/:answerId
+    /// </summary>
+    /// <param name="questionId"></param>
+    /// <param name="answerId"></param>
+    /// <returns></returns>
     [HttpDelete("{answerId:answerId}")]
     [ActionName(nameof(DeleteAnswerAsync))]
     [ServiceFilter<GetAnswerFilter>]
-    public async Task<IActionResult> DeleteAnswerAsync([FromRoute] QuestionId questionId, [FromRoute] string answerId)
+    public async Task<ActionResult<ServiceResponse>> DeleteAnswerAsync([FromRoute] QuestionId questionId, [FromRoute] string answerId)
     {
         var deleteResult = await _answerService.DeleteAnswerAsync(answerId);
-        return FromServiceResponse(deleteResult);
+
+        return deleteResult.ToAction();
     }
 
-
+    /// <summary>
+    /// PUT: /api/questions/:questionId/answers/:answerId
+    /// </summary>
+    /// <param name="answerRequest"></param>
+    /// <returns></returns>
     [HttpPut("{answerId:answerId}")]
-    [ActionName(nameof(GetAnswerAsync))]
+    [ActionName(nameof(GetAnswer))]
     [ServiceFilter<PutAnswerFilter>]
-    public async Task<IActionResult> PutAnswerAync(PutAnswerRequest answerRequest)
+    public async Task<ActionResult<ServiceResponse<ViewAnswer>>> PutAnswerAync(PutAnswerRequest answerRequest)
     {
         var saveResult = await _answerService.SaveAnswerAsync((Answer)answerRequest);
-        return FromServiceDataResponse(saveResult);
+
+        return saveResult.ToAction();
     }
-
-
 }

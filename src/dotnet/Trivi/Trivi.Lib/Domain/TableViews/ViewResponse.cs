@@ -8,25 +8,34 @@ namespace Trivi.Lib.Domain.TableViews;
 
 public class ViewResponse : ITableView<ViewResponse, Response>
 {
+
+    [JsonIgnore]
     [SqlColumn("response_id")]
     [CopyToProperty<Response>(nameof(Response.Id))]
     [CopyToProperty<ResponseShortAnswer>(nameof(ResponseShortAnswer.Id))]
-    [JsonIgnore]
+    [CopyToProperty<ResponseTrueFalse>(nameof(ResponseTrueFalse.Id))]
+    [CopyToProperty<ResponseMultipleChoice>(nameof(ResponseMultipleChoice.Id))]
     public virtual Guid? Id { get; set; }
 
     [SqlColumn("question_id")]
     [CopyToProperty<Response>(nameof(Response.QuestionId))]
     [CopyToProperty<ResponseShortAnswer>(nameof(ResponseShortAnswer.QuestionId))]
+    [CopyToProperty<ResponseTrueFalse>(nameof(ResponseTrueFalse.QuestionId))]
+    [CopyToProperty<ResponseMultipleChoice>(nameof(ResponseMultipleChoice.QuestionId))]
     public virtual QuestionId? QuestionId { get; set; }
 
     [SqlColumn("player_id")]
     [CopyToProperty<Response>(nameof(Response.PlayerId))]
     [CopyToProperty<ResponseShortAnswer>(nameof(ResponseShortAnswer.PlayerId))]
+    [CopyToProperty<ResponseTrueFalse>(nameof(ResponseTrueFalse.PlayerId))]
+    [CopyToProperty<ResponseMultipleChoice>(nameof(ResponseMultipleChoice.PlayerId))]
     public virtual Guid? PlayerId { get; set; }
 
     [SqlColumn("response_created_on")]
     [CopyToProperty<Response>(nameof(Response.CreatedOn))]
     [CopyToProperty<ResponseShortAnswer>(nameof(ResponseShortAnswer.CreatedOn))]
+    [CopyToProperty<ResponseTrueFalse>(nameof(ResponseTrueFalse.CreatedOn))]
+    [CopyToProperty<ResponseMultipleChoice>(nameof(ResponseMultipleChoice.CreatedOn))]
     [JsonPropertyName("createdOn")]
     public virtual DateTime ResponseCreatedOn { get; set; } = DateTime.UtcNow;
 
@@ -45,12 +54,12 @@ public class ViewResponse : ITableView<ViewResponse, Response>
     [SqlColumn("player_nickname")]
     public virtual string? PlayerNickname { get; set; }
 
-    [SqlColumn("collection_id")]
     [JsonIgnore]
+    [SqlColumn("collection_id")]
     public virtual Guid? CollectionId { get; set; }
 
-    [SqlColumn("collection_user_id")]
     [JsonIgnore]
+    [SqlColumn("collection_user_id")]
     public virtual Guid? CollectionUserId { get; set; }
 
 

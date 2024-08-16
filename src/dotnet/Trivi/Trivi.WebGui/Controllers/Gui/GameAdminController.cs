@@ -16,15 +16,20 @@ namespace Trivi.WebGui.Controllers.Gui;
 public class GameAdminController(RequestItems requestItems, IResponseService responseService, AdminQuestionVMService adminQuestionVMService) : GuiController, IControllerName
 {
     /// <inheritdoc/>
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(GameAdminController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<GameAdminController>();
 
     private readonly RequestItems _requestItems = requestItems;
     private readonly IResponseService _responseService = responseService;
     private readonly AdminQuestionVMService _adminQuestionVMService = adminQuestionVMService;
 
+    /// <summary>
+    /// /games/admin/:gameId
+    /// </summary>
+    /// <param name="gameId"></param>
+    /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(GameAdminPage))]
-    public IActionResult GameAdminPage([FromRoute] string gameId)
+    public ActionResult<ViewResult> GameAdminPage([FromRoute] string gameId)
     {
         var game = _requestItems.Game;
 
@@ -45,10 +50,14 @@ public class GameAdminController(RequestItems requestItems, IResponseService res
         return Ok("game page");
     }
 
-    
+    /// <summary>
+    /// /games/admin/:gameId/lobby
+    /// </summary>
+    /// <param name="gameId"></param>
+    /// <returns></returns>
     [HttpGet("lobby")]
     [ActionName(nameof(GameAdminLobbyPage))]
-    public IActionResult GameAdminLobbyPage([FromRoute] string gameId)
+    public ActionResult<ViewResult> GameAdminLobbyPage([FromRoute] string gameId)
     {
         return View(GuiPages.AdminLobby, new AdminLobbyViewModel()
         {
@@ -56,9 +65,15 @@ public class GameAdminController(RequestItems requestItems, IResponseService res
         });
     }
 
+    /// <summary>
+    /// /games/admin/:gameId/questions/:questionId
+    /// </summary>
+    /// <param name="gameId"></param>
+    /// <param name="questionId"></param>
+    /// <returns></returns>
     [HttpGet("questions/{questionId:questionId}")]
     [ActionName(nameof(GameAdminQuestionPageAsync))]
-    public async Task<IActionResult> GameAdminQuestionPageAsync([FromRoute] string gameId, [FromRoute] QuestionId questionId)
+    public async Task<ActionResult<ViewResult>> GameAdminQuestionPageAsync([FromRoute] string gameId, [FromRoute] QuestionId questionId)
     {
         var getViewModel = await _adminQuestionVMService.GetViewModelAsync(new()
         {

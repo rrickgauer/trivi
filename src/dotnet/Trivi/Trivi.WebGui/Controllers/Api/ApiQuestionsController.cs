@@ -4,6 +4,8 @@ using Trivi.Lib.Domain.Models;
 using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.RequestArgs;
 using Trivi.Lib.Domain.Responses;
+using Trivi.Lib.Domain.TableViews;
+using Trivi.Lib.Domain.ViewModels.Api;
 using Trivi.Lib.Filters;
 using Trivi.Lib.Services.Contracts;
 using Trivi.Lib.VMServices.Implementations;
@@ -18,31 +20,27 @@ namespace Trivi.WebGui.Controllers.Api;
 [ServiceFilter<InternalApiAuthFilter>]
 public class ApiQuestionsController(GetQuestionsApiVMService getQuestionsVMService, IQuestionService questionService, RequestItems requestItems) : InternalApiController, IControllerName
 {
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(ApiQuestionsController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<ApiQuestionsController>();
 
     private readonly GetQuestionsApiVMService _getQuestionsVMService = getQuestionsVMService;
-
     private readonly IQuestionService _questionService = questionService;
-
     private readonly RequestItems _requestItems = requestItems;
 
-
+    /// <summary>
+    /// GET: /api/questions
+    /// </summary>
+    /// <param name="queryParms"></param>
+    /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(GetQuestionsAsync))]
-    public async Task<IActionResult> GetQuestionsAsync(GetQuestionsRequest queryParms)
+    public async Task<ActionResult<ServiceResponse<GetQuestionsApiVM>>> GetQuestionsAsync(GetQuestionsRequest queryParms)
     {
-        var getvm = await _getQuestionsVMService.GetViewModelAsync(new()
+        var getViewModel = await _getQuestionsVMService.GetViewModelAsync(new()
         {
             CollectionId = queryParms.CollectionId,
         });
 
-        if (!getvm.Successful)
-        {
-            return BadRequest(getvm);
-        }
-
-        return Ok(getvm);
-
+        return getViewModel.ToAction();
     }
 
 
@@ -52,22 +50,26 @@ public class ApiQuestionsController(GetQuestionsApiVMService getQuestionsVMServi
     /// <param name="questionId"></param>
     /// <returns></returns>
     [HttpGet("{questionId:questionId}")]
-    [ActionName(nameof(GetQuestionAsync))]
+    [ActionName(nameof(GetQuestion))]
     [ServiceFilter<GetQuestionFilter>]
-    public async Task<IActionResult> GetQuestionAsync([FromRoute] QuestionId questionId)
+    public IActionResult GetQuestion([FromRoute] QuestionId questionId)
     {
         return Ok(new ServiceResponse<object>(_requestItems.Question as object));
     }
 
-
+    /// <summary>
+    /// DELETE /api/questions/:questionId
+    /// </summary>
+    /// <param name="questionId"></param>
+    /// <returns></returns>
     [HttpDelete("{questionId:questionId}")]
     [ActionName(nameof(DeleteQuestionAsync))]
     [ServiceFilter<GetQuestionFilter>]
-    public async Task<IActionResult> DeleteQuestionAsync([FromRoute] QuestionId questionId)
+    public async Task<ActionResult<ServiceResponse>> DeleteQuestionAsync([FromRoute] QuestionId questionId)
     {
         var deleteQuestion = await _questionService.DeleteQuestionAsync(questionId);
 
-        return FromServiceResponse(deleteQuestion);
+        return deleteQuestion.ToAction();
     }
 
 
@@ -82,18 +84,13 @@ public class ApiQuestionsController(GetQuestionsApiVMService getQuestionsVMServi
     [HttpPut("{questionId:shortAnswerQuestion}")]
     [ActionName(nameof(PutShortAnswerAsync))]
     [ServiceFilter<SaveQuestionFilter>]
-    public async Task<IActionResult> PutShortAnswerAsync([FromRoute] QuestionId questionId, [FromBody] ShortAnswerForm questionForm)
+    public async Task<ActionResult<ServiceResponse<ViewShortAnswer>>> PutShortAnswerAsync([FromRoute] QuestionId questionId, [FromBody] ShortAnswerForm questionForm)
     {
         var question = ShortAnswer.FromRequestForm(questionId, questionForm);
 
         var saveResult = await _questionService.SaveShortAnswerAsync(question);
 
-        if (!saveResult.Successful)
-        {
-            return BadRequest(saveResult);
-        }
-
-        return Ok(saveResult);
+        return saveResult.ToAction();
     }
 
     /// <summary>
@@ -105,18 +102,13 @@ public class ApiQuestionsController(GetQuestionsApiVMService getQuestionsVMServi
     [HttpPut("{questionId:trueFalseQuestion}")]
     [ActionName(nameof(PutTrueFalseAsync))]
     [ServiceFilter<SaveQuestionFilter>]
-    public async Task<IActionResult> PutTrueFalseAsync([FromRoute] QuestionId questionId, [FromBody] TrueFalseForm questionForm)
+    public async Task<ActionResult<ServiceResponse<ViewTrueFalse>>> PutTrueFalseAsync([FromRoute] QuestionId questionId, [FromBody] TrueFalseForm questionForm)
     {
         var question = TrueFalse.FromRequestForm(questionId, questionForm);
 
         var saveResult = await _questionService.SaveTrueFalseAsync(question);
-
-        if (!saveResult.Successful)
-        {
-            return BadRequest(saveResult);
-        }
-
-        return Ok(saveResult);
+        
+        return saveResult.ToAction();
     }
 
 
@@ -129,17 +121,12 @@ public class ApiQuestionsController(GetQuestionsApiVMService getQuestionsVMServi
     [HttpPut("{questionId:multipleChoiceQuestion}")]
     [ActionName(nameof(PutMultipleChoiceAsync))]
     [ServiceFilter<SaveQuestionFilter>]
-    public async Task<IActionResult> PutMultipleChoiceAsync([FromRoute] QuestionId questionId, [FromBody] MultipleChoiceForm questionForm)
+    public async Task<ActionResult<ServiceResponse<ViewMultipleChoice>>> PutMultipleChoiceAsync([FromRoute] QuestionId questionId, [FromBody] MultipleChoiceForm questionForm)
     {
         var question = MultipleChoice.FromRequestForm(questionId, questionForm);
 
         var saveResult = await _questionService.SaveMultipleChoiceAsync(question);
 
-        if (!saveResult.Successful)
-        {
-            return BadRequest(saveResult);
-        }
-
-        return Ok(saveResult);
+        return saveResult.ToAction();
     }
 }

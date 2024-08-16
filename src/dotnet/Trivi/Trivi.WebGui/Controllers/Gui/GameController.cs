@@ -22,27 +22,30 @@ public class GameController : GuiController, IControllerName
     private readonly IResponseService _responseService;
     private readonly TrueFalseGameQuestionVMService _trueFalseGameQuestionVMService;
     private readonly MulitpleChoiceGameQuestionVMService _mulitpleChoiceGameQuestionVMService;
-    private readonly IGamePageService _gamePageService;
 
-    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService, MulitpleChoiceGameQuestionVMService mulitpleChoiceGameQuestionVMService, IGamePageService gamePageService)
+    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService, MulitpleChoiceGameQuestionVMService mulitpleChoiceGameQuestionVMService)
     {
         _requestItems = requestItems;
         _shortAnswerVMService = shortAnswerVMService;
         _responseService = responseService;
         _trueFalseGameQuestionVMService = trueFalseGameQuestionVMService;
         _mulitpleChoiceGameQuestionVMService = mulitpleChoiceGameQuestionVMService;
-        _gamePageService = gamePageService;
     }
 
+    /// <summary>
+    /// /games/:gameId
+    /// </summary>
+    /// <param name="gameRequest"></param>
+    /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(GamePageAsync))]
-    public async Task<IActionResult> GamePageAsync(PlayGameGuiRequest gameRequest)
+    public async Task<ActionResult<ViewResult>> GamePageAsync(PlayGameGuiRequest gameRequest)
     {
         var game = _requestItems.Game;
 
         if (game.Status == GameStatus.Open)
         {
-            return RedirectToAction(nameof(LobbyPageAsync), gameRequest.GetRedirectRouteValues());
+            return RedirectToAction(nameof(GetLobbyPage), gameRequest.GetRedirectRouteValues());
         }
 
         else if (game.Status == GameStatus.Running && game.ActiveQuestionId is QuestionId activeQuestionId)
@@ -56,7 +59,7 @@ public class GameController : GuiController, IControllerName
         }
     }
 
-    private async Task<IActionResult> HandleRunning(PlayGameGuiRequest gameRequest, QuestionId activeQuestionId)
+    private async Task<ActionResult<ViewResult>> HandleRunning(PlayGameGuiRequest gameRequest, QuestionId activeQuestionId)
     {
         // check if player has already responded to question
         var getQuestion = await _responseService.GetResponseAsync(new()
@@ -67,7 +70,7 @@ public class GameController : GuiController, IControllerName
 
         if (getQuestion.Data is not null)
         {
-            return RedirectToAction(nameof(GetWaitingPageAsync), gameRequest.GetRedirectRouteValues());
+            return RedirectToAction(nameof(GetWaitingPage), gameRequest.GetRedirectRouteValues());
         }
 
         return activeQuestionId.QuestionType switch
@@ -79,17 +82,26 @@ public class GameController : GuiController, IControllerName
         };
     }
 
+    /// <summary>
+    /// /games/:gameId/waiting
+    /// </summary>
+    /// <param name="gameRequest"></param>
+    /// <returns></returns>
     [HttpGet("waiting")]
-    [ActionName(nameof(GetWaitingPageAsync))]   
-    public async Task<IActionResult> GetWaitingPageAsync(PlayGameGuiRequest gameRequest)
+    [ActionName(nameof(GetWaitingPage))]   
+    public ActionResult<ViewResult> GetWaitingPage(PlayGameGuiRequest gameRequest)
     {
         return View(GuiPages.GameWaiting);
     }
 
-
+    /// <summary>
+    /// /games/:gameId/lobby
+    /// </summary>
+    /// <param name="gameRequest"></param>
+    /// <returns></returns>
     [HttpGet("lobby")]
-    [ActionName(nameof(LobbyPageAsync))]
-    public async Task<IActionResult> LobbyPageAsync(PlayGameGuiRequest gameRequest)
+    [ActionName(nameof(GetLobbyPage))]
+    public ActionResult<ViewResult> GetLobbyPage(PlayGameGuiRequest gameRequest)
     {
         return View(GuiPages.GameLobby, new GameLobbyViewModel()
         {
@@ -98,11 +110,16 @@ public class GameController : GuiController, IControllerName
         });
     }
 
-
+    /// <summary>
+    /// /games/:gameId/questions/:sa_questionId
+    /// </summary>
+    /// <param name="gameRequest"></param>
+    /// <param name="questionId"></param>
+    /// <returns></returns>
     [HttpGet("questions/{questionId:shortAnswerQuestion}")]
     [ActionName(nameof(ShortAnswerGameQuestionPageAsync))]
     [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
-    public async Task<IActionResult> ShortAnswerGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
+    public async Task<ActionResult<ViewResult>> ShortAnswerGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVM = await _shortAnswerVMService.GetViewModelAsync(new()
         {
@@ -119,11 +136,16 @@ public class GameController : GuiController, IControllerName
     }
 
 
-
+    /// <summary>
+    /// /games/:gameId/questions/:tf_questionId
+    /// </summary>
+    /// <param name="gameRequest"></param>
+    /// <param name="questionId"></param>
+    /// <returns></returns>
     [HttpGet("questions/{questionId:trueFalseQuestion}")]
     [ActionName(nameof(TrueFalseGameQuestionPageAsync))]
     [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
-    public async Task<IActionResult> TrueFalseGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
+    public async Task<ActionResult<ViewResult>> TrueFalseGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVm = await _trueFalseGameQuestionVMService.GetViewModelAsync(new()
         {
@@ -139,11 +161,16 @@ public class GameController : GuiController, IControllerName
         return View(GuiPages.GameQuestionTrueFalse, getVm.Data);
     }
 
-
+    /// <summary>
+    /// /games/:gameId/questions/:tf_questionId
+    /// </summary>
+    /// <param name="gameRequest"></param>
+    /// <param name="questionId"></param>
+    /// <returns></returns>
     [HttpGet("questions/{questionId:multipleChoiceQuestion}")]
     [ActionName(nameof(MultipleChoiceGameQuestionPageAsync))]
     [ServiceFilter<ViewPlayerGameQuestionPageFilter>]
-    public async Task<IActionResult> MultipleChoiceGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
+    public async Task<ActionResult<ViewResult>> MultipleChoiceGameQuestionPageAsync(PlayGameGuiRequest gameRequest, [FromRoute] QuestionId questionId)
     {
         var getVM = await _mulitpleChoiceGameQuestionVMService.GetViewModelAsync(new()
         {

@@ -9,7 +9,7 @@ public class InternalApiController : ControllerBase
     public SessionManager SessionManager => new(HttpContext.Session);
     public Guid ClientId => SessionManager.ClientId!.Value;
 
-    public IActionResult FromServiceDataResponse<T>(ServiceResponse<T> response)
+    public ActionResult<ServiceResponse<T>> FromServiceDataResponse<T>(ServiceResponse<T> response)
     {
         if (!response.Successful)
         {
@@ -19,7 +19,7 @@ public class InternalApiController : ControllerBase
         return Ok(response);
     }
 
-    public IActionResult FromServiceResponse(ServiceResponse response)
+    public ActionResult FromServiceResponse(ServiceResponse response)
     {
         if (!response.Successful)
         {

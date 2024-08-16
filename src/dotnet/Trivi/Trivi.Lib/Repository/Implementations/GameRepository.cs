@@ -55,6 +55,18 @@ public class GameRepository(DatabaseConnection connection) : IGameRepository
 
         return await _connection.ModifyAsync(command);
     }
+
+    public async Task<int> ActivateNextGameQuestionAsync(string gameId)
+    {
+        MySqlCommand command = new(GameRepositoryCommands.ActivateNextGameQuestionProcName)
+        {
+            CommandType = CommandType.StoredProcedure,
+        };
+
+        command.Parameters.AddWithValue("in_game_id", gameId);
+
+        return await _connection.ModifyAsync(command);
+    }
 }
 
 

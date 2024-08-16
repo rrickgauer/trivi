@@ -14,3 +14,8 @@ export type PlayerApiPostRequest = {
 	gameId: string;
 	nickname: string;
 }
+
+
+export type PlayerQuestionResponseApiResponse = PlayerApiResponse & {
+	hasResponse: boolean;
+}

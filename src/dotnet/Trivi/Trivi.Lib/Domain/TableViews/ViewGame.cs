@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Models;
+using Trivi.Lib.Domain.Other;
 
 namespace Trivi.Lib.Domain.TableViews;
 
@@ -38,6 +39,37 @@ public class ViewGame
     [SqlColumn("game_collection_user_id")]
     public Guid? UserId { get; set; }
 
+    [SqlColumn("active_question_id")]
+    public QuestionId? ActiveQuestionId { get; set; }
+
+    [SqlColumn("next_question_id")]
+    public QuestionId? NextQuestionId { get; set; }
+
+    [SqlColumn("count_game_questions")]
+    public long CountQuestions { get; set; } = 0;
+
+    [SqlColumn("active_question_index")]
+    public ulong? ActiveQuestionIndex { get; set; }
+
+
+    public int? Percentage
+    {
+        get
+        {
+            if (ActiveQuestionIndex is  null)
+            {
+                return null;
+            }
+
+
+            var divide = (decimal)ActiveQuestionIndex / (decimal)CountQuestions;
+
+
+            var result = (int)Math.Round(divide * 100);
+
+            return result;
+        }
+    }
 
     [JsonIgnore]
     public List<ViewGameQuestion> Questions { get; set; } = new();

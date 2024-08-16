@@ -47,8 +47,6 @@ public class StartGameAuth(IGameService gameService) : IAsyncPermissionsAuth<Sta
     {
         var getgame = await _gameService.GetGameAsync(data.GameId);
 
-        getgame.ThrowIfError();
-
         return getgame.GetData();
     }
 }

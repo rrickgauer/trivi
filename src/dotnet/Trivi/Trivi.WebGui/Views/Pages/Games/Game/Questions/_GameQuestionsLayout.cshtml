@@ -1,0 +1,68 @@
+﻿@using Trivi.Lib.Domain.ViewModels.Gui
+@using Trivi.WebGui.ViewComponents
+@model GameQuestionLayoutModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    @RenderSection("Header", required: false)
+    <title>@Model.PageTitle</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+    <div class="position-relative">
+        
+        <partial name="@PartialRazorFiles.PageLoading" />
+
+        <div class="container mt-3">
+            <h3>Game: @Model.Game.Id - #@Model.Game.ActiveQuestionIndex</h3>
+            <hr />
+        </div> 
+
+        @* Prompt *@
+        <div class="container mt-5">
+            <h1 class="display-3 text-center">@Model.Prompt</h1>
+
+            @{
+                string pointsText = Model.Points == 1 ? "point" : "points";
+            }
+
+            <h3 class="text-center lead">@Model.Points @pointsText</h3>
+        </div>
+
+
+        <div class="container-fluid">
+            <div class="row p-0">
+
+                <div class="col-lg-2 p-0"></div>
+
+                <div class="col-lg-8">
+                    <div class="d-flex justify-content-around">
+                        <div class="w-50">
+
+                            @* Progress bar *@
+                            @await Component.InvokeAsync(nameof(GameProgressBarViewComp), Model.Game)
+
+                            @* Body *@
+                            <div class="mt-5">
+                                @RenderSection("Body", required: false)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-2 p-0"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <partial name="@PartialRazorFiles.Footer" />
+    @RenderSection("Footer", required: false)
+
+</body>
+
+</html>

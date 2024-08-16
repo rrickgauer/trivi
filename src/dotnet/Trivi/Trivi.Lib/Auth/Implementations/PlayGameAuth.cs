@@ -51,16 +51,12 @@ public class PlayGameAuth(IGameService gameService, IPlayerService playerService
     {
         var getGame = await _gameService.GetGameAsync(data.GameId);
 
-        getGame.ThrowIfError();
-
         return getGame.GetData();
     }
 
     private async Task<ViewPlayer> GetPlayerAsync(PlayGameAuthParms data)
     {
         var getPlayer = await _playerService.GetPlayerAsync(data.PlayerId);
-
-        getPlayer.ThrowIfError();
 
         return getPlayer.GetData();
     }

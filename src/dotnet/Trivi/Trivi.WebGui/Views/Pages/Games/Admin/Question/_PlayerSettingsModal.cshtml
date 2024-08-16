@@ -1,0 +1,54 @@
+﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.Lib.Domain.ViewModels.Gui
+@model AdminQuestionViewModel
+
+
+
+@{
+    string modalClass = "modal-player-question-settings";
+    string alertsContainerClass = "alerts-container";
+    string messageFormClass = "form-player-question-message";
+    string messageInputId = "form-player-question-message-input";
+
+}
+
+<div class="modal @modalClass" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Player Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="@alertsContainerClass"></div>
+                
+                <div class="player-id user-select-all d-none">0190f054-1768-7143-80ca-206885c0c268</div>
+
+                <form class="@messageFormClass">
+                    <fieldset>
+                        
+                        <div class="row">
+                            <div class="col-lg-10 p-1">
+                                <div class="input-feedback">
+                                    <input type="text" class="form-control form-control-sm input-feedback-input" id="@messageInputId" placeholder="Enter message" required />
+                                    <div class="valid-feedback"></div>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 p-1">
+                                <button type="submit" class="btn btn-sm btn-success btn-submit w-100" disabled>Send</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

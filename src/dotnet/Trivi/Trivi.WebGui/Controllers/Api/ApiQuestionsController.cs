@@ -56,7 +56,7 @@ public class ApiQuestionsController(GetQuestionsApiVMService getQuestionsVMServi
     [ServiceFilter<GetQuestionFilter>]
     public async Task<IActionResult> GetQuestionAsync([FromRoute] QuestionId questionId)
     {
-        return Ok(new ServiceDataResponse<object>(_requestItems.Question as object));
+        return Ok(new ServiceResponse<object>(_requestItems.Question as object));
     }
 
 

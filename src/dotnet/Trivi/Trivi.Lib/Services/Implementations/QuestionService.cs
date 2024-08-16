@@ -20,7 +20,7 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
 
     #region - Get multiple -
 
-    public async Task<ServiceDataResponse<List<ViewQuestion>>> GetQuestionsInCollectionAsync(Guid collectionId)
+    public async Task<ServiceResponse<List<ViewQuestion>>> GetQuestionsInCollectionAsync(Guid collectionId)
     {
         try
         {
@@ -37,7 +37,7 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
 
     #region - Select single -
 
-    public async Task<ServiceDataResponse<ViewQuestion>> GetQuestionAsync(QuestionId questionId)
+    public async Task<ServiceResponse<ViewQuestion>> GetQuestionAsync(QuestionId questionId)
     {
 
         try
@@ -60,7 +60,7 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
     }
 
 
-    private async Task<TQuestion?> GetSpecificQuestionAsync<TQuestion>(QuestionId questionId, Func<QuestionId, Task<ServiceDataResponse<TQuestion>>> getFunction) where TQuestion : ViewQuestion
+    private async Task<TQuestion?> GetSpecificQuestionAsync<TQuestion>(QuestionId questionId, Func<QuestionId, Task<ServiceResponse<TQuestion>>> getFunction) where TQuestion : ViewQuestion
     {
         var getQuestion = await getFunction(questionId);
 
@@ -71,7 +71,7 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
 
 
 
-    public async Task<ServiceDataResponse<ViewShortAnswer>> GetShortAnswerAsync(QuestionId questionId)
+    public async Task<ServiceResponse<ViewShortAnswer>> GetShortAnswerAsync(QuestionId questionId)
     {
         try
         {
@@ -87,11 +87,11 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
     }
 
 
-    public async Task<ServiceDataResponse<ViewMultipleChoice>> GetMultipleChoiceAsync(QuestionId questionId)
+    public async Task<ServiceResponse<ViewMultipleChoice>> GetMultipleChoiceAsync(QuestionId questionId)
     {
         try
         {
-            ServiceDataResponse<ViewMultipleChoice> result = new();
+            ServiceResponse<ViewMultipleChoice> result = new();
 
             var row = await _questionRepo.SelectMultipleChoiceAsync(questionId);
             if (row == null)
@@ -120,7 +120,7 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
 
     }
 
-    public async Task<ServiceDataResponse<ViewTrueFalse>> GetTrueFalseAsync(QuestionId questionId)
+    public async Task<ServiceResponse<ViewTrueFalse>> GetTrueFalseAsync(QuestionId questionId)
     {
         try
         {
@@ -144,28 +144,28 @@ public class QuestionService(IQuestionRepository questionRepo, ITableMapperServi
 
 
 
-    public async Task<ServiceDataResponse<ViewShortAnswer>> SaveShortAnswerAsync(ShortAnswer question)
+    public async Task<ServiceResponse<ViewShortAnswer>> SaveShortAnswerAsync(ShortAnswer question)
     {
         return await SaveQuestionSteps(question, _questionRepo.UpsertShortAnswerAsync, GetShortAnswerAsync);
     }
 
 
-    public async Task<ServiceDataResponse<ViewTrueFalse>> SaveTrueFalseAsync(TrueFalse question)
+    public async Task<ServiceResponse<ViewTrueFalse>> SaveTrueFalseAsync(TrueFalse question)
     {
         return await SaveQuestionSteps(question, _questionRepo.UpsertTrueFalseAsync, GetTrueFalseAsync);
     }
 
 
-    public async Task<ServiceDataResponse<ViewMultipleChoice>> SaveMultipleChoiceAsync(MultipleChoice question)
+    public async Task<ServiceResponse<ViewMultipleChoice>> SaveMultipleChoiceAsync(MultipleChoice question)
     {
         return await SaveQuestionSteps(question, _questionRepo.UpsertMultipleChoiceAsync, GetMultipleChoiceAsync);
     }
 
 
     private delegate Task<int> SaveFunctionCallback<TModel>(TModel question);
-    private delegate Task<ServiceDataResponse<TView>> GetFunctionCallback<TView>(QuestionId questionId);
+    private delegate Task<ServiceResponse<TView>> GetFunctionCallback<TView>(QuestionId questionId);
 
-    private async Task<ServiceDataResponse<TView>> SaveQuestionSteps<TModel, TView>(TModel question, SaveFunctionCallback<TModel> saveFunction, GetFunctionCallback<TView> getFunction) where TModel : Question where TView : ViewQuestion
+    private async Task<ServiceResponse<TView>> SaveQuestionSteps<TModel, TView>(TModel question, SaveFunctionCallback<TModel> saveFunction, GetFunctionCallback<TView> getFunction) where TModel : Question where TView : ViewQuestion
     {
         try
         {

@@ -79,11 +79,19 @@ const configs = [
     new RollupConfig('collection/questions/index.ts', 'collection-questions'),
     new RollupConfig('collection/setup/index.ts', 'collection-setup'),
 
+
     new RollupConfig('games/join/index.ts', 'games-join'),
+
     new RollupConfig('games/game/lobby/index.ts', 'game-lobby'),
 
+    new RollupConfig('games/game/waiting/index.ts', 'game-waiting'),
+
+    new RollupConfig('games/game/questions/short-answer/index.ts', 'game-question-short-answer'),
+    new RollupConfig('games/game/questions/true-false/index.ts', 'game-question-true-false'),
+    new RollupConfig('games/game/questions/multiple-choice/index.ts', 'game-question-multiple-choice'),
 
     new RollupConfig('games/admin/lobby/index.ts', 'admin-lobby'),
+    new RollupConfig('games/admin/question/index.ts', 'admin-question'),
 
 ];
 

@@ -12,9 +12,7 @@ export enum ApiErrorCode
 
     //#endregion
 
-
-
-    //#region - Auth -
+    //#region - Answers -
 
     AnswersInvalidAnswerIdFormat = 300,
 
@@ -22,21 +20,29 @@ export enum ApiErrorCode
 
 
 
-    //#region - Auth -
+    //#region - Games -
 
     GamesInvalidQuestionTimeLimit = 400,
     GamesStartNonOpenGame = 401,
+    GamesCloseQuestion = 402,
 
     //#endregion
 
 
 
-    //#region - Auth -
+    //#region - Join game -
 
     JoinGameNicknameAlreadyTaken = 500,
     JoinGameNotFound = 501,
     JoinGameAlreadyFinished = 502,
     JoinGameInvalidNicknameLength = 503,
+
+    //#endregion
+
+
+    //#region - Responses -
+
+    ResponsesInvalidMultipleChoiceAnswerId = 600,
 
     //#endregion
 

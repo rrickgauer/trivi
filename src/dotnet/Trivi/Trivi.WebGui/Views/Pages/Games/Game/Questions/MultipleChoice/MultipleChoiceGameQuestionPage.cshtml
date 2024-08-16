@@ -1,0 +1,72 @@
+﻿@using Trivi.Lib.Domain.TableViews
+@using Trivi.Lib.Domain.ViewModels.Gui
+@model GameQuestionLayoutModel<MultipleChoiceGameQuestionVM>
+
+@{
+    Layout = $"~/{GuiPages.GameQuestionLayout}";
+
+    string containerClass = "form-game-answer-container";
+    string formClass = "form-game-answer";
+    string alertsContainerClass = "alerts-container";
+
+    string radioGroupName = "form-game-answer-input-mc";
+}
+
+
+@functions {
+
+    public void GetRadioHtml(ViewAnswer answer, string radioGroupName)
+    {
+        string inputId = $"{radioGroupName}-{answer.Id}";
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="@radioGroupName" id="@inputId" value="@answer.Id">
+            <label class="form-check-label" for="@inputId">@answer.AnswerText</label>
+        </div>
+    }
+}
+
+
+
+@section Body {
+
+    <div class="container @containerClass">
+
+        <form class="@formClass">
+            <div class="@alertsContainerClass"></div>
+
+            <fieldset>
+
+                @* Radio inputs *@
+                <div class="form-spacing-sm">
+                    <div>Select one of the following:</div>
+
+                    <div class="radio-group" data-radio-group-name="@radioGroupName">
+
+                        @foreach(var answer in Model.PageModel.Question.Answers)
+                        {
+                            GetRadioHtml(answer, radioGroupName);
+                        }
+
+                    </div>
+
+                </div>
+
+                <div class="form-spacing-sm">
+                    <button type="submit" class="btn btn-lg btn-success btn-submit w-100" disabled>Submit answer</button>
+                </div>
+
+            </fieldset>
+
+        </form>
+
+
+    </div>
+
+}
+
+
+
+@section Footer {
+    <script src="~/js/dist/game-question-multiple-choice.bundle.js"></script>
+}

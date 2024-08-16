@@ -35,6 +35,9 @@ public enum ErrorCode : ulong
     [ErrorCodeGroup(ErrorCodeGroup.Games)]
     GamesStartNonOpenGame = 401,
 
+    [ErrorCodeGroup(ErrorCodeGroup.Games)]
+    GamesCloseQuestion = 402,
+
     #endregion
 
 
@@ -51,6 +54,14 @@ public enum ErrorCode : ulong
 
     [ErrorCodeGroup(ErrorCodeGroup.JoinGame)]
     JoinGameInvalidNicknameLength = 503,
+
+    #endregion
+
+
+    #region - Responses -
+    
+    [ErrorCodeGroup(ErrorCodeGroup.Responses)]
+    ResponsesInvalidMultipleChoiceAnswerId = 600,
 
     #endregion
 

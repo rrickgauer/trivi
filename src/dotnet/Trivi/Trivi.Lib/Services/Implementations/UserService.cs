@@ -17,7 +17,7 @@ public class UserService(IUserRepository repo, ITableMapperService tableMapperSe
     private readonly IUserRepository _repo = repo;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
 
-    public async Task<ServiceDataResponse<List<ViewUser>>> GetUsersAsync()
+    public async Task<ServiceResponse<List<ViewUser>>> GetUsersAsync()
     {
 
         try
@@ -31,7 +31,7 @@ public class UserService(IUserRepository repo, ITableMapperService tableMapperSe
         }
     }
 
-    public async Task<ServiceDataResponse<ViewUser>> GetUserAsync(LoginForm credentials)
+    public async Task<ServiceResponse<ViewUser>> GetUserAsync(LoginForm credentials)
     {
         try
         {
@@ -50,7 +50,7 @@ public class UserService(IUserRepository repo, ITableMapperService tableMapperSe
         }
     }
 
-    public async Task<ServiceDataResponse<ViewUser>> GetUserAsync(string email)
+    public async Task<ServiceResponse<ViewUser>> GetUserAsync(string email)
     {
         try
         {
@@ -69,7 +69,7 @@ public class UserService(IUserRepository repo, ITableMapperService tableMapperSe
         }
     }
 
-    public async Task<ServiceDataResponse<ViewUser>> CreateUserAsync(User user)
+    public async Task<ServiceResponse<ViewUser>> CreateUserAsync(User user)
     {
         try
         {

@@ -8,7 +8,7 @@ public class QuestionIdConverter : JsonConverter<QuestionId>
 {
     public override QuestionId? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        throw new NotImplementedException();
+        return new(reader.GetString()!);
     }
 
     public override void Write(Utf8JsonWriter writer, QuestionId value, JsonSerializerOptions options)

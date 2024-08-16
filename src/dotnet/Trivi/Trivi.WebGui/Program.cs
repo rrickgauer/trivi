@@ -1,19 +1,16 @@
 using Microsoft.Extensions.FileProviders;
-using System.Reflection;
 using Trivi.Lib.Domain.Configurations;
 using Trivi.Lib.Domain.Other;
-using Trivi.Lib.Filters;
 using Trivi.Lib.Hubs.Lobby;
-using Trivi.Lib.JsonConverters;
+using Trivi.Lib.Hubs.Question;
 using Trivi.Lib.Services.Contracts;
-using Trivi.Lib.Utility;
+using Trivi.WebGui.Utility;
 
 
 bool isProduction = true;
 
 #if DEBUG
 isProduction = false;
-
 
 // DO THIS SO YOU DON'T HAVE TO LOG IN EVERY TIME
 SessionManager.TESTING_MASTER_USER_ID = new(@"00000000-0000-0000-0000-000000000000");
@@ -27,90 +24,7 @@ IConfigs config = isProduction ? new ConfigurationProduction() : new Configurati
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<RouteOptions>(options =>
-{
-    options.ConfigureRouteConstraints();
-});
-
-#region - Setup web application builder -
-
-// Add services to the container.
-builder.Services.AddControllersWithViews(options =>
-{
-    options.Filters.Add<HttpResponseExceptionFilter>();
-    options.Filters.Add<ValidationErrorFilter>();
-    //options.Filters.Add<AccessTokenFilter>();
-
-    options.SuppressAsyncSuffixInActionNames = false;
-})
-
-.AddRazorOptions(options =>
-{
-    options.ViewLocationFormats.Add("/{0}.cshtml");
-    options.ViewLocationFormats.Add("/");
-})
-
-// https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-8.0#disable-automatic-400-response
-.ConfigureApiBehaviorOptions(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-    options.SuppressMapClientErrors = true;
-})
-
-.AddJsonOptions(options =>
-{
-    if (!isProduction)
-    {
-        options.JsonSerializerOptions.WriteIndented = true;
-    }
-
-    options.JsonSerializerOptions.Converters.Add(new ServiceDataResponseFactory());
-});
-
-
-builder.Services.AddSignalR(options =>
-{
-    options.EnableDetailedErrors = true;
-    //options.KeepAliveInterval = TimeSpan.FromSeconds(60);
-});
-
-// session management
-builder.Services.AddDistributedMemoryCache();
-
-builder.Services.AddSession(options =>
-{
-    options.Cookie.Name = GuiSessionKeys.SessionName;
-    options.Cookie.IsEssential = true;
-});
-
-#endregion
-
-#region - Dependency Injection -
-
-// inject the appropriate IConfigs instance
-DependencyInjectionUtility.InjectConfigs(builder.Services, isProduction);
-
-// inject the services into the web application
-List<Assembly?> assemblies = new()
-{
-    Assembly.GetAssembly(typeof(IConfigs)),
-    Assembly.GetExecutingAssembly(),
-};
-
-InjectionProject projectTypes = InjectionProject.Always | InjectionProject.WebGui;
-
-foreach (var assembly in assemblies)
-{
-    if (assembly != null)
-    {
-        DependencyInjectionUtility.InjectServicesIntoAssembly(builder.Services, projectTypes, assembly);
-    }
-}
-
-// additional services to inject
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-#endregion
+builder.SetupWebGui(isProduction);
 
 
 var app = builder.Build();
@@ -143,11 +57,16 @@ app.UseStaticFiles(new StaticFileOptions
 
 
 
-app.MapHub<GameLobbyHub>("/hubs/game", options =>
+app.MapHub<GameLobbyHub>("/hubs/game-lobby", options =>
 {
     options.AllowStatefulReconnects = true;
 });
 
+
+app.MapHub<GameHub>("/hubs/game-question", options =>
+{
+    options.AllowStatefulReconnects = true;
+});
 
 app.UseRouting();
 

@@ -7,6 +7,6 @@ public interface IGamePoolService
 {
     public ConnectionsPool GetConnectionPool(string gameId);
 
-    public Task<ServiceDataResponse<ConnectionsPool>> AddPlayerToGameAsync(string gameId, Guid playerId);
+    public Task<ServiceResponse<ConnectionsPool>> AddPlayerToGameAsync(string gameId, Guid playerId);
 }
 

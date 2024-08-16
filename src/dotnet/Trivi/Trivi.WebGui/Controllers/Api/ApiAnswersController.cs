@@ -50,7 +50,7 @@ public class ApiAnswersController(IAnswerService answerService, RequestItems req
     {
         var answer = _requestItems.Answer;
 
-        return Ok(new ServiceDataResponse<ViewAnswer>(answer));
+        return Ok(new ServiceResponse<ViewAnswer>(answer));
     }   
 
     [HttpDelete("{answerId:answerId}")]

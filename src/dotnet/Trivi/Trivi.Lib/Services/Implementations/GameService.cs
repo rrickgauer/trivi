@@ -1,7 +1,10 @@
-﻿using Trivi.Lib.Domain.Attributes;
+﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Runtime.Versioning;
+using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Constants;
 using Trivi.Lib.Domain.Errors;
 using Trivi.Lib.Domain.Models;
+using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.Responses;
 using Trivi.Lib.Domain.TableViews;
 using Trivi.Lib.Repository.Contracts;
@@ -16,7 +19,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
     private readonly ITableMapperService _tableMapperService = tableMapperService;
     private readonly IGameQuestionService _gameQuestionService = gameQuestionService;
 
-    public async Task<ServiceDataResponse<List<ViewGame>>> GetUserGamesAsync(Guid userId)
+    public async Task<ServiceResponse<List<ViewGame>>> GetUserGamesAsync(Guid userId)
     {
         try
         {
@@ -29,11 +32,11 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         }
     }
 
-    public async Task<ServiceDataResponse<ViewGame>> GetGameAsync(string gameId)
+    public async Task<ServiceResponse<ViewGame>> GetGameAsync(string gameId)
     {
         try
         {
-            ServiceDataResponse<ViewGame> result = new();
+            ServiceResponse<ViewGame> result = new();
 
             var row = await _gameRepository.SelectGameAsync(gameId);
 
@@ -51,7 +54,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
     }
 
 
-    public async Task<ServiceDataResponse<ViewGame>> CreateGameAsync(Game game)
+    public async Task<ServiceResponse<ViewGame>> CreateGameAsync(Game game)
     {
         var validateResult = await ValidateNewGameAsync(game);
 
@@ -87,7 +90,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         return result;
     }
 
-    public async Task<ServiceDataResponse<ViewGame>> StartGameAsync(string gameId)
+    public async Task<ServiceResponse<ViewGame>> StartGameAsync(string gameId)
     {
         try
         {
@@ -121,5 +124,20 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         }
 
         return getGame;
+    }
+
+
+    public async Task<ServiceResponse<ViewGame>> ActivateNextGameQuestionAsync(string gameId)
+    {
+        try
+        {
+            await _gameRepository.ActivateNextGameQuestionAsync(gameId);
+        }
+        catch(RepositoryException ex)
+        {
+            return ex;
+        }
+
+        return await GetGameAsync(gameId);
     }
 }

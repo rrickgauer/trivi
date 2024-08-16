@@ -1,5 +1,6 @@
 ﻿using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Errors;
+using Trivi.Lib.Domain.Other;
 using Trivi.Lib.Domain.Responses;
 using Trivi.Lib.Domain.TableViews;
 using Trivi.Lib.Repository.Contracts;
@@ -13,7 +14,7 @@ public class GameQuestionService(IGameQuestionRepository repo, ITableMapperServi
     private readonly IGameQuestionRepository _repo = repo;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
 
-    public async Task<ServiceDataResponse<List<ViewGameQuestion>>> CreateGameQuestionsAsync(string gameId)
+    public async Task<ServiceResponse<List<ViewGameQuestion>>> CreateGameQuestionsAsync(string gameId)
     {
         try
         {
@@ -28,11 +29,40 @@ public class GameQuestionService(IGameQuestionRepository repo, ITableMapperServi
         {
             return ex;
         }
-        catch(Exception ex)
+    }
+
+    public async Task<ServiceResponse<ViewGameQuestion>> GetGameQuestionAsync(GameQuestionLookup gameQuestionLookup)
+    {
+        try
         {
-            var message = ex.Message;
-            int x = 10;
-            throw;
+            ServiceResponse<ViewGameQuestion> result = new();
+
+            var row = await _repo.SelectGameQuestionAsync(gameQuestionLookup);
+
+            if (row != null)
+            {
+                result.Data = _tableMapperService.ToModel<ViewGameQuestion>(row);
+            }
+
+            return result;
         }
+        catch (RepositoryException ex)
+        {
+            return ex;
+        }
+    }
+
+    public async Task<ServiceResponse<ViewGameQuestion>> UpdateGameQuestionStatusAsync(GameQuestionLookup gameQuestionLookup, GameQuestionStatus gameQuestionStatus)
+    {
+        try
+        {
+            await _repo.UpdateGameQuestionStatusAsync(gameQuestionLookup, gameQuestionStatus);
+        }
+        catch(RepositoryException ex)
+        {
+            return ex;
+        }
+
+        return await GetGameQuestionAsync(gameQuestionLookup);
     }
 }

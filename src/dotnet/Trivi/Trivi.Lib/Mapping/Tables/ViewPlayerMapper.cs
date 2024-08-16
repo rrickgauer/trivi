@@ -9,7 +9,6 @@ public class ViewPlayerMapper : TableMapper<ViewPlayer>
     {
         ViewPlayer result = new();
 
-
         result.Id = row.Field<Guid?>(GetColumnName(nameof(result.Id)));
         result.GameId = row.Field<string?>(GetColumnName(nameof(result.GameId)));
         result.Nickname = row.Field<string?>(GetColumnName(nameof(result.Nickname)));

@@ -1,6 +1,7 @@
 ﻿
 
 using Trivi.Lib.Domain.Attributes;
+using Trivi.Lib.Services.Implementations;
 
 namespace Trivi.Lib.Domain.Models;
 
@@ -17,5 +18,14 @@ public class ErrorMessage
     {
         ArgumentNullException.ThrowIfNull(message.Id);
         return (ErrorCode)message.Id;
+    }
+}
+
+
+public static class ErrorMessageExtensions
+{
+    public static List<ErrorMessage> ToErrorMessages(this IEnumerable<ErrorCode> errors)
+    {
+        return ErrorMessageService.ToErrorMessages(errors);
     }
 }

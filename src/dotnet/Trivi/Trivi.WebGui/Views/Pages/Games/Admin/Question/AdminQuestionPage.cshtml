@@ -1,0 +1,97 @@
+﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.Lib.Domain.ViewModels.Gui
+@using Trivi.WebGui.ViewComponents
+@model AdminQuestionViewModel
+
+@{
+    string tableContainerClass = "player-status-table-container";
+    string tableClass = "player-status-list";
+    string alertsContainerClass = "alerts-container";
+    string btnCloseQuestionClass = "btn-close-question";
+    string btnMessageAllPlayersClass = "btn-message-all-players";
+    string btnSetQuestionTimerClass = "btn-set-question-timer";
+    string btnOpenSetQuestionTimerClass = "btn-open-set-question-timer";
+
+
+    bool isQuestionClosed = Model.GameQuestion.QuestionStatus == GameQuestionStatus.Closed;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="@PartialRazorFiles.Header" />
+    <title>@Model.Game.Id Admin Lobby</title>
+</head>
+<body>
+    <partial name="@PartialRazorFiles.BundleTop" />
+
+    @if(isQuestionClosed)
+    {
+        <div class="container mt-5">
+            <div class="alert alert-info" role="alert">
+                This question has been closed.
+            </div>
+        </div>
+    }
+
+    @* Prompt *@
+    <div class="container mt-5">
+        <h1 class="display-3 text-center">@Model.GameQuestion.Prompt</h1>
+        
+        @{
+            string pointsText = Model.GameQuestion.Points == 1 ? "point" : "points";
+        }
+
+        <h3 class="text-center lead">@Model.GameQuestion.Points @pointsText</h3>
+    </div>
+
+    @* Progress bar *@
+    @await Component.InvokeAsync(nameof(GameProgressBarViewComp), Model.Game)
+
+    @* Player status table *@
+    <div class="@tableContainerClass">
+
+        <div class="container mt-5">
+            <div class="@alertsContainerClass"></div>
+        </div>
+
+        <div class="container mt-5">
+            <ul class="list-group @tableClass"></ul>
+        </div>
+
+        @{
+            string disabledText = isQuestionClosed ? "disabled" : string.Empty;
+        }
+
+        @* Close question button *@
+        <div class="container mt-3 d-lg-flex justify-content-between">
+
+            <div class="d-flex">
+                <button type="button" class="btn btn-lg btn-light @btnMessageAllPlayersClass">Message all players</button>
+            </div>
+
+
+            <div class="d-lg-flex">
+                <div class="dropup me-1">
+                    <button class="btn btn-lg btn-light @btnOpenSetQuestionTimerClass" type="button" data-bs-toggle="dropdown">Set timer</button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item @btnSetQuestionTimerClass" data-timer-seconds="5" type="button">5 seconds</button></li>
+                        <li><button class="dropdown-item @btnSetQuestionTimerClass" data-timer-seconds="10" type="button">10 seconds</button></li>
+                        <li><button class="dropdown-item @btnSetQuestionTimerClass" data-timer-seconds="15" type="button">15 seconds</button></li>
+                    </ul>
+                </div>
+
+                <button type="button" class="btn btn-lg btn-success @btnCloseQuestionClass" @disabledText>Close question</button>
+            </div>
+        </div>
+
+
+    </div>
+
+    <partial name="_PlayerSettingsModal.cshtml" />
+    <partial name="_MessageAllPlayersModal.cshtml" />
+
+    <partial name="@PartialRazorFiles.Footer" />
+    <script src="~/js/dist/admin-question.bundle.js"></script>
+</body>
+</html>

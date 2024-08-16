@@ -1,0 +1,58 @@
+﻿@using Trivi.Lib.Domain.ViewModels.Gui
+@model GameQuestionLayoutModel<TrueFalseGameQuestionVM>
+
+@{
+    Layout = $"~/{GuiPages.GameQuestionLayout}";
+
+    
+    string containerClass = "form-game-answer-container";
+    string formClass = "form-game-answer";
+    string alertsContainerClass = "alerts-container";
+
+    string answerRadioInputName = "form-question-tf-input-answer";
+    string answerRadioInputTrueId = "form-question-tf-input-answer-true";
+    string answerRadioInputFalseId = "form-question-tf-input-answer-false";
+}
+
+
+@section Body {
+
+    <div class="container @containerClass">
+
+        <form class="@formClass">
+            <div class="@alertsContainerClass"></div>
+
+            <fieldset>
+
+                <div class="form-spacing">
+
+                    <div class="radio-group" data-radio-group-name="@answerRadioInputName">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@answerRadioInputName" id="@answerRadioInputTrueId" value="true">
+                            <label class="form-check-label" for="@answerRadioInputTrueId">True</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@answerRadioInputName" id="@answerRadioInputFalseId" value="false">
+                            <label class="form-check-label" for="@answerRadioInputFalseId">False</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-spacing-sm">
+                    <button type="submit" class="btn btn-lg btn-success btn-submit w-100" disabled>Submit answer</button>
+                </div>
+
+            </fieldset>
+
+        </form>
+
+
+    </div>
+
+}
+
+
+
+@section Footer {
+    <script src="~/js/dist/game-question-true-false.bundle.js"></script>
+}

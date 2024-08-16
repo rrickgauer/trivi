@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Trivi.Lib.Domain.Attributes;
 using Trivi.Lib.Domain.Errors;
+using Trivi.Lib.Domain.Models;
 using Trivi.Lib.Domain.TableViews;
 
 namespace Trivi.Lib.Domain.Other;
@@ -47,10 +48,16 @@ public class RequestItems
         set => SetItem(RequestItemKey.Player, value);
     }
 
+    public ViewResponse ResponseResult
+    {
+        get => GetItem<ViewResponse>(RequestItemKey.ResponseResult);
+        set => SetItem(RequestItemKey.ResponseResult, value);
+    }
+
 
     private T GetItem<T>(RequestItemKey key) where T : class
     {
-        if (!_items.TryGetValue(key, out var result))
+        if (!_items.TryGetValue(key.GetKeyText(), out var result))
         {
             throw new RequestItemNotSetException(key);
         }
@@ -60,21 +67,24 @@ public class RequestItems
 
     private void SetItem(RequestItemKey key, object? value)
     {
+        var keyText = key.GetKeyText();
+
         if (value == null)
         {
-            _items.Remove(key);
+            _items.Remove(keyText);
+            return;
+        }
+
+
+        if (_items.ContainsKey(keyText))
+        {
+            _items[keyText] = value;
         }
         else
         {
-            if (_items.ContainsKey(key))
-            {
-                _items[key] = value;
-            }
-            else
-            {
-                _items.Add(key, value);
-            }
+            _items.Add(keyText, value);
         }
+    
     }
 
 }

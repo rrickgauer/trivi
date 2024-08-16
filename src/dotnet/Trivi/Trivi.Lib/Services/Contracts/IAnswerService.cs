@@ -8,9 +8,9 @@ namespace Trivi.Lib.Services.Contracts;
 
 public interface IAnswerService
 {
-    public Task<ServiceDataResponse<List<ViewAnswer>>> GetAnswersAsync(QuestionId questionId);
-    public Task<ServiceDataResponse<ViewAnswer>> GetAnswerAsync(string answerId);
-    public Task<ServiceDataResponse<ViewAnswer>> SaveAnswerAsync(Answer answer);
-    public Task<ServiceDataResponse<List<ViewAnswer>>> ReplaceAnswersAsync(PutAnswersRequest answers);
+    public Task<ServiceResponse<List<ViewAnswer>>> GetAnswersAsync(QuestionId questionId);
+    public Task<ServiceResponse<ViewAnswer>> GetAnswerAsync(string answerId);
+    public Task<ServiceResponse<ViewAnswer>> SaveAnswerAsync(Answer answer);
+    public Task<ServiceResponse<List<ViewAnswer>>> ReplaceAnswersAsync(PutAnswersRequest answers);
     public Task<ServiceResponse> DeleteAnswerAsync(string answerId); 
 }

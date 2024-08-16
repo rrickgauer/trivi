@@ -7,4 +7,16 @@ public enum RequestItemKey
     Answer,
     Game,
     Player,
+    ResponseResult,
+    GameId,
+}
+
+
+public static class RequestItemKeyExtensions
+{
+    public static string GetKeyText(this RequestItemKey key)
+    {
+        var keyName = Enum.GetName(key);
+        return $"{nameof(RequestItemKey)}-{keyName}";
+    }
 }

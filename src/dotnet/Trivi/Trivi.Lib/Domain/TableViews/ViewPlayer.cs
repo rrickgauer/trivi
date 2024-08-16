@@ -35,11 +35,8 @@ public class ViewPlayer : ITableView<ViewPlayer, Player>, IUriApi
     [JsonIgnore]
     public Guid? CollectionUserId { get; set; }
 
-
-    //public string? ActiveGameUri { get; set; }
-
     public string UriApi => ((Player)this).UriApi;
 
     public static explicit operator Player(ViewPlayer other) => other.CastToModel<ViewPlayer, Player>();
-        
 }
+

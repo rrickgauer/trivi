@@ -1,5 +1,8 @@
-﻿namespace Trivi.Lib.Domain.Enums;
+﻿using System.Text.Json.Serialization;
 
+namespace Trivi.Lib.Domain.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum GameQuestionStatus : ushort
 {
     Pending = 1,

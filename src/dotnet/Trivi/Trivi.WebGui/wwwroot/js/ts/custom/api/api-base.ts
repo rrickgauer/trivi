@@ -11,4 +11,5 @@ export class ApiEndpoints
     public static readonly Questions = `${API_PREFIX}/questions`;
     public static readonly Games = `${API_PREFIX}/games`;
     public static readonly Players = `${API_PREFIX}/players`;
+    public static readonly Responses = `${API_PREFIX}/responses`;
 }

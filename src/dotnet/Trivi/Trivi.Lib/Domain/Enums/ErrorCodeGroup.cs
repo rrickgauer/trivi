@@ -8,4 +8,5 @@ public enum ErrorCodeGroup : ushort
     Answers = 3,
     Games = 4,
     JoinGame = 5,
+    Responses = 6,
 }

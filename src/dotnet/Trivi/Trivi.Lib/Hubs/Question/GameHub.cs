@@ -19,10 +19,13 @@ public class GameHub(IResponseService responseService, IGameHubConnectionService
     private readonly IResponseService _responseService = responseService;
     private readonly IGameHubConnectionService _gameHubConnectionService = gameHubConnectionService;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async Task PlayerConnectAsync(PlayerConnectParms data)
     {
         _gameHubConnectionService.StorePlayerConnectionId(data, Context.ConnectionId);
     }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
 
     public async Task AdminConnectAsync(AdminJoinParms data)
     {

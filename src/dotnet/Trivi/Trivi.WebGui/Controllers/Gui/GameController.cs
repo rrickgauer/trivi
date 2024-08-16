@@ -22,16 +22,14 @@ public class GameController : GuiController, IControllerName
     private readonly IResponseService _responseService;
     private readonly TrueFalseGameQuestionVMService _trueFalseGameQuestionVMService;
     private readonly MulitpleChoiceGameQuestionVMService _mulitpleChoiceGameQuestionVMService;
-    private readonly IGamePageService _gamePageService;
 
-    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService, MulitpleChoiceGameQuestionVMService mulitpleChoiceGameQuestionVMService, IGamePageService gamePageService)
+    public GameController(RequestItems requestItems, ShortAnswerGameQuestionVMService shortAnswerVMService, IResponseService responseService, TrueFalseGameQuestionVMService trueFalseGameQuestionVMService, MulitpleChoiceGameQuestionVMService mulitpleChoiceGameQuestionVMService)
     {
         _requestItems = requestItems;
         _shortAnswerVMService = shortAnswerVMService;
         _responseService = responseService;
         _trueFalseGameQuestionVMService = trueFalseGameQuestionVMService;
         _mulitpleChoiceGameQuestionVMService = mulitpleChoiceGameQuestionVMService;
-        _gamePageService = gamePageService;
     }
 
     /// <summary>
@@ -47,7 +45,7 @@ public class GameController : GuiController, IControllerName
 
         if (game.Status == GameStatus.Open)
         {
-            return RedirectToAction(nameof(LobbyPageAsync), gameRequest.GetRedirectRouteValues());
+            return RedirectToAction(nameof(GetLobbyPage), gameRequest.GetRedirectRouteValues());
         }
 
         else if (game.Status == GameStatus.Running && game.ActiveQuestionId is QuestionId activeQuestionId)
@@ -72,7 +70,7 @@ public class GameController : GuiController, IControllerName
 
         if (getQuestion.Data is not null)
         {
-            return RedirectToAction(nameof(GetWaitingPageAsync), gameRequest.GetRedirectRouteValues());
+            return RedirectToAction(nameof(GetWaitingPage), gameRequest.GetRedirectRouteValues());
         }
 
         return activeQuestionId.QuestionType switch
@@ -90,8 +88,8 @@ public class GameController : GuiController, IControllerName
     /// <param name="gameRequest"></param>
     /// <returns></returns>
     [HttpGet("waiting")]
-    [ActionName(nameof(GetWaitingPageAsync))]   
-    public async Task<ActionResult<ViewResult>> GetWaitingPageAsync(PlayGameGuiRequest gameRequest)
+    [ActionName(nameof(GetWaitingPage))]   
+    public ActionResult<ViewResult> GetWaitingPage(PlayGameGuiRequest gameRequest)
     {
         return View(GuiPages.GameWaiting);
     }
@@ -102,8 +100,8 @@ public class GameController : GuiController, IControllerName
     /// <param name="gameRequest"></param>
     /// <returns></returns>
     [HttpGet("lobby")]
-    [ActionName(nameof(LobbyPageAsync))]
-    public async Task<ActionResult<ViewResult>> LobbyPageAsync(PlayGameGuiRequest gameRequest)
+    [ActionName(nameof(GetLobbyPage))]
+    public ActionResult<ViewResult> GetLobbyPage(PlayGameGuiRequest gameRequest)
     {
         return View(GuiPages.GameLobby, new GameLobbyViewModel()
         {

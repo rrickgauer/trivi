@@ -94,7 +94,7 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
     [HttpGet("{collectionId}/setup")]
     [ActionName(nameof(SetupPageAsync))]
     [ServiceFilter<GetCollectionFilter>]
-    public async Task<ActionResult<ViewResult>> SetupPageAsync([FromRoute] Guid collectionId)
+    public ActionResult<ViewResult> SetupPageAsync([FromRoute] Guid collectionId)
     {
         return View(GuiPages.CollectionSetup);
     }

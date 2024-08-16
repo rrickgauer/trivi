@@ -41,7 +41,7 @@ public class ViewPlayerGameQuestionPageFilter(IResponseService responseService) 
         }
 
         // the player has already answered the question, so redirect them to the waiting page
-        string actionName = nameof(GameController.GetWaitingPageAsync);
+        string actionName = nameof(GameController.GetWaitingPage);
         string controllerName = GameController.ControllerRedirectName;
 
         var routeValues = new

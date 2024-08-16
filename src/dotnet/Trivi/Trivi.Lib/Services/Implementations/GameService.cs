@@ -56,7 +56,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
 
     public async Task<ServiceResponse<ViewGame>> CreateGameAsync(Game game)
     {
-        var validateResult = await ValidateNewGameAsync(game);
+        var validateResult = ValidateNewGame(game);
 
         if (!validateResult.Successful)
         {
@@ -75,7 +75,7 @@ public class GameService(IGameRepository gameRepository, ITableMapperService tab
         return await GetGameAsync(game.Id!);
     }
 
-    private async Task<ServiceResponse> ValidateNewGameAsync(Game game)
+    private ServiceResponse ValidateNewGame(Game game)
     {
         ServiceResponse result = new();
 

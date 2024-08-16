@@ -50,9 +50,9 @@ public class ApiQuestionsController(GetQuestionsApiVMService getQuestionsVMServi
     /// <param name="questionId"></param>
     /// <returns></returns>
     [HttpGet("{questionId:questionId}")]
-    [ActionName(nameof(GetQuestionAsync))]
+    [ActionName(nameof(GetQuestion))]
     [ServiceFilter<GetQuestionFilter>]
-    public async Task<IActionResult> GetQuestionAsync([FromRoute] QuestionId questionId)
+    public IActionResult GetQuestion([FromRoute] QuestionId questionId)
     {
         return Ok(new ServiceResponse<object>(_requestItems.Question as object));
     }

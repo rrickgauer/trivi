@@ -60,9 +60,9 @@ public class ApiAnswersController(IAnswerService answerService, RequestItems req
     /// <param name="answerId"></param>
     /// <returns></returns>
     [HttpGet("{answerId:answerId}")]
-    [ActionName(nameof(GetAnswerAsync))]
+    [ActionName(nameof(GetAnswer))]
     [ServiceFilter<GetAnswerFilter>]
-    public async Task<ActionResult<ServiceResponse<ViewAnswer>>> GetAnswerAsync([FromRoute] QuestionId questionId, [FromRoute] string answerId)
+    public ActionResult<ServiceResponse<ViewAnswer>> GetAnswer([FromRoute] QuestionId questionId, [FromRoute] string answerId)
     {
         var answer = _requestItems.Answer;
 
@@ -93,7 +93,7 @@ public class ApiAnswersController(IAnswerService answerService, RequestItems req
     /// <param name="answerRequest"></param>
     /// <returns></returns>
     [HttpPut("{answerId:answerId}")]
-    [ActionName(nameof(GetAnswerAsync))]
+    [ActionName(nameof(GetAnswer))]
     [ServiceFilter<PutAnswerFilter>]
     public async Task<ActionResult<ServiceResponse<ViewAnswer>>> PutAnswerAync(PutAnswerRequest answerRequest)
     {

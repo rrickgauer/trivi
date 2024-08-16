@@ -20,10 +20,13 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
 
     private readonly IGameService _gameService = gameService;
 
-
+    /// <summary>
+    /// /app/collections
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(CollectionsPageAsync))]
-    public async Task<IActionResult> CollectionsPageAsync()
+    public async Task<ActionResult<ViewResult>> CollectionsPageAsync()
     {
         var getViewModel = await _collectionsPageVM.GetViewModelAsync(new()
         {
@@ -38,11 +41,17 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
         return View(GuiPages.Collections, getViewModel.Data);
     }
 
+    /// <summary>
+    /// /app/collections/:collectionId
+    /// /app/collections/:collectionId/questions
+    /// </summary>
+    /// <param name="collectionId"></param>
+    /// <returns></returns>
     [HttpGet("{collectionId}")]
     [HttpGet("{collectionId}/questions")]
     [ActionName(nameof(CollectionQuestionsPageAsync))]
     [ServiceFilter<GetCollectionFilter>]
-    public async Task<IActionResult> CollectionQuestionsPageAsync([FromRoute] Guid collectionId)
+    public async Task<ActionResult<ViewResult>> CollectionQuestionsPageAsync([FromRoute] Guid collectionId)
     {
         var getVM = await _questionsVMService.GetViewModelAsync(new()
         {
@@ -57,10 +66,15 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
         return View(GuiPages.CollectionQuestions, getVM.Data);
     }
 
+    /// <summary>
+    /// /app/collections/:collectionId/settings
+    /// </summary>
+    /// <param name="collectionId"></param>
+    /// <returns></returns>
     [HttpGet("{collectionId}/settings")]
     [ActionName(nameof(CollectionPageAsync))]
     [ServiceFilter<GetCollectionFilter>]
-    public async Task<IActionResult> CollectionPageAsync([FromRoute] Guid collectionId)
+    public async Task<ActionResult<ViewResult>> CollectionPageAsync([FromRoute] Guid collectionId)
     {
         var getVM = await _collectionSettingsPageVM.GetViewModelAsync(new()
         {
@@ -80,7 +94,7 @@ public class CollectionsController(CollectionsPageVMService collectionsPageVM, C
     [HttpGet("{collectionId}/setup")]
     [ActionName(nameof(SetupPageAsync))]
     [ServiceFilter<GetCollectionFilter>]
-    public async Task<IActionResult> SetupPageAsync([FromRoute] Guid collectionId)
+    public async Task<ActionResult<ViewResult>> SetupPageAsync([FromRoute] Guid collectionId)
     {
         return View(GuiPages.CollectionSetup);
     }

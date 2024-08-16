@@ -16,7 +16,7 @@ public interface IControllerName
         return RemoveSuffix(controllerName);
     }
 
-    public static string RemoveSuffix(string controllerName)
+    private static string RemoveSuffix(string controllerName)
     {
         string result = controllerName;
 

@@ -10,8 +10,7 @@ public class LandingController(IUserService userService) : GuiController, IContr
 {
     private readonly IUserService _userService = userService;
 
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(LandingController));
-
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<LandingController>();
     [HttpGet]
     public async Task<IActionResult> GetLandingPage()
     {

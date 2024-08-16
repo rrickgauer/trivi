@@ -8,7 +8,7 @@ namespace Trivi.WebGui.Controllers.Gui;
 [Route("games")]
 public class JoinGameController : GuiController, IControllerName
 {
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(JoinGameController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<JoinGameController>();
 
     /// <summary>
     /// GET: /games

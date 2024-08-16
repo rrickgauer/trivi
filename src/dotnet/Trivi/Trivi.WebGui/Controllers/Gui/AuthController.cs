@@ -9,7 +9,7 @@ namespace Trivi.WebGui.Controllers.Gui;
 [Route("auth")]
 public class AuthController(IAuthService authService) : GuiController, IControllerName
 {
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(AuthController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<AuthController>();
 
     private readonly IAuthService _authService = authService;
 

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using Trivi.Lib.Domain.Errors;
 
@@ -50,6 +51,26 @@ public class ServiceResponse<T> : ServiceResponse
         return Data;
     }
 
+
+    public new ActionResult<ServiceResponse<T>> ToAction()
+    {
+        if (!Successful)
+        {
+            return new BadRequestObjectResult(this);
+        }
+
+        return new OkObjectResult(this);
+    }
+
+    public ActionResult<ServiceResponse<T>> ToActionCreated(string? uri)
+    {
+        if (!Successful)
+        {
+            return new BadRequestObjectResult(this);
+        }
+
+        return new CreatedResult(uri, this);
+    }
 
 
 

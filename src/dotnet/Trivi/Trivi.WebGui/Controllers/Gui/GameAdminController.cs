@@ -16,7 +16,7 @@ namespace Trivi.WebGui.Controllers.Gui;
 public class GameAdminController(RequestItems requestItems, IResponseService responseService, AdminQuestionVMService adminQuestionVMService) : GuiController, IControllerName
 {
     /// <inheritdoc/>
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(GameAdminController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<GameAdminController>();
 
     private readonly RequestItems _requestItems = requestItems;
     private readonly IResponseService _responseService = responseService;

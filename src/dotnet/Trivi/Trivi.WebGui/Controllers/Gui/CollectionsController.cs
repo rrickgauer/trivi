@@ -12,7 +12,7 @@ namespace Trivi.WebGui.Controllers.Gui;
 [ServiceFilter<LoginFirstRedirectFilter>]
 public class CollectionsController(CollectionsPageVMService collectionsPageVM, CollectionSettingsPageVMService collectionSettingsPageVM, CollectionQuestionsPageVMService questionsVMService, IGameService gameService) : GuiController, IControllerName
 {
-    public static string ControllerRedirectName => IControllerName.RemoveSuffix(nameof(CollectionsController));
+    public static string ControllerRedirectName => IControllerName.RemoveSuffix<CollectionsController>();
 
     private readonly CollectionsPageVMService _collectionsPageVM = collectionsPageVM;
     private readonly CollectionSettingsPageVMService _collectionSettingsPageVM = collectionSettingsPageVM;

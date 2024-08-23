@@ -17,6 +17,23 @@ public class ViewResponse : ITableView<ViewResponse, Response>
     [CopyToProperty<ResponseMultipleChoice>(nameof(ResponseMultipleChoice.Id))]
     public virtual Guid? Id { get; set; }
 
+
+    [SqlColumn("response_is_correct")]
+    [CopyToProperty<Response>(nameof(Response.IsCorrect))]
+    [CopyToProperty<ResponseShortAnswer>(nameof(ResponseShortAnswer.IsCorrect))]
+    [CopyToProperty<ResponseTrueFalse>(nameof(ResponseTrueFalse.IsCorrect))]
+    [CopyToProperty<ResponseMultipleChoice>(nameof(ResponseMultipleChoice.IsCorrect))]
+    public virtual bool IsCorrect { get; set; } = false;
+
+
+    [SqlColumn("response_points_awarded")]
+    [CopyToProperty<Response>(nameof(Response.PointsAwarded))]
+    [CopyToProperty<ResponseShortAnswer>(nameof(ResponseShortAnswer.PointsAwarded))]
+    [CopyToProperty<ResponseTrueFalse>(nameof(ResponseTrueFalse.PointsAwarded))]
+    [CopyToProperty<ResponseMultipleChoice>(nameof(ResponseMultipleChoice.PointsAwarded))]
+    public virtual ushort PointsAwarded { get; set; } = 0;
+
+
     [SqlColumn("question_id")]
     [CopyToProperty<Response>(nameof(Response.QuestionId))]
     [CopyToProperty<ResponseShortAnswer>(nameof(ResponseShortAnswer.QuestionId))]

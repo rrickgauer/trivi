@@ -96,9 +96,9 @@ public class ResponseRepositoryCommands
 
     public const string InsertResponseBase = @"
         INSERT INTO
-            Responses (id, question_id, player_id, created_on)
+            Responses (id, question_id, player_id, created_on, is_correct, points_awarded)
         VALUES
-            (@id, @question_id, @player_id, @created_on);";
+            (@id, @question_id, @player_id, @created_on, @is_correct, @points_awarded);";
 
 
     public const string UpsertShortAnswer = @"

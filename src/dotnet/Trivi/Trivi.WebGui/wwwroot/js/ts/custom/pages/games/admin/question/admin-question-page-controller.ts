@@ -16,6 +16,8 @@ import { UrlUtility } from "../../../../utility/url-utility";
 import { ModalMessageAllPlayers } from "./modal-message-all-players";
 import { ModalPlayerQuestionSettings } from "./modal-player-question-settings";
 import { PlayerStatusListItem, PlayerStatusListItemElements } from "./player-status-list-item";
+import { ClipboardUtility } from "../../../../utility/clipboard-utility";
+import { ToastUtility } from "../../../../utility/toast-utility";
 
 
 export type AdminQuestionPageUrlParms = {
@@ -33,6 +35,7 @@ const elements = {
     btnSetQuestionTimerClass: ".btn-set-question-timer",
     timerSecondsAttr: "data-timer-seconds",
     btnOpenSetQuestionTimerClass: ".btn-open-set-question-timer",
+    btnCopyJoinGameLinkClass: ".btn-copy-join-game-link",
 }
 
 export const AdminQuestionPageControllerElements = elements;
@@ -48,6 +51,7 @@ export class AdminQuestionPageController implements IControllerAsync
     private _alertsContainer: HTMLDivElement;
     private _btnMessageAllPlayers: SpinnerButton;
     private _btnOpenSetQuestionTimer: SpinnerButton;
+    private _btnCopyJoinGameLink: SpinnerButton;
 
     constructor(urlParms: AdminQuestionPageUrlParms)
     {
@@ -62,6 +66,7 @@ export class AdminQuestionPageController implements IControllerAsync
         this._alertsContainer = this._selector.querySelector<HTMLDivElement>(elements.alertsContainerClass);
         this._btnMessageAllPlayers = SpinnerButton.inParent(this._selector.element, elements.btnMessageAllPlayersClass);
         this._btnOpenSetQuestionTimer = SpinnerButton.inParent(this._selector.element, elements.btnOpenSetQuestionTimerClass);
+        this._btnCopyJoinGameLink = SpinnerButton.inParent(this._selector.element, elements.btnCopyJoinGameLinkClass);
     }
 
     public async control()
@@ -130,7 +135,15 @@ export class AdminQuestionPageController implements IControllerAsync
                 await this.setQuestionTimer(seconds);
             });
         });
+
+
+        this._btnCopyJoinGameLink.button.addEventListener(NativeEvents.Click, (e) =>
+        {
+            this.onBtnCopyJoinGameLinkClick();
+        });
     }
+
+
 
     private onAdminUpdatePlayerQuestionResponsesEvent(message: AdminUpdatePlayerQuestionResponsesParms)
     {
@@ -230,5 +243,32 @@ export class AdminQuestionPageController implements IControllerAsync
             await this.onBtnCloseQuestionClicked();
             this._btnOpenSetQuestionTimer.reset();
         }, milliseconds);
+    }
+
+
+    private onBtnCopyJoinGameLinkClick()
+    {
+        const url = this.getJoinGameUrl();
+
+        ClipboardUtility.copyToClipboard(url.toString());
+
+        ToastUtility.showSuccess({
+            message: 'Copied to clipboard.',
+        });
+    }
+
+    private getJoinGameUrl(): URL
+    {
+        const url = new URL(window.location.href);
+        url.pathname = '/games';
+
+        for (const key of url.searchParams.keys())
+        {
+            url.searchParams.delete(key);
+        }
+
+        url.searchParams.set('gameId', this._urlParms.gameId);
+
+        return url;
     }
 }

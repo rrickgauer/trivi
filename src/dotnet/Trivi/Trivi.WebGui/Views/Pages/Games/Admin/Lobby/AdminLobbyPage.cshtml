@@ -15,6 +15,19 @@
         <h1>Admin Lobby Page</h1>
     </div>
 
+    <div class="container my-5">
+        <div class="alert alert-secondary" role="alert">
+            
+
+            @{
+                string joinGameLink = $"/games?gameId={Model.Game.Id}";
+            }
+
+            <a href="@joinGameLink" target="_blank">@joinGameLink</a>
+
+        </div>
+    </div>
+
     <div class="container players-lobby-list-container my-5">
 
         <div>Players in lobby</div>

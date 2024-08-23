@@ -182,6 +182,8 @@ public class ResponseRepository(DatabaseConnection connection, TransactionConnec
         command.Parameters.AddWithValue("@question_id", response.QuestionId?.ToString());
         command.Parameters.AddWithValue("@player_id", response.PlayerId);
         command.Parameters.AddWithValue("@created_on", response.CreatedOn);
+        command.Parameters.AddWithValue("@is_correct", response.IsCorrect);
+        command.Parameters.AddWithValue("@points_awarded", response.PointsAwarded);
 
         return command;
     }

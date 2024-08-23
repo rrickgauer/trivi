@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Trivi.Lib.Domain.ViewModels.Gui;
 using Trivi.WebGui.Controllers.Contracts;
 
 
@@ -16,8 +17,13 @@ public class JoinGameController : GuiController, IControllerName
     /// <returns></returns>
     [HttpGet]
     [ActionName(nameof(JoinGamePage))]
-    public ActionResult JoinGamePage()
+    public ActionResult JoinGamePage([FromQuery] string? gameId)
     {
-        return View(GuiPages.GameJoin);
+        JoinGameViewModel viewModel = new()
+        {
+            GameId = gameId,
+        };
+
+        return View(GuiPages.GameJoin, viewModel);
     }
 }

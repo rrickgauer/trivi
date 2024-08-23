@@ -143,10 +143,11 @@ public class DatabaseConnection(IConfigs configs)
     /// <exception cref="RepositoryException"></exception>
     public async Task<int> ModifyAsync(MySqlCommand command)
     {
+        // setup a new database connection object
+        using MySqlConnection connection = GetNewConnection();
+
         try
         {
-            // setup a new database connection object
-            using MySqlConnection connection = GetNewConnection();
             await connection.OpenAsync();
             command.Connection = connection;
 
@@ -160,6 +161,8 @@ public class DatabaseConnection(IConfigs configs)
         }
         catch (MySqlException ex)
         {
+            await CloseConnectionAsync(connection);
+
             if (ex.Number == RepositoryConstants.USER_DEFINED_EXCEPTION_NUMBER)
             {
                 throw new RepositoryException(ex);

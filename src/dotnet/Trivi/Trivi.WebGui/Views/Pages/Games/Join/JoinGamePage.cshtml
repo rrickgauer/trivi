@@ -1,4 +1,6 @@
 ﻿@using Trivi.Lib.Domain.Constants
+@using Trivi.Lib.Domain.ViewModels.Gui
+@model JoinGameViewModel
 
 <!DOCTYPE html>
 <html>
@@ -28,9 +30,14 @@
 
         <form class="@formClass">
             <fieldset>
+
+                @{
+                    string gameIdValue = Model.GameId ?? string.Empty;
+                }
+
                 <div class="form-spacing input-feedback">
                     <label for="@gameIdInputId" class="form-label">Game ID</label>
-                    <input type="text" class="form-control form-control-lg input-feedback-input" id="@gameIdInputId" required maxlength="@NanoIdConstants.GameIdLength">
+                    <input type="text" class="form-control form-control-lg input-feedback-input" id="@gameIdInputId" required maxlength="@NanoIdConstants.GameIdLength" value="@gameIdValue">
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback"></div>
                 </div>

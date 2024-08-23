@@ -134,7 +134,7 @@ CREATE TABLE Game_Questions (
   CONSTRAINT Game_Questions_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Game_Questions_ibfk_2 FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Game_Questions_ibfk_3 FOREIGN KEY (game_question_status_id) REFERENCES Game_Question_Status (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +175,7 @@ CREATE TABLE Games (
   KEY game_status_id (game_status_id),
   CONSTRAINT Games_ibfk_1 FOREIGN KEY (collection_id) REFERENCES Collections (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Games_ibfk_2 FOREIGN KEY (game_status_id) REFERENCES Game_Status (id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,7 +196,7 @@ CREATE TABLE Players (
   UNIQUE KEY id (id),
   KEY game_id (game_id),
   CONSTRAINT Players_ibfk_1 FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,6 +308,8 @@ CREATE TABLE Responses (
   question_id varchar(36) NOT NULL,
   player_id char(36) NOT NULL,
   created_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  is_correct tinyint(1) NOT NULL DEFAULT '0',
+  points_awarded smallint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (internal_id),
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
@@ -315,7 +317,7 @@ CREATE TABLE Responses (
   KEY player_id (player_id),
   CONSTRAINT Responses_ibfk_1 FOREIGN KEY (question_id) REFERENCES Questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT Responses_ibfk_2 FOREIGN KEY (player_id) REFERENCES Players (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -333,7 +335,7 @@ CREATE TABLE Responses_MC (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Responses_MC_ibfk_1 FOREIGN KEY (id) REFERENCES Responses (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -351,7 +353,7 @@ CREATE TABLE Responses_SA (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Responses_SA_ibfk_1 FOREIGN KEY (id) REFERENCES Responses (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -369,7 +371,7 @@ CREATE TABLE Responses_TF (
   UNIQUE KEY internal_id (internal_id),
   UNIQUE KEY id (id),
   CONSTRAINT Responses_TF_ibfk_1 FOREIGN KEY (id) REFERENCES Responses (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -587,6 +589,8 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50001 CREATE VIEW `View_Responses` AS SELECT 
  1 AS response_id,
  1 AS response_created_on,
+ 1 AS response_is_correct,
+ 1 AS response_points_awarded,
  1 AS game_id,
  1 AS question_id,
  1 AS question_type_id,
@@ -610,6 +614,8 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS answer_given,
  1 AS response_id,
  1 AS response_created_on,
+ 1 AS response_is_correct,
+ 1 AS response_points_awarded,
  1 AS game_id,
  1 AS question_id,
  1 AS question_type_id,
@@ -634,6 +640,8 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS correct_answer,
  1 AS response_id,
  1 AS response_created_on,
+ 1 AS response_is_correct,
+ 1 AS response_points_awarded,
  1 AS game_id,
  1 AS question_id,
  1 AS question_type_id,
@@ -658,6 +666,8 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS correct_answer,
  1 AS response_id,
  1 AS response_created_on,
+ 1 AS response_is_correct,
+ 1 AS response_points_awarded,
  1 AS game_id,
  1 AS question_id,
  1 AS question_type_id,
@@ -977,7 +987,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Games AS with Game_Questions_Ranked as (select q.question_id AS question_id,q.game_id AS game_id,q.game_question_status_id AS game_question_status_id,q.created_on AS created_on,row_number() OVER (PARTITION BY q.game_id ORDER BY q.game_id )  AS question_index from Game_Questions q) select g.id AS game_id,g.collection_id AS game_collection_id,g.game_status_id AS game_status_id,g.randomize_questions AS game_randomize_questions,g.question_time_limit AS game_question_time_limit,g.created_on AS game_created_on,g.started_on AS game_started_on,c.user_id AS game_collection_user_id,(select q.question_id from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.game_question_status_id = 2)) limit 1) AS active_question_id,(select q.question_id from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.game_question_status_id = 1)) limit 1) AS next_question_id,(select count(0) from Game_Questions_Ranked q where (q.game_id = q.game_id)) AS count_game_questions,(select q.question_index from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.question_id = active_question_id)) limit 1) AS active_question_index from (Games g join Collections c on((c.id = g.collection_id))) */;
+/*!50001 VIEW View_Games AS with Game_Questions_Ranked as (select q.question_id AS question_id,q.game_id AS game_id,q.game_question_status_id AS game_question_status_id,q.created_on AS created_on,row_number() OVER (PARTITION BY q.game_id ORDER BY q.game_id )  AS question_index from Game_Questions q) select g.id AS game_id,g.collection_id AS game_collection_id,g.game_status_id AS game_status_id,g.randomize_questions AS game_randomize_questions,g.question_time_limit AS game_question_time_limit,g.created_on AS game_created_on,g.started_on AS game_started_on,c.user_id AS game_collection_user_id,(select q.question_id from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.game_question_status_id = 2)) limit 1) AS active_question_id,(select q.question_id from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.game_question_status_id = 1)) limit 1) AS next_question_id,(select count(0) from Game_Questions_Ranked q where (q.game_id = g.id)) AS count_game_questions,(select q.question_index from Game_Questions_Ranked q where ((q.game_id = g.id) and (q.question_id = active_question_id)) limit 1) AS active_question_index from (Games g join Collections c on((c.id = g.collection_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1085,7 +1095,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Responses AS select r.id AS response_id,r.created_on AS response_created_on,p.player_game_id AS game_id,r.question_id AS question_id,q.question_question_type_id AS question_type_id,q.question_prompt AS question_prompt,q.question_points AS question_points,r.player_id AS player_id,p.player_nickname AS player_nickname,q.question_collection_id AS collection_id,q.collection_user_id AS collection_user_id from ((Responses r left join View_Questions q on((q.question_id = r.question_id))) left join View_Players p on((p.player_id = r.player_id))) */;
+/*!50001 VIEW View_Responses AS select r.id AS response_id,r.created_on AS response_created_on,r.is_correct AS response_is_correct,r.points_awarded AS response_points_awarded,p.player_game_id AS game_id,r.question_id AS question_id,q.question_question_type_id AS question_type_id,q.question_prompt AS question_prompt,q.question_points AS question_points,r.player_id AS player_id,p.player_nickname AS player_nickname,q.question_collection_id AS collection_id,q.collection_user_id AS collection_user_id from ((Responses r left join View_Questions q on((q.question_id = r.question_id))) left join View_Players p on((p.player_id = r.player_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1103,7 +1113,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Responses_MC AS select r.answer_given AS answer_given,v.response_id AS response_id,v.response_created_on AS response_created_on,v.game_id AS game_id,v.question_id AS question_id,v.question_type_id AS question_type_id,v.question_prompt AS question_prompt,v.question_points AS question_points,v.player_id AS player_id,v.player_nickname AS player_nickname,v.collection_id AS collection_id,v.collection_user_id AS collection_user_id from (Responses_MC r join View_Responses v on((v.response_id = r.id))) */;
+/*!50001 VIEW View_Responses_MC AS select r.answer_given AS answer_given,v.response_id AS response_id,v.response_created_on AS response_created_on,v.response_is_correct AS response_is_correct,v.response_points_awarded AS response_points_awarded,v.game_id AS game_id,v.question_id AS question_id,v.question_type_id AS question_type_id,v.question_prompt AS question_prompt,v.question_points AS question_points,v.player_id AS player_id,v.player_nickname AS player_nickname,v.collection_id AS collection_id,v.collection_user_id AS collection_user_id from (Responses_MC r join View_Responses v on((v.response_id = r.id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1121,7 +1131,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Responses_SA AS select r.answer_given AS answer_given,sa.correct_answer AS correct_answer,v.response_id AS response_id,v.response_created_on AS response_created_on,v.game_id AS game_id,v.question_id AS question_id,v.question_type_id AS question_type_id,v.question_prompt AS question_prompt,v.question_points AS question_points,v.player_id AS player_id,v.player_nickname AS player_nickname,v.collection_id AS collection_id,v.collection_user_id AS collection_user_id from ((Responses_SA r join View_Responses v on((v.response_id = r.id))) join Questions_SA sa on((sa.id = v.question_id))) */;
+/*!50001 VIEW View_Responses_SA AS select r.answer_given AS answer_given,sa.correct_answer AS correct_answer,v.response_id AS response_id,v.response_created_on AS response_created_on,v.response_is_correct AS response_is_correct,v.response_points_awarded AS response_points_awarded,v.game_id AS game_id,v.question_id AS question_id,v.question_type_id AS question_type_id,v.question_prompt AS question_prompt,v.question_points AS question_points,v.player_id AS player_id,v.player_nickname AS player_nickname,v.collection_id AS collection_id,v.collection_user_id AS collection_user_id from ((Responses_SA r join View_Responses v on((v.response_id = r.id))) join Questions_SA sa on((sa.id = v.question_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1139,7 +1149,7 @@ USE Trivi_Dev;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=main@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW View_Responses_TF AS select r.answer_given AS answer_given,tf.correct_answer AS correct_answer,v.response_id AS response_id,v.response_created_on AS response_created_on,v.game_id AS game_id,v.question_id AS question_id,v.question_type_id AS question_type_id,v.question_prompt AS question_prompt,v.question_points AS question_points,v.player_id AS player_id,v.player_nickname AS player_nickname,v.collection_id AS collection_id,v.collection_user_id AS collection_user_id from ((Responses_TF r join View_Responses v on((v.response_id = r.id))) join Questions_TF tf on((tf.id = v.question_id))) */;
+/*!50001 VIEW View_Responses_TF AS select r.answer_given AS answer_given,tf.correct_answer AS correct_answer,v.response_id AS response_id,v.response_created_on AS response_created_on,v.response_is_correct AS response_is_correct,v.response_points_awarded AS response_points_awarded,v.game_id AS game_id,v.question_id AS question_id,v.question_type_id AS question_type_id,v.question_prompt AS question_prompt,v.question_points AS question_points,v.player_id AS player_id,v.player_nickname AS player_nickname,v.collection_id AS collection_id,v.collection_user_id AS collection_user_id from ((Responses_TF r join View_Responses v on((v.response_id = r.id))) join Questions_TF tf on((tf.id = v.question_id))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1171,7 +1181,7 @@ USE Trivi_Dev;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-16  9:27:30
+-- Dump completed on 2024-08-28  8:20:10
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Trivi_Dev
@@ -1253,4 +1263,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-16  9:27:36
+-- Dump completed on 2024-08-28  8:20:15

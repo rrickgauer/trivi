@@ -19,6 +19,8 @@ public class ViewResponseMapper : TableMapper<ViewResponse>
         result.PlayerNickname    = row.Field<string?>(GetColumnName(nameof(result.PlayerNickname)));
         result.CollectionId      = row.Field<Guid?>(GetColumnName(nameof(result.CollectionId)));
         result.CollectionUserId  = row.Field<Guid?>(GetColumnName(nameof(result.CollectionUserId)));
+        result.PointsAwarded     = row.Field<ushort>(GetColumnName(nameof(result.PointsAwarded)));
+        result.IsCorrect         = row.Field<bool>(GetColumnName(nameof(result.IsCorrect)));
 
         return result;
     }

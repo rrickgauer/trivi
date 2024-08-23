@@ -10,13 +10,14 @@ using Trivi.Lib.Services.Contracts;
 namespace Trivi.Lib.Services.Implementations;
 
 [AutoInject<IResponseService>(AutoInjectionType.Scoped, InjectionProject.Always)]
-public class ResponseService(IResponseRepository responseRepository, ITableMapperService tableMapperService, IAnswerService answerService) : IResponseService
+public class ResponseService(IResponseRepository responseRepository, ITableMapperService tableMapperService, IAnswerService answerService, IGradingService gradingService) : IResponseService
 {
     #region - Private members -
 
     private readonly IResponseRepository _responseRepository = responseRepository;
     private readonly ITableMapperService _tableMapperService = tableMapperService;
     private readonly IAnswerService _answerService = answerService;
+    private readonly IGradingService _gradingService = gradingService;
 
     private delegate Task<ServiceResponse<TView>> GetFunctionCallback<TView>(PlayerQuestionResponse parms);
 
@@ -28,10 +29,10 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
     {
         return responseData.QuestionId.QuestionType switch
         {
-            QuestionType.ShortAnswer    => await GetResponseAsync(GetShortAnswerAsync, responseData),
-            QuestionType.TrueFalse      => await GetResponseAsync(GetTrueFalseAsync, responseData),
+            QuestionType.ShortAnswer => await GetResponseAsync(GetShortAnswerAsync, responseData),
+            QuestionType.TrueFalse => await GetResponseAsync(GetTrueFalseAsync, responseData),
             QuestionType.MultipleChoice => await GetResponseAsync(GetMultipleChoiceAsync, responseData),
-            _                           => throw new NotImplementedException(),
+            _ => throw new NotImplementedException(),
         };
     }
 
@@ -204,8 +205,25 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
     #region - Create response -
 
+    /// <summary>
+    /// Create short answer response
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
     public async Task<ServiceResponse<ViewResponseShortAnswer>> CreateShortAnswerResponseAsync(ResponseShortAnswer response)
     {
+        // grade response
+        try
+        {
+            await GradeResponseAsync(response, _gradingService.GradeResponseAsync);
+        }
+        catch(ServiceException serviceException)
+        {
+            return new(serviceException.Errors);
+        }
+
+
+        // save it to the database
         try
         {
             await _responseRepository.CreateResponseAsync(response);
@@ -215,6 +233,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
             return ex;
         }
 
+        // return the response
         if (response.Id is Guid responseId)
         {
             return await GetShortAnswerAsync(responseId);
@@ -223,8 +242,25 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         return new();
     }
 
+
+    /// <summary>
+    /// Create true false response
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
     public async Task<ServiceResponse<ViewResponseTrueFalse>> CreateTrueFalseResponseAsync(ResponseTrueFalse response)
     {
+        // grade the response
+        try
+        {
+            await GradeResponseAsync(response, _gradingService.GradeResponseAsync);
+        }
+        catch(ServiceException serviceException)
+        {
+            return new(serviceException.Errors);
+        }
+
+        // save it to the database
         try
         {
             await _responseRepository.CreateResponseAsync(response);
@@ -234,6 +270,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
             return ex;
         }
 
+        // return the response
         if (response.Id is Guid responseId)
         {
             return await GetTrueFalseAsync(responseId);
@@ -242,8 +279,15 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         return new();
     }
 
+
+    /// <summary>
+    /// Create multiple choice response
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
     public async Task<ServiceResponse<ViewResponseMultipleChoice>> CreateMultipleChoiceResponseAsync(ResponseMultipleChoice response)
     {
+        // validate the response
         var getValidation = await ValidateNewMultipleChoiceAsync(response);
 
         if (!getValidation.Successful)
@@ -252,6 +296,18 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
         }
 
 
+        // grade it
+        try
+        {
+            await GradeResponseAsync(response, _gradingService.GradeResponseAsync);
+        }
+        catch(ServiceException serviceException)
+        {
+            return new(serviceException.Errors);
+        }
+        
+
+        // save it to the database
         try
         {
             await _responseRepository.CreateResponseAsync(response);
@@ -261,6 +317,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
             return ex;
         }
 
+        // return response
         if (response.Id is Guid responseId)
         {
             return await GetMultipleChoiceAsync(responseId);
@@ -268,7 +325,12 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
         return new();
     }
-
+    
+    /// <summary>
+    /// Validate the given multiple-choice response
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
     private async Task<ServiceResponse> ValidateNewMultipleChoiceAsync(ResponseMultipleChoice response)
     {
 
@@ -281,7 +343,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
 
         var answerIds = getAnswers.Data?.Select(a => a.Id).ToList() ?? new();
 
-        
+
         if (!answerIds.Contains(response.AnswerGiven))
         {
             return new(ErrorCode.ResponsesInvalidMultipleChoiceAnswerId);
@@ -291,7 +353,29 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
     }
 
 
+    /// <summary>
+    /// Grade the specified response
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="response">The response to grade.</param>
+    /// <param name="gradeCallback">Grading Service callback function</param>
+    /// <returns></returns>
+    /// <exception cref="ServiceException"></exception>
+    private async Task GradeResponseAsync<T>(T response, Func<T, Task<ServiceResponse<ResponseGrade>>> gradeCallback) where T : Response
+    {
+        var getGrade = await gradeCallback(response);
+
+        if (!getGrade.Successful)
+        {
+            throw new ServiceException(getGrade);
+        }
+
+        response.SetGrade(getGrade.Data);
+    }
+
+
     #endregion
+
 
 
     public async Task<ServiceResponse<List<ViewPlayerQuestionResponse>>> GetPlayerQuestionResponsesAsync(string gameId, QuestionId questionId)
@@ -301,7 +385,7 @@ public class ResponseService(IResponseRepository responseRepository, ITableMappe
             var table = await _responseRepository.GetPlayerQuestionResponsesAsync(gameId, questionId);
             return _tableMapperService.ToModels<ViewPlayerQuestionResponse>(table);
         }
-        catch(RepositoryException ex)
+        catch (RepositoryException ex)
         {
             return ex;
         }

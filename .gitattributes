@@ -1,0 +1,4 @@
+*.js linguist-language=typescript
+**/css/bootstrap/** -linguist-detectable
+**/ts/custom/lib/** -linguist-detectable
+
